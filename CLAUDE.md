@@ -89,14 +89,20 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **Parallel output price fetching** — Done (5 workers, global rate limiter)
 - [x] **CSFloat rate limit handling** — Done (token bucket + exponential backoff)
 - [x] **Skinport output fallback** — Done (qty ≥ 2 guard, NO_CSFLOAT_LISTINGS exclusion)
+- [ ] **Fix CSFloat input pagination** — Currently only getting 50 input listings due to price cursor bug. Fixing this alone could add 1,000–2,000 more inputs. Biggest quick win.
+- [ ] **Sell on Skinport (output)** — Currently if CSFloat has no listing for an output it's dead. Enabling Skinport as a valid sell platform (with qty ≥ 2 guard, minus Skinport fee) would unlock many collections currently skipped as NO_CSFLOAT_LISTINGS. Second biggest quick win.
+- [ ] **Add Waxpeer as input source** — Public API, returns listings with float values, large inventory, often cheaper than DMarket. Add as 3rd input source alongside DMarket and CSFloat.
 - [ ] **Rarity expansion** — Support all rarity tiers more broadly
 - [ ] **Quick execution solution** — Auto-buy inputs or one-click purchase flow
-- [ ] **Steam 14-day price trend** — Add price history as trend indicator
 
 ### Medium Priority
-- [ ] **More marketplace integrations** — Buff163, Waxpeer, CS.Money
-- [ ] **Add buy order support** — Place buy orders at target prices
+- [ ] **Steam output price fallback** — Steam median is available for any skin. Use as last-resort output price (minus 15% fee) to give coverage where both CSFloat and Skinport have no listings.
+- [ ] **CSFloat float-range targeted fetch** — CSFloat API accepts min_float/max_float params. Instead of fetching all listings and filtering, query exactly the float ranges needed per collection. More surgical, less waste, more relevant results.
+- [ ] **Add CS.Money as input source** — API returns floats per listing, good coverage on mid-tier skins DMarket misses.
+- [ ] **Add BitSkins as input source** — Has float data in API, less popular but adds coverage.
+- [ ] **Add buy order support** — Place buy orders on DMarket/Skinport at target prices
 - [ ] **Auto-refresh mode** — Run every X minutes and alert on new opportunities
+- [ ] **Steam 14-day price trend** — Add price history as trend indicator
 
 ### Low Priority
 - [ ] **Integrate Pricempire** — Needs new subscription
