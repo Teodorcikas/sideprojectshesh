@@ -12,7 +12,9 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 | `price_cache.json` | Auto-generated cache for CSFloat output prices (3h TTL) |
 | `skinport_cache.json` | Auto-generated cache for Skinport prices (3h fresh, 6h stale fallback) |
 | `dmarket_cache.json` | Auto-generated cache for DMarket listings (3h fresh, 6h stale fallback) |
+| `csfloat_input_cache.json` | Auto-generated cache for CSFloat input listings (6h fresh) |
 | `skinport_lastcall.txt` | Rate limiter tracker for Skinport API (60s cooldown) |
+| `opportunities_cache.json` | Saved profitable opportunities with listing IDs for verification |
 
 ## APIs Used
 
@@ -40,32 +42,28 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 - Steam seller fee: 15% (for comparison only)
 - No buyer fees on DMarket/Skinport
 
-## Current State (v3.0)
+## Current State (v3.2)
 
 **Working:**
-- Fetches 2000 items/weapon from DMarket (5000+ raw FT items)
+- Fetches from DMarket (7000+ items) + CSFloat (2000 items via price-based pagination)
+- **Deduplication by listing_id** to prevent counting same listing multiple times
 - Dynamic float limits per collection based on output skin ranges
 - Groups by collection, requires 10+ inputs of same rarity (liquidity check)
 - Separates StatTrak/non-StatTrak (can't mix in trade-ups)
 - CSFloat output prices with 2% fee calculation
 - Steam volume/trend data for profitable trade-ups only
-- ROI filter: only shows 25%+ ROI trade-ups
+- ROI filter: only shows 25%+ ROI AND $0.30+ EV trade-ups
 - WATCH LIST: Shows collections with 5-9 inputs (close to executable)
-- Caching: 3h fresh, 3-6h stale fallback, delete after 6h
+- **Opportunity tracking:** Saves profitable trade-ups with exact listing IDs to `opportunities_cache.json`
+- **Verification on startup:** Checks if saved listings still exist and prices remain profitable
+- Caching: 6h for inputs, 3h for output prices
 - Skinport rate limiter: 60s cooldown between API calls
-
-**Latest run results:**
-- 5167 raw items fetched
-- 524 viable after float filtering
-- 11 viable collections, 10 trade-ups analyzed
-- No 25%+ ROI found (best was graphic design at -6.4%)
-- Skinport was rate limited — expect better results when enabled
 
 ## TODO
 
 ### High Priority
-- [ ] **Add CSFloat as input source** — CSFloat has individual listings with exact floats, could find cheaper/better inputs
-- [ ] **Test with Skinport enabled** — Rate limit expires, should find more listings and better prices
+- [x] **Add CSFloat as input source** — Done! Fetches low-float FT listings
+- [ ] **Steam 14-day price trend** — Add Steam price history (last 14 days) as a price source/trend indicator
 - [ ] **Lower ROI threshold option** — Add CLI arg to show 10%+ or 15%+ ROI for more visibility
 
 ### Medium Priority
@@ -77,17 +75,18 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 ### Low Priority
 - [ ] **Integrate Pricempire** — Needs new subscription
 - [ ] **Filter by Steam volume** — Skip illiquid outputs (<5 sales/day)
-- [ ] **One-click purchase links** — Direct add-to-cart URLs
 - [ ] **StatTrak trade-up support** — Currently filters to non-ST, could show ST opportunities separately
 
 ## Key Constants
 
 ```python
-SKINPORT_COOLDOWN = 60        # 1 minute between Skinport API calls
-CACHE_EXPIRY = 3 * 60 * 60    # 3 hours fresh
+SKINPORT_COOLDOWN = 60            # 1 minute between Skinport API calls
+CACHE_EXPIRY = 3 * 60 * 60        # 3 hours fresh (output prices)
+INPUT_CACHE_EXPIRY = 6 * 60 * 60  # 6 hours fresh (input listings)
 CACHE_STALE_EXPIRY = 6 * 60 * 60  # 6 hours stale fallback
-MIN_ROI = 25.0                # Only show 25%+ ROI
-CSFLOAT_SELLER_FEE = 0.02     # 2% when selling on CSFloat
+MIN_ROI = 25.0                    # Only show 25%+ ROI
+MIN_EV = 30                       # Only show $0.30+ net profit (in cents)
+CSFLOAT_SELLER_FEE = 0.02         # 2% when selling on CSFloat
 ```
 
 ## Quick Start
