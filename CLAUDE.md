@@ -63,10 +63,13 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 
 ### High Priority
 - [x] **Add CSFloat as input source** — Done! Fetches low-float FT listings
+- [ ] **Rarity expansion** — Support all rarity tiers (not just FT→MW), find trade-ups across all conditions
+- [ ] **Quick execution solution** — Auto-buy inputs or one-click purchase flow to execute trade-ups before listings sell
 - [ ] **Steam 14-day price trend** — Add Steam price history (last 14 days) as a price source/trend indicator
 - [ ] **Lower ROI threshold option** — Add CLI arg to show 10%+ or 15%+ ROI for more visibility
 
 ### Medium Priority
+- [ ] **More marketplace integrations** — Add Buff163, Waxpeer, CS.Money, or other marketplaces for better coverage
 - [ ] **Fetch more items** — Increase beyond 2000/weapon or add pagination for better coverage
 - [ ] **Add buy order support** — Place buy orders on DMarket/Skinport at target prices
 - [ ] **Historical EV tracking** — Log profitable opportunities over time
@@ -76,6 +79,9 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 - [ ] **Integrate Pricempire** — Needs new subscription
 - [ ] **Filter by Steam volume** — Skip illiquid outputs (<5 sales/day)
 - [ ] **StatTrak trade-up support** — Currently filters to non-ST, could show ST opportunities separately
+
+### Ongoing
+- [ ] **Bug fixes** — Monitor and fix issues as they arise
 
 ## Key Constants
 
