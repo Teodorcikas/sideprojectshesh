@@ -5,6 +5,26 @@ import sys
 import json
 import os
 import time
+import threading
+
+
+class RateLimiter:
+    """Token-bucket rate limiter. Enforces a minimum interval between calls globally across all threads."""
+    def __init__(self, max_per_second):
+        self._interval = 1.0 / max_per_second
+        self._lock = threading.Lock()
+        self._last = 0.0
+
+    def wait(self):
+        with self._lock:
+            now = time.time()
+            gap = self._interval - (now - self._last)
+            if gap > 0:
+                time.sleep(gap)
+            self._last = time.time()
+
+
+_csfloat_rate_limiter = RateLimiter(max_per_second=4)  # 250ms between every CSFloat request globally
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -20,6 +40,7 @@ DMARKET_CACHE_FILE = os.path.join(os.path.dirname(__file__), "dmarket_cache.json
 CSFLOAT_INPUT_CACHE_FILE = os.path.join(os.path.dirname(__file__), "csfloat_input_cache.json")
 SKINPORT_RATELIMIT_FILE = os.path.join(os.path.dirname(__file__), "skinport_lastcall.txt")
 OPPORTUNITIES_CACHE_FILE = os.path.join(os.path.dirname(__file__), "opportunities_cache.json")
+WINNERS_FILE = os.path.join(os.path.dirname(__file__), "winners.md")
 CACHE_EXPIRY = 3 * 60 * 60  # 3 hours for output prices
 CACHE_STALE_EXPIRY = 6 * 60 * 60  # 6 hours (keep stale data as fallback)
 INPUT_CACHE_EXPIRY = 6 * 60 * 60  # 6 hours for input listings (don't change fast)
@@ -435,6 +456,52 @@ def verify_saved_opportunities(cached_prices):
     return confirmed, expired
 
 
+def append_winners_log(profitable_results):
+    """Append profitable trade-ups to the persistent winners.md log."""
+    if not profitable_results:
+        return
+
+    from datetime import date
+    today = date.today().isoformat()
+
+    lines = [f"\n## {today}\n"]
+    for r in profitable_results:
+        coll = r["collection"].title()
+        in_r = RARITY_NAMES[r["in_rarity"]].title()
+        out_r = RARITY_NAMES[r["out_rarity"]].title()
+        roi = r["roi"]
+        ev = r["ev"] / 100
+        cost = r["input_cost"] / 100
+        ev_out = r["ev_output"] / 100
+        avg_flt = r["avg_float"]
+        adj_flt = r.get("max_adjusted", 0)
+
+        input_skin = r["inputs"][0]["title"] if r["inputs"] else "?"
+        input_price = r["inputs"][0]["price"] / 100 if r["inputs"] else 0
+        max_flt = r["inputs"][0].get("max_float") or 0
+
+        lines.append(f"### {coll} | {in_r} → {out_r} | +{roi:.1f}% ROI | EV: ${ev:.2f}")
+        lines.append(f"- **Input:** 10x {input_skin} @ ${input_price:.2f} each = ${cost:.2f} total")
+        lines.append(f"- **Max input float:** {max_flt:.4f}")
+        lines.append(f"- **Avg input float:** {avg_flt:.4f} (max adjusted allowed: {adj_flt:.4f})")
+        lines.append(f"- **Expected output value:** ${ev_out:.2f} (after 2% CSFloat fee)")
+        lines.append(f"- **Outputs (1/{len(r['outputs'])} each):**")
+        for o in r["outputs"]:
+            source = o.get("price_source", "CSFloat")
+            price = o["price_raw"] / 100
+            jackpot = " ← jackpot" if o["price_raw"] >= 1000 else ""
+            lines.append(f"  - {o['name']} ({o['condition'][:2]}, ~{o['float']:.4f}) — ${price:.2f} [{source}]{jackpot}")
+        lines.append("")
+
+    lines.append("---\n")
+    entry = "\n".join(lines)
+
+    with open(WINNERS_FILE, "a", encoding="utf-8") as f:
+        f.write(entry)
+
+    print(f"   Appended {len(profitable_results)} winner(s) to winners.md")
+
+
 def save_profitable_opportunities(profitable_results):
     """Save profitable trade-ups to opportunities cache."""
     if not profitable_results:
@@ -489,17 +556,11 @@ def save_profitable_opportunities(profitable_results):
 
     save_opportunities(opportunities)
     print(f"\n   Saved {len(opportunities)} opportunities to {OPPORTUNITIES_CACHE_FILE}")
+    append_winners_log(profitable_results)
 
 
 # ============ PHASE 1: FETCH INPUTS ============
 
-WEAPON_NAMES = [
-    "AK-47", "M4A4", "M4A1-S", "AWP", "Desert Eagle", "USP-S", "Glock-18",
-    "P250", "Five-SeveN", "Tec-9", "CZ75-Auto", "Dual Berettas", "R8 Revolver",
-    "P2000", "MP9", "MAC-10", "MP7", "UMP-45", "P90", "PP-Bizon", "MP5-SD",
-    "FAMAS", "Galil AR", "SG 553", "AUG", "SSG 08", "SCAR-20", "G3SG1",
-    "Nova", "XM1014", "MAG-7", "Sawed-Off", "M249", "Negev"
-]
 
 
 def fetch_csfloat_listings(max_items=2000):
@@ -513,8 +574,11 @@ def fetch_csfloat_listings(max_items=2000):
     min_price = 0  # Start from $0
     max_iterations = 50  # Safety limit
 
+    stop_reason = "hit max_items limit"
+
     for iteration in range(max_iterations):
         if len(all_items) >= max_items:
+            stop_reason = f"reached max_items limit ({max_items})"
             break
 
         params = {
@@ -528,17 +592,27 @@ def fetch_csfloat_listings(max_items=2000):
         try:
             r = requests.get(CSFLOAT_URL, params=params, headers=headers, timeout=15)
             if not r.ok:
+                stop_reason = f"API error HTTP {r.status_code}"
                 print(f"   [CSFLOAT] API error: {r.status_code}")
                 break
             data = r.json()
             listings = data.get("data", [])
             if not listings:
+                stop_reason = "API returned 0 results (exhausted)"
                 break
 
             new_items_this_batch = 0
+            # Track max price across ALL listings in this batch (pre-filter),
+            # so min_price always advances even when entire pages are filtered out.
             max_price_seen = min_price
             for listing in listings:
                 item = listing.get("item", {})
+                price = listing.get("price", 0)
+
+                # Always advance price cursor regardless of filters
+                if price > max_price_seen:
+                    max_price_seen = price
+
                 fv = item.get("float_value")
                 market_hash_name = item.get("market_hash_name", "")
 
@@ -560,9 +634,6 @@ def fetch_csfloat_listings(max_items=2000):
                 if rarity not in RARITY_ORDER:
                     continue
 
-                # Price is in cents
-                price = listing.get("price", 0)
-
                 # Get listing ID for direct link
                 listing_id = listing.get("id", "")
 
@@ -571,10 +642,6 @@ def fetch_csfloat_listings(max_items=2000):
                     continue
                 seen_listing_ids.add(listing_id)
                 new_items_this_batch += 1
-
-                # Track highest price to use as next min_price
-                if price > max_price_seen:
-                    max_price_seen = price
 
                 all_items.append({
                     "title": market_hash_name,
@@ -586,31 +653,36 @@ def fetch_csfloat_listings(max_items=2000):
                     "listing_id": listing_id,
                 })
 
-            # If no new items and price didn't change, we've exhausted listings
-            if new_items_this_batch == 0:
+            print(f"   [CSFLOAT] Page {iteration + 1}: {len(listings)} fetched, {new_items_this_batch} kept, {len(all_items)} total (min_price={min_price})")
+
+            # Only stop if the API itself returned nothing — filtered-out pages still
+            # have a valid max_price_seen to advance to.
+            if max_price_seen == min_price:
+                # No price movement at all — truly stuck (all same price and all dupes)
+                stop_reason = "price cursor did not advance (all dupes at same price)"
                 break
 
-            # Use same price tier to catch remaining items at this price
-            # (dedup via seen_listing_ids prevents counting them twice)
             min_price = max_price_seen
             time.sleep(CSFLOAT_INPUT_RATE_LIMIT)
 
         except Exception as e:
+            stop_reason = f"exception: {e}"
             print(f"   [CSFLOAT] Error: {e}")
             break
 
+    print(f"   [CSFLOAT] Stopped after {iteration + 1} page(s): {stop_reason}")
     return all_items
 
 
-def fetch_weapon_raw(weapon_name, max_items=500):
-    """Fetch raw items for a weapon from DMarket (all conditions)."""
+def fetch_skin_raw(skin_name, max_items=1000):
+    """Fetch all DMarket listings for a specific skin name (all conditions, all prices)."""
     all_items = []
     cursor = None
 
     while len(all_items) < max_items:
         params = {
             "gameId": "a8db",
-            "title": weapon_name,
+            "title": skin_name,
             "limit": 100,
             "orderBy": "price",
             "orderDir": "asc",
@@ -635,16 +707,12 @@ def fetch_weapon_raw(weapon_name, max_items=500):
                 quality = extra.get("quality", "").lower()
                 title = item.get("title", "")
 
-                # Skip souvenir
                 if "Souvenir" in title:
                     continue
-
                 if fv is None or not colls or quality not in RARITY_ORDER:
                     continue
 
-                # Get item ID for direct link
                 item_id = item.get("itemId", "")
-
                 all_items.append({
                     "title": title,
                     "price_usd": int(item.get("price", {}).get("USD", 0)),
@@ -658,7 +726,7 @@ def fetch_weapon_raw(weapon_name, max_items=500):
             if not cursor:
                 break
         except (requests.RequestException, json.JSONDecodeError, KeyError, ValueError) as e:
-            print(f"   WARNING: DMarket fetch interrupted ({e}), got {len(all_items)} items so far")
+            print(f"   WARNING: DMarket fetch interrupted for '{skin_name}' ({e}), got {len(all_items)} so far")
             break
 
     return all_items
@@ -749,7 +817,7 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
     return processed
 
 
-def phase1_fetch_inputs(float_limits, skinport_prices, skin_float_ranges, target=15000):
+def phase1_fetch_inputs(float_limits, skinport_prices, skin_float_ranges, coll_skins, target=15000):
     """Fetch inputs from DMarket + CSFloat, compare with Skinport prices."""
     print("\n" + "=" * 70)
     print("PHASE 1: Fetching input skins from DMarket + CSFloat + Skinport")
@@ -766,25 +834,33 @@ def phase1_fetch_inputs(float_limits, skinport_prices, skin_float_ranges, target
     else:
         stale_fallback = cached_items if cache_status == "stale" else None
 
-        print(f"   [DMARKET] Fetching {len(WEAPON_NAMES)} weapon types in parallel...")
+        # Build deduplicated set of every input skin across all viable collection+rarity combos.
+        # This ensures Mil-Spec, Restricted, and Classified skins are fetched directly
+        # instead of being crowded out by cheap consumer-grade skins from a global weapon search.
+        skins_to_fetch = set()
+        for (coll, in_rarity) in float_limits:
+            for skin in coll_skins.get(coll, {}).get(in_rarity, []):
+                skins_to_fetch.add(skin["name"])
+
+        print(f"   [DMARKET] Fetching {len(skins_to_fetch)} specific skins across all rarity tiers in parallel...")
         fetched_items = []
         try:
             with ThreadPoolExecutor(max_workers=10) as executor:
                 futures = {
-                    executor.submit(fetch_weapon_raw, weapon, 2000): weapon
-                    for weapon in WEAPON_NAMES
+                    executor.submit(fetch_skin_raw, skin_name): skin_name
+                    for skin_name in skins_to_fetch
                 }
                 for future in as_completed(futures):
-                    weapon = futures[future]
+                    skin_name = futures[future]
                     try:
                         items = future.result()
                         fetched_items.extend(items)
                     except Exception as e:
-                        print(f"   Error fetching {weapon}: {e}")
+                        print(f"   Error fetching '{skin_name}': {e}")
 
             if fetched_items:
                 save_dmarket_cache(fetched_items)
-                print(f"   [DMARKET] Fetched {len(fetched_items)} raw items (cached for 6h)")
+                print(f"   [DMARKET] Fetched {len(fetched_items)} raw items across {len(skins_to_fetch)} skins (cached for 6h)")
                 dmarket_items = fetched_items
             elif stale_fallback:
                 age_mins = (time.time() - cache_time) / 60
@@ -914,9 +990,12 @@ def fetch_skinport_prices():
     # Try to fetch fresh data
     try:
         headers = {
-            "Accept": "application/json",
-            "Accept-Encoding": "br, gzip, deflate",
-            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Encoding": "br, gzip, deflate",  # brotli required by Skinport (needs brotli package)
+            "Accept-Language": "en-US,en;q=0.9",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Origin": "https://skinport.com",
+            "Referer": "https://skinport.com/",
         }
         set_skinport_last_call()  # Record call time BEFORE request
         r = requests.get(SKINPORT_URL, params={"app_id": 730, "currency": "USD"},
@@ -933,22 +1012,37 @@ def fetch_skinport_prices():
             print(f"   No cache available, continuing with DMarket only...")
             return {}
 
-        if r.ok:
-            data = r.json()
-            prices = {}
-            for item in data:
-                name = item.get("market_hash_name", "")
-                min_price = item.get("min_price")
-                quantity = item.get("quantity", 0)
-                if name and min_price is not None:
-                    prices[name] = {
-                        "price": int(min_price * 100),
-                        "quantity": quantity,
-                    }
-            # Save to cache
-            save_skinport_cache(prices)
-            print(f"   [SKINPORT] Fetched fresh ({len(prices)} items, cached for 3h)")
-            return prices
+        if not r.ok:
+            print(f"   WARNING: Skinport returned HTTP {r.status_code}")
+            if cache_status == "stale" and cached_prices:
+                age_mins = (time.time() - cache_time) / 60
+                print(f"   [SKINPORT CACHE] Using stale fallback ({age_mins:.0f}m old)")
+                return cached_prices
+            return {}
+
+        if not r.text.strip():
+            print(f"   WARNING: Skinport returned empty response body (HTTP {r.status_code})")
+            if cache_status == "stale" and cached_prices:
+                age_mins = (time.time() - cache_time) / 60
+                print(f"   [SKINPORT CACHE] Using stale fallback ({age_mins:.0f}m old)")
+                return cached_prices
+            return {}
+
+        data = r.json()
+        prices = {}
+        for item in data:
+            name = item.get("market_hash_name", "")
+            min_price = item.get("min_price")
+            quantity = item.get("quantity", 0)
+            if name and min_price is not None:
+                prices[name] = {
+                    "price": int(min_price * 100),
+                    "quantity": quantity,
+                }
+        # Save to cache
+        save_skinport_cache(prices)
+        print(f"   [SKINPORT] Fetched fresh ({len(prices)} items, cached for 3h)")
+        return prices
 
     except Exception as e:
         print(f"   Error fetching Skinport: {e}")
@@ -970,27 +1064,46 @@ def get_skinport_price(skinport_prices, skin_name, condition):
     return price
 
 
+CSFLOAT_NO_LISTING = -1  # Sentinel: CSFloat confirmed zero active listings for this skin
+
 def fetch_csfloat_price(skin_name, condition):
-    """Fetch lowest CSFloat buy-now price for specific skin + condition."""
-    try:
-        market_hash_name = f"{skin_name} ({condition})"
-        headers = {"Authorization": CSFLOAT_API_KEY}
-        params = {
-            "market_hash_name": market_hash_name,
-            "sort_by": "lowest_price",
-            "limit": 1,
-            "type": "buy_now",
-        }
-        r = requests.get(CSFLOAT_URL, params=params, headers=headers, timeout=10)
-        if r.ok:
-            data = r.json()
-            listings = data.get("data", [])
-            if listings:
-                # Price is in cents
-                return int(listings[0].get("price", 0))
-    except (requests.RequestException, json.JSONDecodeError, KeyError, ValueError):
-        pass
-    return 0
+    """Fetch lowest CSFloat buy-now price for a skin+condition.
+
+    Returns:
+      price > 0          — CSFloat has an active listing at this price (cents)
+      CSFLOAT_NO_LISTING — CSFloat responded 200 OK but zero listings; skin not sellable here
+      0                  — Rate-limited after all retries, or network error; do NOT cache
+
+    Uses the global _csfloat_rate_limiter (4 req/s) before every attempt.
+    Retries on 429 with exponential backoff: 5s, 10s, 20s, 40s.
+    """
+    market_hash_name = f"{skin_name} ({condition})"
+    headers = {"Authorization": CSFLOAT_API_KEY}
+    params = {
+        "market_hash_name": market_hash_name,
+        "sort_by": "lowest_price",
+        "limit": 1,
+        "type": "buy_now",
+    }
+    backoff_delays = [5, 10, 20, 40]
+    for attempt, backoff in enumerate([0] + backoff_delays):
+        if backoff:
+            time.sleep(backoff)
+        _csfloat_rate_limiter.wait()
+        try:
+            r = requests.get(CSFLOAT_URL, params=params, headers=headers, timeout=10)
+            if r.status_code == 429:
+                continue  # sleep backoff on next iteration
+            if r.ok:
+                listings = r.json().get("data", [])
+                if listings:
+                    return int(listings[0].get("price", 0))
+                else:
+                    return CSFLOAT_NO_LISTING  # Confirmed: CSFloat has no listing for this skin
+            # Other non-OK status (5xx etc.) — treat as transient, retry
+        except (requests.RequestException, json.JSONDecodeError, KeyError, ValueError):
+            pass  # Network error — retry
+    return 0  # All retries exhausted — do NOT cache this result
 
 
 def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_prices, skin_float_ranges):
@@ -1002,18 +1115,90 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
     results = []
     skipped_supply = 0
     skipped_stattrak = 0
+    skipped_no_outputs = 0
+    skipped_no_price = 0
+    skipped_not_mw = 0
     prices_from_cache = 0
     prices_fetched = 0
+    rarity_label = lambda r: RARITY_NAMES[r] if r < len(RARITY_NAMES) else str(r)
+
+    # --- PRE-FETCH: Collect all output (name, cond) pairs and bulk-fetch in parallel ---
+    print(f"\n[PHASE 2] Pre-fetching output prices in parallel...")
+    all_output_pairs = set()
+    for coll_name, rarities in viable_collections.items():
+        if coll_name not in coll_skins:
+            continue
+        for in_rarity, inputs in rarities.items():
+            out_rarity = in_rarity + 1
+            outputs = coll_skins[coll_name].get(out_rarity, [])
+            if not outputs:
+                continue
+            stattrak_inputs = [i for i in inputs if i.get("_is_stattrak", False)]
+            normal_inputs = [i for i in inputs if not i.get("_is_stattrak", False)]
+            if len(normal_inputs) >= 10:
+                selected = normal_inputs
+            elif len(stattrak_inputs) >= 10:
+                selected = stattrak_inputs
+            else:
+                continue
+            selected.sort(key=lambda x: x.get("_best_price", 999999))
+            top10 = selected[:10]
+            if len(selected) < 10:
+                continue
+            input_data = []
+            for x in top10:
+                extra = x.get("extra", {})
+                input_data.append({
+                    "float": extra.get("floatValue", 0.18),
+                    "skin_min": extra.get("skin_min", 0.0),
+                    "skin_max": extra.get("skin_max", 1.0),
+                })
+            for out in outputs:
+                out_fv = calc_output_float(input_data, out["min_float"], out["max_float"])
+                out_cond = get_condition(out_fv)
+                cache_key = f"{out['name']}|{out_cond}"
+                if cache_key not in cached_prices:
+                    all_output_pairs.add((out["name"], out_cond))
+
+    if all_output_pairs:
+        print(f"   Fetching {len(all_output_pairs)} unique output prices (4 req/s global, up to 5 workers)...")
+
+        def _fetch_output_price(name_cond):
+            name, cond = name_cond
+            # rate limiting + retry is handled inside fetch_csfloat_price
+            return name_cond, fetch_csfloat_price(name, cond)
+
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures = {executor.submit(_fetch_output_price, pair): pair for pair in all_output_pairs}
+            done = 0
+            for future in as_completed(futures):
+                (name, cond), price = future.result()
+                if price != 0:
+                    # Only cache confirmed results (positive price or NO_LISTING sentinel)
+                    # 0 means all retries failed — leave uncached so next run retries
+                    cached_prices[f"{name}|{cond}"] = price
+                done += 1
+                if done % 50 == 0:
+                    print(f"   ... {done}/{len(all_output_pairs)} fetched")
+        no_listing = sum(1 for v in cached_prices.values() if v == CSFLOAT_NO_LISTING)
+        has_price = sum(1 for v in cached_prices.values() if v > 0)
+        print(f"   Pre-fetch complete: {has_price} with price, {no_listing} confirmed no CSFloat listing.")
+    else:
+        print(f"   All output prices already in cache.")
 
     for coll_name, rarities in viable_collections.items():
         if coll_name not in coll_skins:
+            print(f"   [SKIP] {coll_name}: not in skin database")
             continue
 
         for in_rarity, inputs in rarities.items():
             out_rarity = in_rarity + 1
             outputs = coll_skins[coll_name].get(out_rarity, [])
+            tag = f"{coll_name} | {rarity_label(in_rarity)}->{rarity_label(out_rarity)}"
 
             if not outputs:
+                skipped_no_outputs += 1
+                print(f"   [SKIP] {tag}: no output skins at rarity {out_rarity}")
                 continue
 
             # Separate StatTrak and non-StatTrak inputs
@@ -1028,8 +1213,8 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 selected_inputs = stattrak_inputs
                 is_stattrak_tradeup = True
             else:
-                # Not enough of either type - skip (mixed would be invalid)
                 skipped_stattrak += 1
+                print(f"   [SKIP] {tag}: mixed StatTrak split (normal={len(normal_inputs)}, ST={len(stattrak_inputs)}, need 10 of either)")
                 continue
 
             # Sort by best price, take 10 cheapest
@@ -1037,9 +1222,9 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
             top10 = selected_inputs[:10]
 
             # LIQUIDITY CHECK: Verify we have exactly 10 unique listings
-            # (DMarket listings are individual items, so len >= 10 means 10+ available)
             if len(selected_inputs) < 10:
                 skipped_supply += 1
+                print(f"   [SKIP] {tag}: insufficient supply ({len(selected_inputs)} listings, need 10)")
                 continue
 
             input_cost = sum(x.get("_best_price", 0) for x in top10)
@@ -1062,7 +1247,7 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 out_cond = get_condition(out_fv)
                 output_conditions.append((out["name"], out_cond, out_fv, out["min_float"], out["max_float"]))
 
-            # Look up prices from CSFloat for outputs
+            # Look up prices for outputs: CSFloat first, Skinport fallback
             ev_sum = 0
             out_info = []
             has_price = False
@@ -1071,16 +1256,45 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 cache_key = f"{name}|{cond}"
 
                 if cache_key in cached_prices:
-                    price = cached_prices[cache_key]
+                    cached_val = cached_prices[cache_key]
                     prices_from_cache += 1
+                    if cached_val == CSFLOAT_NO_LISTING:
+                        # CSFloat confirmed zero listings — skin not sellable here, no Skinport fallback
+                        price = 0
+                        price_source = "NO_CSFLOAT_LISTINGS"
+                    elif cached_val > 0:
+                        price = cached_val
+                        price_source = "CSFloat"
+                    else:
+                        # cached 0 = rate-limit/error during pre-fetch — try Skinport as proxy
+                        sp_data = get_skinport_price(skinport_prices, name, cond)
+                        if sp_data != "ERROR" and sp_data.get("quantity", 0) >= 2:
+                            price = sp_data.get("price", 0)
+                            price_source = "Skinport"
+                        else:
+                            price = 0
+                            price_source = "none"
                 else:
-                    # Get CSFloat price
+                    # Not pre-fetched (shouldn't happen) — fetch now
                     price = fetch_csfloat_price(name, cond)
-                    cached_prices[cache_key] = price
                     prices_fetched += 1
-                    time.sleep(0.1)  # Rate limit CSFloat calls
+                    if price == CSFLOAT_NO_LISTING:
+                        price = 0
+                        price_source = "NO_CSFLOAT_LISTINGS"
+                    elif price > 0:
+                        price_source = "CSFloat"
+                    else:
+                        sp_data = get_skinport_price(skinport_prices, name, cond)
+                        if sp_data != "ERROR" and sp_data.get("quantity", 0) >= 2:
+                            price = sp_data.get("price", 0)
+                            price_source = "Skinport"
+                        else:
+                            price = 0
+                            price_source = "none"
+                    cached_prices[cache_key] = price
 
-                # Apply CSFloat seller fee
+                # Apply CSFloat seller fee (same fee regardless of price source —
+                # we are selling on CSFloat regardless of where we looked up the price)
                 price_after_fee = int(price * (1 - TOTAL_SELL_FEE)) if price else 0
 
                 if price_after_fee > 0:
@@ -1096,16 +1310,21 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                     "float_max": out_max,
                     "price_raw": price,
                     "price_after_fee": price_after_fee,
+                    "price_source": price_source,
                     "probability": prob,
                 })
 
             if not has_price:
+                skipped_no_price += 1
+                print(f"   [SKIP] {tag}: no price on CSFloat or Skinport for any output ({[o['name'] for o in out_info]})")
                 continue
 
             # Validate: warn if no outputs achieve MW (the entire thesis is FT->MW)
             mw_outputs = sum(1 for o in out_info if o["condition"] == "Minimal Wear" or o["condition"] == "Factory New")
             if mw_outputs == 0:
-                # All outputs are FT or worse - no MW benefit, skip
+                skipped_not_mw += 1
+                out_summary = ", ".join(f"{o['name']} -> {o['condition']} (fv={o['float']:.4f})" for o in out_info)
+                print(f"   [SKIP] {tag}: avg_input_float={avg_float:.4f}, outputs all FT or worse: {out_summary}")
                 continue
 
             # Calculate EV
@@ -1161,10 +1380,14 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
 
     print(f"   Prices: {prices_fetched} fetched, {prices_from_cache} from cache")
     print(f"   Calculated {len(results)} trade-ups")
-    if skipped_supply > 0:
-        print(f"   Skipped {skipped_supply} (INSUFFICIENT SUPPLY - need 10+ listings)")
-    if skipped_stattrak > 0:
-        print(f"   Skipped {skipped_stattrak} (MIXED STATTRAK - can't mix ST and non-ST)")
+    total_skipped = skipped_no_outputs + skipped_stattrak + skipped_supply + skipped_no_price + skipped_not_mw
+    if total_skipped:
+        print(f"   Skipped {total_skipped} total:")
+        if skipped_no_outputs:  print(f"     {skipped_no_outputs} - no output skins at next rarity")
+        if skipped_stattrak:    print(f"     {skipped_stattrak} - mixed StatTrak (can't split evenly)")
+        if skipped_supply:      print(f"     {skipped_supply} - insufficient supply (<10 listings)")
+        if skipped_no_price:    print(f"     {skipped_no_price} - no CSFloat price for outputs")
+        if skipped_not_mw:      print(f"     {skipped_not_mw} - output floats don't land in MW/FN")
 
     return results, cached_prices
 
@@ -1392,7 +1615,7 @@ def main():
     confirmed_opps, expired_opps = verify_saved_opportunities(cached_prices)
 
     # PHASE 1: Fetch inputs
-    viable_collections, watchlist_collections = phase1_fetch_inputs(float_limits, skinport_prices, skin_float_ranges)
+    viable_collections, watchlist_collections = phase1_fetch_inputs(float_limits, skinport_prices, skin_float_ranges, coll_skins)
 
     if not viable_collections and not watchlist_collections:
         print("\nNo viable or watchlist collections found")
@@ -1481,15 +1704,14 @@ def main():
                         print(" (MW achievable)")
 
                 if out['price_raw'] > 0:
-                    print(f"    CSFloat Price: ${out['price_raw']/100:.2f} (${out['price_after_fee']/100:.2f} after 2% fee)")
-                    # EV contribution from this output
+                    source = out.get('price_source', 'CSFloat')
+                    print(f"    Price [{source}]: ${out['price_raw']/100:.2f} (${out['price_after_fee']/100:.2f} after 2% fee)")
                     ev_contribution = out['price_after_fee'] * out['probability']
                     print(f"    EV Contribution: ${ev_contribution/100:.2f} ({out['probability']*100:.0f}% × ${out['price_after_fee']/100:.2f})")
-                    # Generate CSFloat search link
                     search_name = out['name'].replace(' ', '%20').replace('|', '%7C')
                     print(f"    Sell on CSFloat: https://csfloat.com/search?market_hash_name={search_name}%20%28{out['condition'].replace(' ', '%20')}%29&sort_by=lowest_price")
                 else:
-                    print(f"    CSFloat Price: No listing found")
+                    print(f"    Price: No listing found on CSFloat or Skinport")
 
                 # Steam trend
                 trend = out.get("steam_trend", {})
@@ -1511,7 +1733,10 @@ def main():
             # Get unique input skins and their max float limits
             input_skins = {}
             for inp in r["inputs"]:
-                base_name = inp["title"].replace(" (Field-Tested)", "")
+                # Strip any condition suffix to get the base skin name for grouping
+                base_name = inp["title"]
+                for _c in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
+                    base_name = base_name.replace(_c, "").strip()
                 if base_name not in input_skins:
                     input_skins[base_name] = {
                         "max_float": inp.get("max_float", 0.25),
@@ -1531,9 +1756,10 @@ def main():
             for skin_name, data in input_skins.items():
                 avg_flt = sum(data["floats"]) / len(data["floats"])
                 max_flt = data["max_float"]
+                condition = get_condition(avg_flt)
 
                 print(f"\n  {skin_name}:")
-                print(f"    Buy: {data['count']}x Field-Tested (max float: {max_flt:.4f})")
+                print(f"    Buy: {data['count']}x {condition} (max float: {max_flt:.4f})")
 
             # Show output conditions using overall avg across all 10 inputs
             overall_avg_flt = sum(inp["float"] for inp in r["inputs"]) / len(r["inputs"]) if r["inputs"] else 0
@@ -1561,7 +1787,10 @@ def main():
             for i, inp in enumerate(r["inputs"], 1):
                 max_flt = inp.get("max_float", 0)
                 adj_flt = inp.get("adjusted_float", 0)
-                skin_short = inp["title"].replace(" (Field-Tested)", "")[:25]
+                skin_short = inp["title"]
+                for _c in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
+                    skin_short = skin_short.replace(_c, "").strip()
+                skin_short = skin_short[:25]
                 source = inp.get("source", "?")
                 if inp.get("price_from_skinport", False):
                     has_skinport_price = True
@@ -1584,9 +1813,16 @@ def main():
             print("  " + "-" * 76)
 
             # Group by skin name and track unique listings
+            _dmarket_exterior_map = {
+                "Factory New": "factory-new", "Minimal Wear": "minimal-wear",
+                "Field-Tested": "field-tested", "Well-Worn": "well-worn",
+                "Battle-Scarred": "battle-scarred",
+            }
             skin_listings = {}
             for inp in r["inputs"]:
-                base_name = inp["title"].replace(" (Field-Tested)", "")
+                base_name = inp["title"]
+                for _c in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
+                    base_name = base_name.replace(_c, "").strip()
                 original_source = inp.get("original_source", inp.get("source", "?"))
                 listing_id = inp.get("listing_id", "")
 
@@ -1596,11 +1832,11 @@ def main():
                         "listings": [],  # List of (source, listing_id, price, float)
                         "market_hash": inp["title"],
                         "max_float": inp.get("max_float", 0.25),
-                        "best_price_source": inp.get("source", "?"),
+                        "condition": get_condition(inp["float"]),
                     }
                 skin_listings[base_name]["count"] += 1
 
-                # Track unique listings (by listing_id)
+                # Track unique listings (by listing_id) — all 10
                 if listing_id and listing_id not in [l[1] for l in skin_listings[base_name]["listings"]]:
                     skin_listings[base_name]["listings"].append(
                         (original_source, listing_id, inp["price"], inp["float"])
@@ -1609,24 +1845,24 @@ def main():
             for skin_name, data in skin_listings.items():
                 print(f"\n  {skin_name} ({data['count']}x needed):")
 
-                # Show direct listing links if we have them
+                # Show ALL direct listing links
                 if data["listings"]:
                     print(f"    Direct listings from DMarket/CSFloat:")
-                    for src, lid, price, flt in data["listings"][:5]:  # Show max 5
+                    for src, lid, price, flt in data["listings"]:
                         if src == "CSFloat":
                             print(f"      ${price/100:.2f} @ {flt:.4f}: https://csfloat.com/item/{lid}")
                         elif src == "DMarket":
                             print(f"      ${price/100:.2f} @ {flt:.4f}: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId={lid}")
-                    if len(data["listings"]) > 5:
-                        print(f"      ... and {len(data['listings']) - 5} more")
 
-                # Show search links
+                # Show search links with correct condition/exterior
+                condition = data["condition"]
+                exterior = _dmarket_exterior_map.get(condition, "field-tested")
                 market_hash = data["market_hash"].replace(' ', '%20').replace('|', '%7C')
                 max_flt = data["max_float"]
-                print(f"    Search (max float {max_flt:.4f}):")
-                print(f"      Skinport: https://skinport.com/market/730?search={market_hash}&sort=price&order=asc&exterior=2")
+                print(f"    Search (max float {max_flt:.4f}, condition: {condition}):")
+                print(f"      Skinport: https://skinport.com/market/730?search={market_hash}&sort=price&order=asc")
                 print(f"      CSFloat:  https://csfloat.com/search?market_hash_name={market_hash}&max_float={max_flt:.4f}&sort_by=lowest_price&type=buy_now")
-                print(f"      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title={market_hash.replace('%20', '+').replace('%7C', '%257C')}&exterior=field-tested")
+                print(f"      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title={market_hash.replace('%20', '+').replace('%7C', '%257C')}&exterior={exterior}")
 
 
             # Output sell links with expected float ranges
