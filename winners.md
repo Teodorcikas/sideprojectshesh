@@ -638,3 +638,118 @@ Profitable trade-ups found with ROI >= 25% and EV >= $0.30.
   - UMP-45 | Continuum (Fi, ~0.3050) — $0.95 [Steam]
 
 ---
+
+## 2026-03-22
+
+### Harlequin | Consumer Grade → Industrial Grade | +482.5% ROI | EV: $1.54
+- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.32 total
+- **Max input float:** 0.2090
+- **Avg input float:** 0.1259 (max adjusted allowed: 0.3800)
+- **Expected output value:** $1.86 (after platform fees)
+- **Outputs (1/5 each):**
+  - MP5-SD | Picnic (Fi, ~0.1504) — $0.49 [Skinport]
+  - MP7 | Coral Paisley (Mi, ~0.1303) — $3.49 [Skinport]
+  - SSG 08 | Calligrafaux (Fi, ~0.2005) — $3.27 [Skinport]
+  - Tec-9 | Banana Leaf (Mi, ~0.1203) — $0.24 [Steam]
+  - XM1014 | XoooM (Mi, ~0.1203) — $2.68 [Skinport]
+
+### Limited Edition Item | Classified → Covert | +67.9% ROI | EV: $10.99
+- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.18 total
+- **Max input float:** 0.3800
+- **Avg input float:** 0.3171 (max adjusted allowed: 0.3800)
+- **Expected output value:** $27.17 (after platform fees)
+- **Outputs (1/1 each):**
+  - AK-47 | Aphrodite (Fi, ~0.3171) — $31.97 [Steam] ← jackpot
+
+### 2018 Nuke | Mil-Spec Grade → Restricted | +32.7% ROI | EV: $0.36
+- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
+- **Max input float:** 0.1900
+- **Avg input float:** 0.1583 (max adjusted allowed: 0.3800)
+- **Expected output value:** $1.46 (after platform fees)
+- **Outputs (1/3 each):**
+  - AUG | Random Access (Fi, ~0.1583) — $1.17 [Steam]
+  - Glock-18 | Nuclear Garden (Fi, ~0.2217) — $2.43 [Skinport]
+  - MAG-7 | Core Breach (Fi, ~0.3167) — $1.27 [Skinport]
+
+---
+
+## 2026-03-22
+
+### Harlequin | Consumer Grade → Industrial Grade | +236.0% ROI | EV: $0.47
+- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.20 total
+- **Max input float:** 0.2090
+- **Avg input float:** 0.2023 (max adjusted allowed: 0.3800)
+- **Expected output value:** $0.67 (after platform fees)
+- **Outputs (1/5 each):**
+  - MP5-SD | Picnic (Fi, ~0.2188) — $0.49 [Steam]
+  - MP7 | Coral Paisley (Fi, ~0.1897) — $0.09 [Steam]
+  - SSG 08 | Calligrafaux (Fi, ~0.2918) — $3.27 [Steam]
+  - Tec-9 | Banana Leaf (Fi, ~0.1751) — $0.08 [Steam]
+  - XM1014 | XoooM (Fi, ~0.1751) — $0.07 [Steam]
+
+### Limited Edition Item | Classified → Covert | +67.9% ROI | EV: $10.99
+- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.18 total
+- **Max input float:** 0.3800
+- **Avg input float:** 0.3171 (max adjusted allowed: 0.3800)
+- **Expected output value:** $27.17 (after platform fees)
+- **Outputs (1/1 each):**
+  - AK-47 | Aphrodite (Fi, ~0.3171) — $31.97 [Steam] ← jackpot
+
+---
+
+## 2026-03-22
+
+### Harlequin | Consumer Grade → Industrial Grade | +540.0% ROI | EV: $1.08
+- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.20 total
+- **Max input float:** 0.2090
+- **Avg input float:** 0.2023 (max adjusted allowed: 0.3800)
+- **Expected output value:** $1.28 (after platform fees)
+- **Outputs (1/5 each):**
+  - MP5-SD | Picnic (Fi, ~0.2188) — $0.10 [Steam]
+  - MP7 | Coral Paisley (Fi, ~0.1897) — $3.48 [Skinport]
+  - SSG 08 | Calligrafaux (Fi, ~0.2918) — $3.27 [Skinport]
+  - Tec-9 | Banana Leaf (Fi, ~0.1751) — $0.07 [Skinport]
+  - XM1014 | XoooM (Fi, ~0.1751) — $0.07 [Skinport]
+
+### Achroma | Consumer Grade → Industrial Grade | +224.0% ROI | EV: $0.45
+- **Input:** 10x M249 | Sleet (Minimal Wear) @ $0.02 each = $0.20 total
+- **Max input float:** 0.3311
+- **Avg input float:** 0.2086 (max adjusted allowed: 0.4730)
+- **Expected output value:** $0.65 (after platform fees)
+- **Outputs (1/5 each):**
+  - FAMAS | Vendetta (Fi, ~0.2036) — $0.05 [CSFloat]
+  - M4A4 | Aeolian Dark (Fi, ~0.2206) — $0.46 [Skinport]
+  - MAC-10 | Snow Splash (Fi, ~0.2036) — $2.92 [Skinport]
+  - MP5-SD | Snow Splash (Fi, ~0.2036) — $0.06 [Skinport]
+  - R8 Revolver | Dark Chamber (Fi, ~0.2727) — $0.06 [Steam]
+
+### Harlequin | Industrial Grade → Mil-Spec Grade | +80.4% ROI | EV: $0.56
+- **Input:** 10x Tec-9 | Banana Leaf (Field-Tested) @ $0.07 each = $0.70 total
+- **Max input float:** 0.3257
+- **Avg input float:** 0.2413 (max adjusted allowed: 0.5429)
+- **Expected output value:** $1.26 (after platform fees)
+- **Outputs (1/4 each):**
+  - Five-SeveN | Fraise Crane (Fi, ~0.2615) — $1.73 [Skinport]
+  - Galil AR | Sky Mandala (Fi, ~0.2816) — $2.45 [Skinport]
+  - Zeus x27 | Earth Mandala (Fi, ~0.2655) — $0.71 [Steam]
+  - UMP-45 | Warm Blooded (Fi, ~0.2816) — $0.72 [Steam]
+
+### Limited Edition Item | Classified → Covert | +54.2% ROI | EV: $8.77
+- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.18 total
+- **Max input float:** 0.3800
+- **Avg input float:** 0.3171 (max adjusted allowed: 0.3800)
+- **Expected output value:** $24.95 (after platform fees)
+- **Outputs (1/1 each):**
+  - AK-47 | Aphrodite (Fi, ~0.3171) — $27.13 [Skinport] ← jackpot
+
+### 2018 Nuke | Mil-Spec Grade → Restricted | +31.8% ROI | EV: $0.35
+- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
+- **Max input float:** 0.1900
+- **Avg input float:** 0.1583 (max adjusted allowed: 0.3800)
+- **Expected output value:** $1.45 (after platform fees)
+- **Outputs (1/3 each):**
+  - AUG | Random Access (Fi, ~0.1583) — $1.14 [Steam]
+  - Glock-18 | Nuclear Garden (Fi, ~0.2217) — $2.43 [Skinport]
+  - MAG-7 | Core Breach (Fi, ~0.3167) — $1.27 [Skinport]
+
+---

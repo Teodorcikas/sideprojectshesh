@@ -64,29 +64,33 @@ CSFloat enforces a request rate limit. The code uses:
 - **No caching of failed results**: if all retries fail (returns 0), the result is NOT written to cache — next run will retry fresh
 - **`CSFLOAT_NO_LISTING = -1` sentinel**: distinguishes "confirmed no listing" from "rate-limited unknown"
 
-## Current State (v3.5)
+## Current State (v3.6)
 
 **Working:**
-- Fetches from DMarket (47,000+ items) + CSFloat (1,700+ via targeted rarity fetch) + Waxpeer + Skinport
-- **Waxpeer input source**: 4th marketplace, free API, returns float values, often cheapest prices
+- Fetches from DMarket + CSFloat + Waxpeer (bulk, 200 pages) + Skinport (~19,500 total items)
+- **Waxpeer bulk fetch**: Paginated bulk fetch (200 pages), gets ~4,600 items with floats. Much faster than per-skin search.
 - **Skin-targeted DMarket fetch**: fetches by exact skin name per collection+rarity instead of weapon type, so rare/expensive skins are not crowded out
 - **Deduplication by listing_id** to prevent counting same listing multiple times
 - **Expanded float filter**: Accepts FN, MW, and FT output conditions (not just MW). Calculates most permissive float limit per collection.
 - Dynamic float limits per collection based on output skin float ranges
 - Groups by collection, requires 10+ inputs of same rarity (liquidity check)
 - Separates StatTrak/non-StatTrak (can't mix in trade-ups)
-- **Steam-first output pricing**: Output prices sourced from Steam (free) first, then Skinport fallback, CSFloat only as last resort. Saves CSFloat budget for inputs.
+- **Steam-first output pricing**: Output prices sourced from Steam (free, 1.5s/req with 429 retry) first, then Skinport fallback, CSFloat only as last resort.
 - **Per-source platform fees**: Steam 15%, Skinport 8%, CSFloat 2% — applied correctly based on price source
-- **Steam median price verification**: ALL output prices verified against Steam median/lowest. Caps inflated CSFloat/Skinport prices to prevent fake EV.
-- **CSFloat budget guardrail**: Reserves 10 requests, per-page budget check, never fully exhausts budget
+- **Price source persistence**: `price_cache.json` stores both prices AND their source, so cached prices keep correct fee labels across runs
+- **Skinport singleton filter (outputs)**: Rejects Skinport output prices with qty=1 (unreliable)
+- **Skinport 3× sanity check**: Rejects Skinport output price if > 3× Steam median for same skin
+- **CSFloat budget split**: 150 inputs / 50 outputs / 10 reserve. Smart output allocation only fetches CSFloat for promising trade-ups (EV pre-scan).
 - **Unverifiable EV detection**: Trade-ups with any output skin missing a price are excluded from profitable results and shown separately
-- Steam volume/trend data for profitable trade-ups only
+- **UNVERIFIED ON CSFLOAT warning**: Trade-ups where all output prices come from Steam/Skinport (no CSFloat verification) are flagged in results
+- **Float violation hard skip**: Trade-ups where inputs exceed MaxFloat are skipped with ERROR log, not silently included
+- **Steam 429 retry**: `fetch_steam_trend` retries 3× with 5s/10s/15s backoff on rate limit
 - ROI filter: only shows 25%+ ROI AND $0.30+ EV trade-ups — **do not lower this threshold**
 - WATCH LIST: Shows collections with 5-9 inputs (close to executable)
 - **Opportunity tracking:** Saves profitable trade-ups with exact listing IDs to `opportunities_cache.json`
 - **Verification on startup:** Checks if saved listings still exist and prices remain profitable
 - **Winners log:** Appends all profitable results to `winners.md` with date, ROI, EV, buy links
-- Caching: 6h for inputs, 3h for output prices
+- Caching: 6h for inputs, 3h for output prices (with source tracking)
 
 ## TODO
 
@@ -97,9 +101,12 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **CSFloat rate limit handling** — Done (token bucket + exponential backoff)
 - [x] **Skinport output fallback** — Done (qty ≥ 2 guard, NO_CSFLOAT_LISTINGS exclusion)
 - [x] **Fix CSFloat input pagination** — Fixed: price cursor got stuck on price clusters, now advances by 1 cent past clusters instead of breaking.
-- [ ] **Sell on Skinport (output)** — Currently if CSFloat has no listing for an output it's dead. Enabling Skinport as a valid sell platform (with qty ≥ 2 guard, minus Skinport fee) would unlock many collections currently skipped as NO_CSFLOAT_LISTINGS. Second biggest quick win.
-- [x] **Add Waxpeer as input source** — Done. Fetches by skin name, normalizes to same format as DMarket/CSFloat, 6h cache.
-- [ ] **CSFloat budget priority** — Reserve CSFloat API budget for output pricing (where we sell). Deprioritize CSFloat input fetching when budget is tight.
+- [x] **Add Waxpeer as input source** — Done. Bulk fetch (200 pages), ~4,600 items with floats, 6h cache.
+- [x] **CSFloat budget split** — Done. 150 inputs / 50 outputs / 10 reserve. Smart output allocation pre-scans EV before spending budget.
+- [x] **Steam 429 retry** — Done. 3 retries with 5s/10s/15s backoff, 1.5s between requests.
+- [x] **Price source persistence** — Done. Cache stores source alongside price, correct fees applied across runs.
+- [ ] **Multi-collection trade-ups** — Currently only analyzes trade-ups within a single collection. CS2 trade-ups can mix inputs from ANY collections of the same rarity. Supporting multi-collection trade-ups would massively expand the number of possible profitable combinations. Biggest win for finding new opportunities.
+- [ ] **Sell on Skinport (output)** — Currently if CSFloat has no listing for an output it's dead. Enabling Skinport as a valid sell platform (with qty ≥ 2 guard, minus Skinport fee) would unlock many collections currently skipped as NO_CSFLOAT_LISTINGS.
 - [ ] **Rarity expansion** — Support all rarity tiers more broadly
 - [ ] **Quick execution solution** — Auto-buy inputs or one-click purchase flow
 
@@ -136,9 +143,12 @@ MIN_ROI = 25.0                    # Only show 25%+ ROI — do not lower
 MIN_EV = 30                       # Only show $0.30+ net profit (in cents)
 CSFLOAT_SELLER_FEE = 0.02         # 2% when selling on CSFloat
 CSFLOAT_BUDGET_RESERVE = 10       # Keep 10 requests in reserve
+CSFLOAT_INPUT_CAP = 150           # Max requests for input fetching
+CSFLOAT_OUTPUT_RESERVE = 50       # Reserved for output price verification
 CSFLOAT_NO_LISTING = -1           # Sentinel: confirmed no CSFloat listing
 SOURCE_FEES = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
-# Global rate limiter: 4 req/s for all CSFloat requests
+# Steam: 1.5s between requests, 3 retries on 429 with 5s/10s/15s backoff
+# CSFloat: 4 req/s global rate limiter
 ```
 
 ## Quick Start
