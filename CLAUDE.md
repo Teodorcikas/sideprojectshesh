@@ -166,6 +166,48 @@ CSFloat enforces a request rate limit. The code uses:
 ### Ongoing
 - [ ] **Bug fixes** — Monitor and fix issues as they arise
 
+## Improvement Roadmap (March 2026)
+
+### Tier 1 — Highest impact, directly unlocks new profits
+
+1. **Multi-collection filler system** — The single biggest limitation. 16 collections sit on watchlist with 5-9 inputs. With fillers, combine e.g., 7 inputs from a valuable collection + 3 cheap fillers from another. Key insight: don't just pick cheapest fillers — pick fillers whose collection ALSO has valuable outputs. 3 inputs from Collection B gives 30% × (1/num_outputs) chance at Collection B's outputs too. Optimize full probability-weighted EV across both collections, not just minimize filler cost.
+
+2. **Reverse search — start from valuable outputs** — Instead of "find cheap inputs → calculate outputs → check profit", flip it: rank all output skins by value ($5+, $10+, $50+ MW/FN skins), work backwards to which collections produce them, check if inputs are available cheaply enough. Targets exactly where profit is possible, skips thousands of low-value collections.
+
+3. **Steam sales history for output pricing** — Steam has an endpoint returning actual completed sales (not listings). Median of last 7 days of real sales is far more reliable than any listing price. Listings can be set to anything — sales reflect what people actually pay. Would be the gold standard for output pricing and largely eliminate inflated price problems.
+
+### Tier 2 — Significant improvement, moderate effort
+
+4. **Dynamic float optimization** — The bot picks 10 cheapest inputs below float threshold. But lower floats → better output condition → higher value. There's an optimal float point: 10 inputs at 0.152 might produce low MW ($8 sell) but cost $0.50 each, while 10 at 0.25 produce FT ($2 sell) at $0.02 each. Calculate EV at multiple float points and pick the one maximizing net profit, not just minimizing input cost.
+
+5. **Per-key cache expiry** — Already noted as a bug. When price_cache hits 3h01m, ALL 700+ output prices wiped. Per-key timestamps mean most runs need 0-10 fresh fetches instead of 700. Massive speed improvement on typical runs.
+
+6. **Liquidity-weighted EV** — A $50 output selling 2/day is risky. A $5 output selling 500/day is reliable. Discount EV by liquidity: >100/day = full EV, 10-100 = 90%, <10 = 70%, <2 = 50% or flag as risky. Prevents recommending trade-ups that look profitable but take weeks to sell.
+
+7. **Fee-aware sell platform recommendation** — For each output, calculate net on each platform (CSFloat 2%, Skinport 8%, Steam 15%) and recommend the best one. Currently assumes you sell at the source's fee, but you should sell on the cheapest-fee platform with buyers.
+
+### Tier 3 — Good improvements, lower urgency
+
+8. **Real-time listing monitoring (WebSocket)** — DMarket and CSFloat have WebSocket/SSE feeds for new listings. Instead of batch scanning every few hours, subscribe and trigger EV calculation instantly when a cheap input appears. Profitable trade-ups exist for minutes, not hours.
+
+9. **Alert system (Discord/Telegram)** — Push notifications when profitable trade-ups found: collection, ROI, EV, direct buy links, countdown estimate. No point finding opportunities if not at the computer.
+
+10. **Buy order placement** — Place buy orders at target prices on DMarket/Skinport instead of buying at current listings. Passive approach: define the input price that makes the trade-up profitable, wait for sellers. Guaranteed profitability if orders fill.
+
+11. **Float-targeted API fetching** — CSFloat and DMarket accept min_float/max_float params. Instead of fetching 70k items and filtering to 50k, query only the float ranges needed per collection. Cut Phase 1 from 70k to ~10k items.
+
+12. **Historical tracking & model calibration** — Log every recommended trade-up and actual outcome. Did inputs cost what was predicted? Did outputs sell at predicted price? Real ROI vs predicted? Reveals systematic biases (e.g., "Skinport output prices are consistently 15% above actual sell").
+
+### Tier 4 — Speculative / longer-term
+
+13. **Cross-marketplace arbitrage** — Same skin priced differently across platforms (DMarket $0.50, CSFloat $1.20) is direct arbitrage, no trade-up needed. Data is already fetched — just add a comparison pass.
+
+14. **Portfolio/bankroll optimization** — With a $50 budget, which combination of trade-ups maximizes expected return? Kelly criterion for bet sizing. Don't put everything into one trade-up.
+
+15. **Pattern/sticker premium awareness** — Some outputs have patterns worth 10-100x (e.g., Case Hardened blue gems). Can't predict which pattern, but flag "this collection has pattern-premium outputs" as upside.
+
+16. **Buff163 integration** — Biggest CS2 marketplace globally (Chinese market), often cheapest. API access requires Chinese phone verification but would significantly expand input coverage.
+
 ## Key Constants
 
 ```python
