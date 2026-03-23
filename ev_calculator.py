@@ -7,6 +7,12 @@ import os
 import time
 import threading
 
+try:
+    import brotli  # noqa: F401 — needed by urllib3 for Skinport brotli responses
+    _has_brotli = True
+except ImportError:
+    _has_brotli = False
+
 
 class RateLimiter:
     """Token-bucket rate limiter. Enforces a minimum interval between calls globally across all threads."""
@@ -1419,7 +1425,7 @@ def fetch_skinport_prices():
     try:
         headers = {
             "Accept": "application/json, text/plain, */*",
-            "Accept-Encoding": "br, gzip, deflate",  # brotli required by Skinport (needs brotli package)
+            "Accept-Encoding": "br, gzip, deflate" if _has_brotli else "gzip, deflate",
             "Accept-Language": "en-US,en;q=0.9",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
             "Origin": "https://skinport.com",
