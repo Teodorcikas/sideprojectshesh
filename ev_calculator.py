@@ -24,7 +24,12 @@ class RateLimiter:
             self._last = time.time()
 
 
-_csfloat_rate_limiter = RateLimiter(max_per_second=2)  # 500ms between every CSFloat request globally
+_csfloat_rate_limiter = RateLimiter(max_per_second=4)  # 250ms between every CSFloat request globally
+
+# CSFloat budget constants (defined before functions that use them)
+CSFLOAT_BUDGET_RESERVE = 10  # Keep 10 requests in reserve for testing/debugging
+CSFLOAT_INPUT_CAP = 150       # Max requests for input fetching (Phase 1)
+CSFLOAT_OUTPUT_RESERVE = 50   # Reserved exclusively for output price verification (Phase 2)
 
 # Global CSFloat budget tracker — updated from response headers
 _csfloat_budget = {"remaining": None, "limit": None, "reset": None, "lock": threading.Lock()}
@@ -72,11 +77,6 @@ CACHE_STALE_EXPIRY = 6 * 60 * 60  # 6 hours (keep stale data as fallback)
 INPUT_CACHE_EXPIRY = 6 * 60 * 60  # 6 hours for input listings (don't change fast)
 INPUT_CACHE_STALE_EXPIRY = 12 * 60 * 60  # 12 hours stale fallback for input listings
 SKINPORT_COOLDOWN = 60  # 1 minute between Skinport API calls
-CSFLOAT_BUDGET_RESERVE = 10  # Keep 10 requests in reserve for testing/debugging
-CSFLOAT_INPUT_CAP = 150       # Max requests for input fetching (Phase 1)
-CSFLOAT_OUTPUT_RESERVE = 50   # Reserved exclusively for output price verification (Phase 2)
-
-
 STEAM_SELLER_FEE = 0.15
 DMARKET_BUYER_FEE = 0.0  # No buyer fee on DMarket
 SKINPORT_BUYER_FEE = 0.0  # No buyer fee on Skinport
@@ -1366,7 +1366,8 @@ def phase1_fetch_inputs(float_limits, skinport_prices, skin_float_ranges, coll_s
             fv = extra.get("floatValue", 0)
             price = item.get("_best_price", 0)
             title = item.get("title", "")
-            listing_id = f"_synth_{title}_{price}_{fv}"
+            source = item.get("_original_source", item.get("_best_source", "?"))
+            listing_id = f"_synth_{source}_{title}_{price}_{fv}"
 
         # Skip duplicates within same collection+rarity
         key = (coll, RARITY_ORDER[quality])
@@ -1455,7 +1456,17 @@ def fetch_skinport_prices():
                 return cached_prices
             return {}
 
-        data = r.json()
+        try:
+            data = r.json()
+        except (json.JSONDecodeError, ValueError) as je:
+            content_type = r.headers.get("content-type", "unknown")
+            print(f"   WARNING: Skinport returned invalid JSON (HTTP {r.status_code}, content-type: {content_type})")
+            print(f"   Response preview: {r.text[:200]}")
+            if cache_status == "stale" and cached_prices:
+                age_mins = (time.time() - cache_time) / 60
+                print(f"   [SKINPORT CACHE] Using stale fallback ({age_mins:.0f}m old)")
+                return cached_prices
+            return {}
         prices = {}
         for item in data:
             name = item.get("market_hash_name", "")
@@ -1844,9 +1855,38 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
             for selected_inputs, is_stattrak_tradeup in groups_to_analyze:
                 st_label = " [ST]" if is_stattrak_tradeup else ""
 
-                # Sort by best price, take 10 cheapest
-                selected_inputs.sort(key=lambda x: x.get("_best_price", 999999))
-                top10 = selected_inputs[:10]
+                # Calculate the most restrictive float limit across ALL output skins
+                # Must be done BEFORE selecting top10 to avoid picking items that violate
+                filter_target = 0.38  # FT ceiling
+                min_max_adjusted = None
+                for out in outputs:
+                    max_adj = calc_max_adjusted_float(out["min_float"], out["max_float"], filter_target)
+                    if max_adj is not None:
+                        if min_max_adjusted is None or max_adj < min_max_adjusted:
+                            min_max_adjusted = max_adj
+
+                # Filter inputs by the per-output-skin float limit before selecting top10
+                float_valid_inputs = []
+                float_prefiltered = 0
+                for x in selected_inputs:
+                    extra = x.get("extra", {})
+                    skin_min = extra.get("skin_min", 0)
+                    skin_max = extra.get("skin_max", 1)
+                    raw_float = extra.get("floatValue", 0)
+                    max_raw = calc_max_input_float_for_skin(min_max_adjusted, skin_min, skin_max) if min_max_adjusted else None
+                    if max_raw is not None and raw_float > max_raw + 0.0001:
+                        float_prefiltered += 1
+                        continue
+                    float_valid_inputs.append(x)
+
+                if len(float_valid_inputs) < 10:
+                    if float_prefiltered > 0:
+                        print(f"   [SKIP] {tag}{st_label}: only {len(float_valid_inputs)} inputs after float filter ({float_prefiltered} exceeded max)")
+                    continue
+
+                # Sort by best price, take 10 cheapest from float-valid items
+                float_valid_inputs.sort(key=lambda x: x.get("_best_price", 999999))
+                top10 = float_valid_inputs[:10]
 
                 input_cost = sum(x.get("_best_price", 0) for x in top10)
 
@@ -1965,18 +2005,8 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 net_ev = ev_sum - input_cost
                 roi = (net_ev / input_cost * 100) if input_cost > 0 else 0
 
-                # Calculate max allowed float for each input skin type
-                filter_target = 0.38  # FT ceiling — matches Phase 1 filter
-                min_max_adjusted = None
-                for out in outputs:
-                    max_adj = calc_max_adjusted_float(out["min_float"], out["max_float"], filter_target)
-                    if max_adj is not None:
-                        if min_max_adjusted is None or max_adj < min_max_adjusted:
-                            min_max_adjusted = max_adj
-
-                # Build inputs with max_raw_float calculated
+                # Build inputs with max_raw_float (already filtered above, no violations possible)
                 inputs_with_limits = []
-                float_violations = 0
                 for x in top10:
                     extra = x.get("extra", {})
                     skin_min = extra.get("skin_min", 0)
@@ -1985,8 +2015,6 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                     raw_float = extra.get("floatValue", 0)
                     adjusted_float = (raw_float - skin_min) / skin_range if skin_range > 0 else 0
                     max_raw = calc_max_input_float_for_skin(min_max_adjusted, skin_min, skin_max) if min_max_adjusted else None
-                    if max_raw is not None and raw_float > max_raw + 0.0001:
-                        float_violations += 1
                     inputs_with_limits.append({
                         "title": x.get("title"),
                         "price": x.get("_best_price", 0),
@@ -1999,10 +2027,6 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                         "max_float": max_raw,
                         "listing_id": x.get("_listing_id", ""),
                     })
-
-                if float_violations > 0:
-                    print(f"   [ERROR] {tag}{st_label}: {float_violations}/10 inputs float > max — SKIPPING")
-                    continue
 
                 # Flag if no output price was verified on CSFloat
                 has_csfloat_price = any(o.get("price_source") == "CSFloat" for o in out_info if o["price_raw"] > 0)
@@ -2260,11 +2284,22 @@ def verify_profitable_inputs(profitable_results):
                     base = base.replace(c, "").strip()
                 skin_titles.add(base)
 
-            # Fetch fresh listings for each skin
+            # Fetch fresh listings from DMarket + check Waxpeer cache for replacements
             fresh_listings = []
             for skin_name in skin_titles:
                 items = fetch_skin_raw(skin_name, max_items=50)
                 fresh_listings.extend(items)
+
+            # Also check Waxpeer cache for matching skins (no API cost)
+            waxpeer_cached, _, waxpeer_status = load_waxpeer_cache()
+            if waxpeer_status in ("fresh", "stale") and waxpeer_cached:
+                for witem in waxpeer_cached:
+                    wtitle = witem.get("title", "")
+                    wbase = wtitle
+                    for c in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
+                        wbase = wbase.replace(c, "").strip()
+                    if wbase in skin_titles:
+                        fresh_listings.append(witem)
 
             if not fresh_listings:
                 print(f"   [{coll}] Could not re-fetch listings, dropping trade-up")
@@ -2289,7 +2324,7 @@ def verify_profitable_inputs(profitable_results):
                     active_inputs.append({
                         "title": item.get("title", ""),
                         "price": item.get("price_usd", 0),
-                        "source": "DMarket",
+                        "source": item.get("source", "DMarket"),
                         "float": item.get("float", 0),
                         "listing_id": lid,
                         "max_float": max_float,
@@ -2323,7 +2358,13 @@ def verify_profitable_inputs(profitable_results):
             result["roi"] = new_roi
             print(f"   [{coll}] Refreshed: {fresh_count} new listings, ROI: {new_roi:.1f}%, EV: ${new_ev/100:.2f}")
         else:
-            print(f"   [{coll}] All {verified_count} listings verified active")
+            if verified_count > 0:
+                print(f"   [{coll}] All {verified_count} listings verified active" +
+                      (f" ({unknown_count} unverified/Skinport-sourced)" if unknown_count > 0 else ""))
+            elif unknown_count > 0:
+                print(f"   [{coll}] {unknown_count} listings not verifiable (Skinport-sourced, no listing IDs)")
+            else:
+                print(f"   [{coll}] No listings to verify")
 
         verified_results.append(result)
 
