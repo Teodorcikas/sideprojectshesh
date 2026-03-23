@@ -2181,8 +2181,154 @@ def fetch_steam_trend(skin_name, condition):
     return None
 
 
-    # verify_dmarket_listing and verify_profitable_inputs removed:
-    # User manually checks prices before executing trade-ups.
+def verify_dmarket_listing(item_id):
+    """Check if a DMarket listing is still active."""
+    try:
+        r = requests.get(f"https://api.dmarket.com/exchange/v1/market/items/{item_id}",
+                        timeout=10)
+        if r.ok:
+            data = r.json()
+            return data.get("status") == "active" and data.get("inMarket", False)
+        if r.status_code == 404:
+            return False
+    except Exception:
+        pass
+    return None  # Unknown (network error)
+
+
+def verify_profitable_inputs(profitable_results):
+    """Verify that DMarket/CSFloat listings in profitable trade-ups are still active.
+
+    Re-fetches current cheapest listings for skins where listings are sold.
+    Recalculates profitability and drops trade-ups that are no longer viable.
+    Acts as a guardrail — user still double-checks before executing.
+    """
+    print("\n" + "=" * 70)
+    print("VERIFYING INPUT LISTINGS (checking if still available)")
+    print("=" * 70)
+
+    if not profitable_results:
+        return profitable_results
+
+    verified_results = []
+    for result in profitable_results:
+        coll = result["collection"]
+        sold_count = 0
+        verified_count = 0
+        unknown_count = 0
+
+        for inp in result["inputs"]:
+            source = inp.get("source", "")
+            listing_id = inp.get("listing_id", "")
+
+            if source == "DMarket" and listing_id:
+                is_active = verify_dmarket_listing(listing_id)
+                if is_active is True:
+                    inp["_verified"] = True
+                    verified_count += 1
+                elif is_active is False:
+                    inp["_verified"] = False
+                    inp["_sold"] = True
+                    sold_count += 1
+                else:
+                    inp["_verified"] = None
+                    unknown_count += 1
+                time.sleep(0.05)  # Light rate limiting
+            elif source == "CSFloat" and listing_id:
+                result_check = verify_csfloat_listing(listing_id)
+                if result_check["available"]:
+                    inp["_verified"] = True
+                    verified_count += 1
+                else:
+                    inp["_verified"] = False
+                    inp["_sold"] = True
+                    sold_count += 1
+                time.sleep(0.2)
+            else:
+                # Skinport-priced items can't be verified individually
+                inp["_verified"] = None
+                unknown_count += 1
+
+        if sold_count > 0:
+            print(f"   [{coll}] {sold_count} SOLD, {verified_count} active, {unknown_count} unverified — re-fetching...")
+
+            # Re-fetch current listings for this skin to find replacements
+            skin_titles = set()
+            for inp in result["inputs"]:
+                base = inp["title"]
+                for c in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
+                    base = base.replace(c, "").strip()
+                skin_titles.add(base)
+
+            # Fetch fresh listings for each skin
+            fresh_listings = []
+            for skin_name in skin_titles:
+                items = fetch_skin_raw(skin_name, max_items=50)
+                fresh_listings.extend(items)
+
+            if not fresh_listings:
+                print(f"   [{coll}] Could not re-fetch listings, dropping trade-up")
+                continue
+
+            # Rebuild the inputs: keep verified ones, replace sold ones from fresh listings
+            active_inputs = [inp for inp in result["inputs"] if inp.get("_verified") is not False]
+            needed = 10 - len(active_inputs)
+
+            if needed > 0:
+                used_ids = set(inp.get("listing_id", "") for inp in active_inputs)
+
+                for item in sorted(fresh_listings, key=lambda x: x.get("price_usd", 999999)):
+                    if needed <= 0:
+                        break
+                    lid = item.get("listing_id", "")
+                    if lid in used_ids:
+                        continue
+                    max_float = result["inputs"][0].get("max_float", 0.38) if result["inputs"] else 0.38
+                    if item.get("float", 1.0) > max_float:
+                        continue
+                    active_inputs.append({
+                        "title": item.get("title", ""),
+                        "price": item.get("price_usd", 0),
+                        "source": "DMarket",
+                        "float": item.get("float", 0),
+                        "listing_id": lid,
+                        "max_float": max_float,
+                        "skin_min": result["inputs"][0].get("skin_min", 0),
+                        "skin_max": result["inputs"][0].get("skin_max", 1),
+                        "_verified": True,
+                        "_fresh": True,
+                    })
+                    used_ids.add(lid)
+                    needed -= 1
+
+            if len(active_inputs) < 10:
+                print(f"   [{coll}] Only {len(active_inputs)} active listings found (need 10), dropping")
+                continue
+
+            # Recalculate cost with fresh inputs
+            active_inputs.sort(key=lambda x: x.get("price", x.get("_best_price", 999999)))
+            top10 = active_inputs[:10]
+            new_cost = sum(inp.get("price", inp.get("_best_price", 0)) for inp in top10)
+            new_ev = result["ev_output"] - new_cost
+            new_roi = (new_ev / new_cost * 100) if new_cost > 0 else 0
+
+            if new_roi < 25.0 or new_ev < 30:
+                print(f"   [{coll}] No longer profitable after re-price (ROI: {new_roi:.1f}%, EV: ${new_ev/100:.2f}), dropping")
+                continue
+
+            fresh_count = sum(1 for inp in top10 if inp.get("_fresh"))
+            result["inputs"] = top10
+            result["input_cost"] = new_cost
+            result["ev"] = new_ev
+            result["roi"] = new_roi
+            print(f"   [{coll}] Refreshed: {fresh_count} new listings, ROI: {new_roi:.1f}%, EV: ${new_ev/100:.2f}")
+        else:
+            print(f"   [{coll}] All {verified_count} listings verified active")
+
+        verified_results.append(result)
+
+    print(f"\n   Verified: {len(verified_results)}/{len(profitable_results)} trade-ups still viable")
+    return verified_results
 
 
 def phase3_fetch_trends(profitable_results):
@@ -2304,6 +2450,13 @@ def main():
     results.sort(key=lambda x: x["roi"], reverse=True)
     profitable = [r for r in results if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and not r.get("unverifiable")]
     unverifiable = [r for r in results if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and r.get("unverifiable")]
+
+    # Verify input listings are still available (guardrail — user still double-checks)
+    profitable = verify_profitable_inputs(profitable)
+
+    # Re-sort and re-filter after verification (prices may have changed)
+    profitable.sort(key=lambda x: x["roi"], reverse=True)
+    profitable = [r for r in profitable if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and not r.get("unverifiable")]
 
     # PHASE 3: Fetch trends for profitable only
     profitable = phase3_fetch_trends(profitable)
