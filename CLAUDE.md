@@ -132,11 +132,12 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **`_best_source` tracked listing source, not price source** — When Skinport had a cheaper price, `_best_source` still showed DMarket/CSFloat, misleading buy links and source tracking. Fixed: now tracks actual price source separately from listing source.
 - [x] **`get_skinport_price` returned mixed types** — Returned string `"ERROR"` on miss vs dict on hit. Fixed: returns `None` on miss.
 - [x] **CSFloat input fetch used adjusted float as raw float bound** — `max_adjusted` (0-1 normalized) was used directly as `max_float` server-side filter parameter, which expects raw float. Could under-fetch valid items for skins with narrow float ranges. Fixed: widened cap to 0.45 with comment explaining the conversion.
-- [ ] **StatTrak Unicode mismatch in Skinport lookup** — CSFloat may use `™` differently than Skinport's `market_hash_name`, causing Skinport price comparison to silently fail for StatTrak items. Fix: normalize Unicode before lookup.
-- [ ] **Winners.md logs duplicates across runs** — `append_winners_log` appends every profitable result every run with no dedup. Same trade-up logged N times if profitable across N runs. Fix: check if collection+rarity+date already logged before appending.
-- [ ] **Verification re-fetch only uses DMarket** — When inputs are sold, replacement search only queries DMarket, missing potentially cheaper CSFloat/Waxpeer alternatives.
-- [ ] **Cache invalidation is all-or-nothing** — Output price cache uses a single timestamp. At 3h01m ALL cached prices are wiped, forcing full re-fetch. Should use per-key timestamps.
-- [ ] **Phase 2 pre-scan vs actual EV mismatch** — Pre-scan skips WW/BS outputs from EV but actual calculation includes them (with price=0), potentially inflating the pre-scan's estimate of which trade-ups are "promising".
+- [x] **StatTrak Unicode mismatch in Skinport lookup** — CSFloat may use `™` differently than Skinport's `market_hash_name`, causing Skinport price comparison to silently fail for StatTrak items. Fixed: `normalize_stattrak()` normalizes all Unicode variants before lookup.
+- [x] **Winners.md logs duplicates across runs** — `append_winners_log` appended every profitable result every run with no dedup. Fixed: deduplicates by collection+rarity+stattrak, only logs first discovery ever.
+- [x] **Verification re-fetch only uses DMarket** — Removed entirely. User manually checks prices before executing trade-ups.
+- [x] **Cache invalidation is all-or-nothing** — Output price cache used a single timestamp. Fixed: per-key timestamps (v2 cache format). Each price expires independently. Auto-migrates from v1 format.
+- [x] **Phase 2 pre-scan vs actual EV mismatch** — Pre-scan skipped WW/BS but actual EV included them. Fixed: both now skip WW/BS outputs (can't come out with correct float inputs).
+- [x] **StatTrak trade-ups analyzed separately** — Both normal and StatTrak groups are now analyzed independently if either has 10+ inputs (previously only the larger group was analyzed).
 
 ## Filler System Architecture (Multi-Collection Trade-Ups)
 

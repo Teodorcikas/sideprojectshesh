@@ -207,24 +207,86 @@ def build_input_float_limits(coll_skins):
 # ============ CACHING ============
 
 def load_cache():
+    """Load output price cache with per-key timestamps.
+
+    Returns (prices_dict, sources_dict, timestamps_dict) where each entry has its own expiry.
+    Expired keys (>6h) are filtered out on load. Stale keys (3-6h) are kept as fallback.
+    """
     if not os.path.exists(CACHE_FILE):
-        return {}, 0, {}
+        return {}, {}, {}
     try:
         with open(CACHE_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-        return data.get("prices", {}), data.get("timestamp", 0), data.get("sources", {})
+
+        # Handle v1 format (single global timestamp) — migrate to v2
+        if "timestamp" in data and "version" not in data:
+            old_ts = data.get("timestamp", 0)
+            old_prices = data.get("prices", {})
+            old_sources = data.get("sources", {})
+            prices = {}
+            sources = {}
+            timestamps = {}
+            now = time.time()
+            if (now - old_ts) < CACHE_STALE_EXPIRY:
+                for key, price in old_prices.items():
+                    prices[key] = price
+                    sources[key] = old_sources.get(key, "Steam")
+                    timestamps[key] = old_ts  # Use global timestamp for migrated keys
+            return prices, sources, timestamps
+
+        # v2 format: per-key timestamps
+        entries = data.get("prices", {})
+        now = time.time()
+        prices = {}
+        sources = {}
+        timestamps = {}
+        expired_count = 0
+        for key, entry in entries.items():
+            if isinstance(entry, dict):
+                ts = entry.get("ts", 0)
+                age = now - ts
+                if age < CACHE_STALE_EXPIRY:  # Keep if < 6h (stale fallback)
+                    prices[key] = entry.get("price", 0)
+                    sources[key] = entry.get("source", "Steam")
+                    timestamps[key] = ts
+                else:
+                    expired_count += 1
+            else:
+                # Bare value (shouldn't happen, but handle gracefully)
+                prices[key] = entry
+                sources[key] = "Steam"
+                timestamps[key] = 0
+        if expired_count:
+            print(f"   [CACHE] Dropped {expired_count} expired keys (>6h old)")
+        return prices, sources, timestamps
     except (IOError, json.JSONDecodeError, ValueError):
-        return {}, 0, {}
+        return {}, {}, {}
 
 
-def save_cache(prices, sources=None):
-    data = {"timestamp": time.time(), "prices": prices, "sources": sources or {}}
+def save_cache(prices, sources=None, timestamps=None):
+    """Save output price cache with per-key timestamps.
+
+    New/updated keys get current timestamp. Existing keys keep their original timestamp.
+    """
+    sources = sources or {}
+    timestamps = timestamps or {}
+    now = time.time()
+    entries = {}
+    for key, price in prices.items():
+        entries[key] = {
+            "price": price,
+            "source": sources.get(key, "Steam"),
+            "ts": timestamps.get(key, now),
+        }
+    data = {"version": 2, "prices": entries}
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f)
 
 
-def is_cache_valid(timestamp):
-    return (time.time() - timestamp) < CACHE_EXPIRY
+def is_price_fresh(key, timestamps):
+    """Check if a specific cached price is still fresh (< 3h old)."""
+    ts = timestamps.get(key, 0)
+    return (time.time() - ts) < CACHE_EXPIRY
 
 
 def load_skinport_cache():
@@ -541,16 +603,58 @@ def verify_saved_opportunities(cached_prices):
     return confirmed, expired
 
 
+def _load_existing_winner_keys():
+    """Load set of (collection, in_rarity, out_rarity, is_stattrak) keys already logged in winners.md."""
+    keys = set()
+    if not os.path.exists(WINNERS_FILE):
+        return keys
+    try:
+        with open(WINNERS_FILE, "r", encoding="utf-8") as f:
+            for line in f:
+                # Parse header lines like "### Collection | Rarity → Rarity | ..."
+                if line.startswith("### ") and "→" in line and "|" in line:
+                    parts = line.strip().split("|")
+                    if len(parts) >= 2:
+                        coll = parts[0].replace("### ", "").strip().lower()
+                        rarity_part = parts[1].strip().lower()
+                        is_st = "[stattrak]" in line.lower()
+                        keys.add((coll, rarity_part, is_st))
+    except (IOError, ValueError):
+        pass
+    return keys
+
+
 def append_winners_log(profitable_results):
-    """Append profitable trade-ups to the persistent winners.md log."""
+    """Append profitable trade-ups to the persistent winners.md log.
+
+    Only logs first discovery ever per collection+rarity+stattrak — no duplicates.
+    """
     if not profitable_results:
         return
 
+    existing_keys = _load_existing_winner_keys()
     from datetime import date
     today = date.today().isoformat()
 
-    lines = [f"\n## {today}\n"]
+    new_results = []
     for r in profitable_results:
+        coll = r["collection"].title()
+        in_r = RARITY_NAMES[r["in_rarity"]].title()
+        out_r = RARITY_NAMES[r["out_rarity"]].title()
+        is_st = r.get("is_stattrak", False)
+        rarity_key = f"{in_r} → {out_r}".lower()
+        dedup_key = (coll.lower(), rarity_key, is_st)
+        if dedup_key in existing_keys:
+            continue
+        existing_keys.add(dedup_key)
+        new_results.append(r)
+
+    if not new_results:
+        print(f"   No new winners to log (all already in winners.md)")
+        return
+
+    lines = [f"\n## {today}\n"]
+    for r in new_results:
         coll = r["collection"].title()
         in_r = RARITY_NAMES[r["in_rarity"]].title()
         out_r = RARITY_NAMES[r["out_rarity"]].title()
@@ -560,12 +664,13 @@ def append_winners_log(profitable_results):
         ev_out = r["ev_output"] / 100
         avg_flt = r["avg_float"]
         adj_flt = r.get("max_adjusted", 0)
+        st_tag = " [STATTRAK]" if r.get("is_stattrak") else ""
 
         input_skin = r["inputs"][0]["title"] if r["inputs"] else "?"
         input_price = r["inputs"][0]["price"] / 100 if r["inputs"] else 0
         max_flt = r["inputs"][0].get("max_float") or 0
 
-        lines.append(f"### {coll} | {in_r} → {out_r} | +{roi:.1f}% ROI | EV: ${ev:.2f}")
+        lines.append(f"### {coll} | {in_r} → {out_r}{st_tag} | +{roi:.1f}% ROI | EV: ${ev:.2f}")
         lines.append(f"- **Input:** 10x {input_skin} @ ${input_price:.2f} each = ${cost:.2f} total")
         lines.append(f"- **Max input float:** {max_flt:.4f}")
         lines.append(f"- **Avg input float:** {avg_flt:.4f} (max adjusted allowed: {adj_flt:.4f})")
@@ -584,7 +689,7 @@ def append_winners_log(profitable_results):
     with open(WINNERS_FILE, "a", encoding="utf-8") as f:
         f.write(entry)
 
-    print(f"   Appended {len(profitable_results)} winner(s) to winners.md")
+    print(f"   Appended {len(new_results)} NEW winner(s) to winners.md (skipped {len(profitable_results) - len(new_results)} already logged)")
 
 
 def save_profitable_opportunities(profitable_results):
@@ -982,12 +1087,30 @@ def fetch_waxpeer_listings(skin_names, skin_db_lookup, max_pages=200):
     return all_items
 
 
+def normalize_stattrak(title):
+    """Normalize StatTrak™ Unicode variants to a single canonical form.
+
+    Different platforms use different Unicode for ™:
+    - Steam/Skinport: 'StatTrak™' (U+2122 TRADE MARK SIGN)
+    - CSFloat sometimes: 'StatTrak™' or plain 'StatTrak'
+    Normalize to 'StatTrak™ ' for consistent lookups.
+    """
+    import unicodedata
+    title = unicodedata.normalize("NFKC", title)
+    # After NFKC normalization, ™ (U+2122) becomes 'TM' — restore to ™
+    title = title.replace("StatTrakTM ", "StatTrak™ ")
+    # Also handle plain StatTrak without any trademark symbol
+    if "StatTrak " in title and "StatTrak™" not in title:
+        title = title.replace("StatTrak ", "StatTrak™ ")
+    return title
+
+
 def extract_skin_name(title):
     """Extract base skin name from title (e.g., 'AK-47 | Redline (Field-Tested)' -> 'AK-47 | Redline')."""
     # Remove condition suffix
     for cond in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
         title = title.replace(cond, "")
-    # Remove StatTrak prefix for lookup
+    # Remove StatTrak prefix for lookup (handles both ™ variants)
     title = title.replace("StatTrak™ ", "").replace("StatTrak ", "")
     return title.strip()
 
@@ -1035,8 +1158,12 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
         # Get price from source
         source_price = item["price_usd"]
 
-        # Compare with Skinport price
-        sp_data = skinport_prices.get(title, {})
+        # Compare with Skinport price (normalize StatTrak™ Unicode for consistent lookup)
+        sp_lookup_key = normalize_stattrak(title)
+        sp_data = skinport_prices.get(sp_lookup_key, {})
+        if not sp_data:
+            # Try original title as fallback
+            sp_data = skinport_prices.get(title, {})
         skinport_price = sp_data.get("price") if sp_data else None
 
         # Always use real float from DMarket/CSFloat listing
@@ -1428,7 +1555,7 @@ def fetch_csfloat_price(skin_name, condition):
     return 0  # All retries exhausted — do NOT cache this result
 
 
-def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_prices, skin_float_ranges, cached_sources=None):
+def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_prices, skin_float_ranges, cached_sources=None, cached_timestamps=None):
     """For viable collections, calculate output float and fetch CSFloat prices."""
     print("\n" + "=" * 70)
     print("PHASE 2: Calculating EVs (CSFloat output prices)")
@@ -1488,9 +1615,10 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 if cache_key not in cached_prices:
                     all_output_pairs.add((out["name"], out_cond))
 
-    # Track price sources: cache_key -> "Steam" / "Skinport" / "CSFloat"
-    # Restore sources from cache so cached prices keep their correct source label
+    # Track price sources and timestamps: cache_key -> "Steam" / "Skinport" / "CSFloat"
+    # Restore from cache so cached prices keep their correct source label and timestamp
     price_sources = dict(cached_sources) if cached_sources else {}
+    price_timestamps = dict(cached_timestamps) if cached_timestamps else {}
 
     if all_output_pairs:
         # OUTPUT PRICING STRATEGY:
@@ -1523,6 +1651,7 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 if steam_ref and steam_ref > 0:
                     cached_prices[cache_key] = steam_ref
                     price_sources[cache_key] = "Steam"
+                    price_timestamps[cache_key] = time.time()
                     steam_refs[cache_key] = steam_ref
                     steam_ok += 1
                 else:
@@ -1557,10 +1686,12 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                       f"${sp_data['price']/100:.2f} > 3× Steam ${steam_ref/100:.2f} — using Steam instead")
                 cached_prices[cache_key] = steam_ref
                 price_sources[cache_key] = "Steam"
+                price_timestamps[cache_key] = time.time()
                 skinport_rejected_inflated += 1
                 continue
             cached_prices[cache_key] = sp_data["price"]
             price_sources[cache_key] = "Skinport"
+            price_timestamps[cache_key] = time.time()
             skinport_filled += 1
         if skinport_filled:
             print(f"   Skinport fallback: {skinport_filled} filled")
@@ -1661,9 +1792,11 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                         if price > 0:
                             cached_prices[f"{name}|{cond}"] = price
                             price_sources[f"{name}|{cond}"] = "CSFloat"
+                            price_timestamps[f"{name}|{cond}"] = time.time()
                             csfloat_ok += 1
                         elif price == CSFLOAT_NO_LISTING:
                             cached_prices[f"{name}|{cond}"] = CSFLOAT_NO_LISTING
+                            price_timestamps[f"{name}|{cond}"] = time.time()
             else:
                 if skipped_unpromising:
                     print(f"   CSFloat skipped: all {skipped_unpromising} missing outputs belong to unprofitable trade-ups")
@@ -1692,212 +1825,205 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 print(f"   [SKIP] {tag}: no output skins at rarity {out_rarity}")
                 continue
 
-            # Separate StatTrak and non-StatTrak inputs
+            # Separate StatTrak and non-StatTrak inputs — analyze BOTH groups independently
             stattrak_inputs = [i for i in inputs if i.get("_is_stattrak", False)]
             normal_inputs = [i for i in inputs if not i.get("_is_stattrak", False)]
 
-            # Use whichever group has more items (prefer non-StatTrak if equal)
+            # Build list of (selected_inputs, is_stattrak) groups to analyze
+            groups_to_analyze = []
             if len(normal_inputs) >= 10:
-                selected_inputs = normal_inputs
-                is_stattrak_tradeup = False
-            elif len(stattrak_inputs) >= 10:
-                selected_inputs = stattrak_inputs
-                is_stattrak_tradeup = True
-            else:
+                groups_to_analyze.append((normal_inputs, False))
+            if len(stattrak_inputs) >= 10:
+                groups_to_analyze.append((stattrak_inputs, True))
+
+            if not groups_to_analyze:
                 skipped_stattrak += 1
-                print(f"   [SKIP] {tag}: mixed StatTrak split (normal={len(normal_inputs)}, ST={len(stattrak_inputs)}, need 10 of either)")
+                print(f"   [SKIP] {tag}: insufficient inputs (normal={len(normal_inputs)}, ST={len(stattrak_inputs)}, need 10 of either)")
                 continue
 
-            # Sort by best price, take 10 cheapest
-            selected_inputs.sort(key=lambda x: x.get("_best_price", 999999))
-            top10 = selected_inputs[:10]
+            for selected_inputs, is_stattrak_tradeup in groups_to_analyze:
+                st_label = " [ST]" if is_stattrak_tradeup else ""
 
-            # LIQUIDITY CHECK: Verify we have exactly 10 unique listings
-            if len(selected_inputs) < 10:
-                skipped_supply += 1
-                print(f"   [SKIP] {tag}: insufficient supply ({len(selected_inputs)} listings, need 10)")
-                continue
+                # Sort by best price, take 10 cheapest
+                selected_inputs.sort(key=lambda x: x.get("_best_price", 999999))
+                top10 = selected_inputs[:10]
 
-            input_cost = sum(x.get("_best_price", 0) for x in top10)
+                input_cost = sum(x.get("_best_price", 0) for x in top10)
 
-            # Build input data for October 2025 algorithm
-            input_data = []
-            for x in top10:
-                extra = x.get("extra", {})
-                input_data.append({
-                    "float": extra.get("floatValue", 0.18),
-                    "skin_min": extra.get("skin_min", 0.0),
-                    "skin_max": extra.get("skin_max", 1.0),
-                })
-            avg_float = sum(d["float"] for d in input_data) / 10
+                # Build input data for October 2025 algorithm
+                input_data = []
+                for x in top10:
+                    extra = x.get("extra", {})
+                    input_data.append({
+                        "float": extra.get("floatValue", 0.18),
+                        "skin_min": extra.get("skin_min", 0.0),
+                        "skin_max": extra.get("skin_max", 1.0),
+                    })
+                avg_float = sum(d["float"] for d in input_data) / 10
 
-            # Calculate output conditions FIRST
-            output_conditions = []
-            for out in outputs:
-                out_fv = calc_output_float(input_data, out["min_float"], out["max_float"])
-                out_cond = get_condition(out_fv)
-                output_conditions.append((out["name"], out_cond, out_fv, out["min_float"], out["max_float"]))
+                # Calculate output conditions — skip WW/BS entirely (can't come out with correct floats)
+                output_conditions = []
+                for out in outputs:
+                    out_fv = calc_output_float(input_data, out["min_float"], out["max_float"])
+                    out_cond = get_condition(out_fv)
+                    if out_cond in ("Well-Worn", "Battle-Scarred"):
+                        continue  # Impossible with correct float inputs
+                    output_conditions.append((out["name"], out_cond, out_fv, out["min_float"], out["max_float"]))
 
-            # Look up prices for outputs: Steam first, Skinport fallback, CSFloat last resort
-            ev_sum = 0
-            out_info = []
-            has_price = False
+                if not output_conditions:
+                    skipped_not_mw += 1
+                    print(f"   [SKIP] {tag}{st_label}: all outputs WW/BS")
+                    continue
 
-            # Fee per price source:
-            #   Steam: price is what buyers pay (includes 15% Steam fee). Seller receives price * 0.85
-            #   Skinport: seller fee ~8%. Seller receives price * 0.92
-            #   CSFloat: seller fee 2%. Seller receives price * 0.98
-            SOURCE_FEES = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
+                # Look up prices for outputs: Steam first, Skinport fallback, CSFloat last resort
+                ev_sum = 0
+                out_info = []
+                has_price = False
 
-            for name, cond, fv, out_min, out_max in output_conditions:
-                cache_key = f"{name}|{cond}"
+                # Fee per price source
+                SOURCE_FEES = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
 
-                if cache_key in cached_prices:
-                    cached_val = cached_prices[cache_key]
-                    prices_from_cache += 1
-                    if cached_val == CSFLOAT_NO_LISTING:
-                        price = 0
-                        price_source = "NO_LISTINGS"
-                    elif cached_val > 0:
-                        price = cached_val
-                        price_source = price_sources.get(cache_key, "Steam")
-                    else:
-                        price = 0
-                        price_source = "none"
-                else:
-                    # Not pre-fetched — try Steam on the fly
-                    trend = fetch_steam_trend(name, cond)
-                    time.sleep(1.5)
-                    if trend:
-                        steam_ref = trend.get("median") or trend.get("lowest")
-                        if steam_ref and steam_ref > 0:
-                            price = steam_ref
-                            price_source = "Steam"
-                            cached_prices[cache_key] = price
-                            price_sources[cache_key] = "Steam"
-                            prices_fetched += 1
+                # Probability is 1/total_outputs (including WW/BS that we skipped from pricing)
+                # because the trade-up still rolls those outcomes — they just have $0 value
+                prob = 1 / len(outputs)
+
+                for name, cond, fv, out_min, out_max in output_conditions:
+                    cache_key = f"{name}|{cond}"
+
+                    if cache_key in cached_prices:
+                        cached_val = cached_prices[cache_key]
+                        prices_from_cache += 1
+                        if cached_val == CSFLOAT_NO_LISTING:
+                            price = 0
+                            price_source = "NO_LISTINGS"
+                        elif cached_val > 0:
+                            price = cached_val
+                            price_source = price_sources.get(cache_key, "Steam")
                         else:
                             price = 0
                             price_source = "none"
                     else:
-                        price = 0
-                        price_source = "none"
+                        # Not pre-fetched — try Steam on the fly
+                        trend = fetch_steam_trend(name, cond)
+                        time.sleep(1.5)
+                        if trend:
+                            steam_ref = trend.get("median") or trend.get("lowest")
+                            if steam_ref and steam_ref > 0:
+                                price = steam_ref
+                                price_source = "Steam"
+                                cached_prices[cache_key] = price
+                                price_sources[cache_key] = "Steam"
+                                price_timestamps[cache_key] = time.time()
+                                prices_fetched += 1
+                            else:
+                                price = 0
+                                price_source = "none"
+                        else:
+                            price = 0
+                            price_source = "none"
 
-                # Apply the correct fee for the price source
-                fee = SOURCE_FEES.get(price_source, 0.15)  # Default to 15% if unknown
-                price_after_fee = int(price * (1 - fee)) if price else 0
+                    # Apply the correct fee for the price source
+                    fee = SOURCE_FEES.get(price_source, 0.15)
+                    price_after_fee = int(price * (1 - fee)) if price else 0
 
-                if price_after_fee > 0:
-                    has_price = True
+                    if price_after_fee > 0:
+                        has_price = True
 
-                prob = 1 / len(outputs)
-                ev_sum += price_after_fee * prob
-                out_info.append({
-                    "name": name,
-                    "condition": cond,
-                    "float": fv,
-                    "float_min": out_min,
-                    "float_max": out_max,
-                    "price_raw": price,
-                    "price_after_fee": price_after_fee,
-                    "price_source": price_source,
-                    "probability": prob,
+                    ev_sum += price_after_fee * prob
+                    out_info.append({
+                        "name": name,
+                        "condition": cond,
+                        "float": fv,
+                        "float_min": out_min,
+                        "float_max": out_max,
+                        "price_raw": price,
+                        "price_after_fee": price_after_fee,
+                        "price_source": price_source,
+                        "probability": prob,
+                    })
+
+                if not has_price:
+                    skipped_no_price += 1
+                    print(f"   [SKIP] {tag}{st_label}: no price for any output")
+                    continue
+
+                # Check if any output has unknown price — makes EV unverifiable
+                missing_price_outputs = [o["name"] for o in out_info if o["price_raw"] <= 0]
+                has_missing_prices = len(missing_price_outputs) > 0
+                if has_missing_prices:
+                    print(f"   [WARN] {tag}{st_label}: {len(missing_price_outputs)}/{len(out_info)} outputs no price — EV unverifiable")
+
+                # Determine the best output condition achieved
+                condition_priority = {"Factory New": 3, "Minimal Wear": 2, "Field-Tested": 1}
+                best_cond = max(
+                    (o["condition"] for o in out_info if o["condition"] in condition_priority),
+                    key=lambda c: condition_priority.get(c, 0),
+                    default="Field-Tested"
+                )
+
+                # Calculate EV
+                net_ev = ev_sum - input_cost
+                roi = (net_ev / input_cost * 100) if input_cost > 0 else 0
+
+                # Calculate max allowed float for each input skin type
+                filter_target = 0.38  # FT ceiling — matches Phase 1 filter
+                min_max_adjusted = None
+                for out in outputs:
+                    max_adj = calc_max_adjusted_float(out["min_float"], out["max_float"], filter_target)
+                    if max_adj is not None:
+                        if min_max_adjusted is None or max_adj < min_max_adjusted:
+                            min_max_adjusted = max_adj
+
+                # Build inputs with max_raw_float calculated
+                inputs_with_limits = []
+                float_violations = 0
+                for x in top10:
+                    extra = x.get("extra", {})
+                    skin_min = extra.get("skin_min", 0)
+                    skin_max = extra.get("skin_max", 1)
+                    skin_range = skin_max - skin_min
+                    raw_float = extra.get("floatValue", 0)
+                    adjusted_float = (raw_float - skin_min) / skin_range if skin_range > 0 else 0
+                    max_raw = calc_max_input_float_for_skin(min_max_adjusted, skin_min, skin_max) if min_max_adjusted else None
+                    if max_raw is not None and raw_float > max_raw + 0.0001:
+                        float_violations += 1
+                    inputs_with_limits.append({
+                        "title": x.get("title"),
+                        "price": x.get("_best_price", 0),
+                        "source": x.get("_best_source", "?"),
+                        "price_from_skinport": x.get("_price_from_skinport", False),
+                        "float": raw_float,
+                        "adjusted_float": adjusted_float,
+                        "skin_min": skin_min,
+                        "skin_max": skin_max,
+                        "max_float": max_raw,
+                        "listing_id": x.get("_listing_id", ""),
+                    })
+
+                if float_violations > 0:
+                    print(f"   [ERROR] {tag}{st_label}: {float_violations}/10 inputs float > max — SKIPPING")
+                    continue
+
+                # Flag if no output price was verified on CSFloat
+                has_csfloat_price = any(o.get("price_source") == "CSFloat" for o in out_info if o["price_raw"] > 0)
+
+                results.append({
+                    "collection": coll_name,
+                    "in_rarity": in_rarity,
+                    "out_rarity": out_rarity,
+                    "target_condition": best_cond,
+                    "input_cost": input_cost,
+                    "avg_float": avg_float,
+                    "max_adjusted": min_max_adjusted,
+                    "ev_output": ev_sum,
+                    "ev": net_ev,
+                    "roi": roi,
+                    "is_stattrak": is_stattrak_tradeup,
+                    "outputs": out_info,
+                    "inputs": inputs_with_limits,
+                    "unverifiable": has_missing_prices,
+                    "unverified_csfloat": not has_csfloat_price,
                 })
-
-            if not has_price:
-                skipped_no_price += 1
-                print(f"   [SKIP] {tag}: no price on CSFloat or Skinport for any output ({[o['name'] for o in out_info]})")
-                continue
-
-            # Check if any output has unknown price — makes EV unverifiable
-            missing_price_outputs = [o["name"] for o in out_info if o["price_raw"] <= 0]
-            has_missing_prices = len(missing_price_outputs) > 0
-            if has_missing_prices:
-                print(f"   [WARN] {tag}: {len(missing_price_outputs)}/{len(out_info)} outputs have no price — EV unverifiable")
-
-            # Skip if all outputs are WW or BS (no value in those conditions)
-            ww_bs_only = all(o["condition"] in ("Well-Worn", "Battle-Scarred") for o in out_info)
-            if ww_bs_only:
-                skipped_not_mw += 1
-                out_summary = ", ".join(f"{o['name']} -> {o['condition']} (fv={o['float']:.4f})" for o in out_info)
-                print(f"   [SKIP] {tag}: outputs all WW/BS: {out_summary}")
-                continue
-
-            # Determine the best output condition achieved
-            condition_priority = {"Factory New": 3, "Minimal Wear": 2, "Field-Tested": 1}
-            best_cond = max(
-                (o["condition"] for o in out_info if o["condition"] in condition_priority),
-                key=lambda c: condition_priority.get(c, 0),
-                default="Field-Tested"
-            )
-
-            # Calculate EV
-            net_ev = ev_sum - input_cost
-            roi = (net_ev / input_cost * 100) if input_cost > 0 else 0
-
-            # Calculate max allowed float for each input skin type
-            # Use the FT threshold (0.38) since that's what Phase 1 actually filtered by.
-            # The actual output condition depends on the output skin's float range,
-            # not a single global threshold.
-            filter_target = 0.38  # FT ceiling — matches Phase 1 filter
-            min_max_adjusted = None
-            for out in outputs:
-                max_adj = calc_max_adjusted_float(out["min_float"], out["max_float"], filter_target)
-                if max_adj is not None:
-                    if min_max_adjusted is None or max_adj < min_max_adjusted:
-                        min_max_adjusted = max_adj
-
-            # Build inputs with max_raw_float calculated
-            inputs_with_limits = []
-            float_violations = 0
-            for x in top10:
-                extra = x.get("extra", {})
-                skin_min = extra.get("skin_min", 0)
-                skin_max = extra.get("skin_max", 1)
-                skin_range = skin_max - skin_min
-                raw_float = extra.get("floatValue", 0)
-                adjusted_float = (raw_float - skin_min) / skin_range if skin_range > 0 else 0
-                max_raw = calc_max_input_float_for_skin(min_max_adjusted, skin_min, skin_max) if min_max_adjusted else None
-                # Hard assertion: input float must not exceed max_raw_float
-                if max_raw is not None and raw_float > max_raw + 0.0001:  # tiny epsilon for float rounding
-                    float_violations += 1
-                inputs_with_limits.append({
-                    "title": x.get("title"),
-                    "price": x.get("_best_price", 0),
-                    "source": x.get("_best_source", "?"),
-                    "price_from_skinport": x.get("_price_from_skinport", False),
-                    "float": raw_float,
-                    "adjusted_float": adjusted_float,
-                    "skin_min": skin_min,
-                    "skin_max": skin_max,
-                    "max_float": max_raw,
-                    "listing_id": x.get("_listing_id", ""),
-                })
-
-            if float_violations > 0:
-                print(f"   [ERROR] {tag}: {float_violations}/10 inputs have float > max_raw_float — SKIPPING")
-                continue
-
-            # Flag if no output price was verified on CSFloat (all from Steam/Skinport)
-            has_csfloat_price = any(o.get("price_source") == "CSFloat" for o in out_info if o["price_raw"] > 0)
-
-            results.append({
-                "collection": coll_name,
-                "in_rarity": in_rarity,
-                "out_rarity": out_rarity,
-                "target_condition": best_cond,
-                "input_cost": input_cost,
-                "avg_float": avg_float,
-                "max_adjusted": min_max_adjusted,
-                "ev_output": ev_sum,
-                "ev": net_ev,
-                "roi": roi,
-                "is_stattrak": is_stattrak_tradeup,
-                "outputs": out_info,
-                "inputs": inputs_with_limits,
-                "unverifiable": has_missing_prices,
-                "unverified_csfloat": not has_csfloat_price,
-            })
 
     print(f"   Prices: {prices_fetched} fetched, {prices_from_cache} from cache")
     print(f"   Calculated {len(results)} trade-ups")
@@ -1910,7 +2036,7 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
         if skipped_no_price:    print(f"     {skipped_no_price} - no CSFloat price for outputs")
         if skipped_not_mw:      print(f"     {skipped_not_mw} - output floats all WW/BS (no value)")
 
-    return results, cached_prices, price_sources
+    return results, cached_prices, price_sources, price_timestamps
 
 
 def calculate_watchlist_estimates(watchlist_collections, coll_skins, cached_prices, price_sources=None):
@@ -2055,158 +2181,8 @@ def fetch_steam_trend(skin_name, condition):
     return None
 
 
-def verify_dmarket_listing(item_id):
-    """Check if a DMarket listing is still active."""
-    try:
-        r = requests.get(f"https://api.dmarket.com/exchange/v1/market/items/{item_id}",
-                        timeout=10)
-        if r.ok:
-            data = r.json()
-            return data.get("status") == "active" and data.get("inMarket", False)
-        if r.status_code == 404:
-            return False
-    except Exception:
-        pass
-    return None  # Unknown (network error)
-
-
-def verify_profitable_inputs(profitable_results):
-    """Verify that DMarket listings in profitable trade-ups are still active.
-
-    Re-fetches current cheapest listings for skins where listings are sold.
-    Recalculates profitability and drops trade-ups that are no longer viable.
-    """
-    print("\n" + "=" * 70)
-    print("VERIFYING INPUT LISTINGS (checking if still available)")
-    print("=" * 70)
-
-    if not profitable_results:
-        return profitable_results
-
-    verified_results = []
-    for result in profitable_results:
-        coll = result["collection"]
-        sold_count = 0
-        verified_count = 0
-        unknown_count = 0
-
-        for inp in result["inputs"]:
-            source = inp.get("source", "")
-            listing_id = inp.get("listing_id", "")
-
-            if source == "DMarket" and listing_id:
-                is_active = verify_dmarket_listing(listing_id)
-                if is_active is True:
-                    inp["_verified"] = True
-                    verified_count += 1
-                elif is_active is False:
-                    inp["_verified"] = False
-                    inp["_sold"] = True
-                    sold_count += 1
-                else:
-                    inp["_verified"] = None
-                    unknown_count += 1
-                time.sleep(0.05)  # Light rate limiting
-            elif source == "CSFloat" and listing_id:
-                # Already have verify_csfloat_listing for this
-                result_check = verify_csfloat_listing(listing_id)
-                if result_check["available"]:
-                    inp["_verified"] = True
-                    verified_count += 1
-                else:
-                    inp["_verified"] = False
-                    inp["_sold"] = True
-                    sold_count += 1
-                time.sleep(0.2)
-            else:
-                # Skinport-priced items can't be verified individually
-                inp["_verified"] = None
-                unknown_count += 1
-
-        if sold_count > 0:
-            print(f"   [{coll}] {sold_count} SOLD, {verified_count} active, {unknown_count} unverified — re-fetching...")
-
-            # Re-fetch current listings for this skin to find replacements
-            # Get the skin name from the first input
-            skin_titles = set()
-            for inp in result["inputs"]:
-                base = inp["title"]
-                for c in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
-                    base = base.replace(c, "").strip()
-                skin_titles.add(base)
-
-            # Fetch fresh listings for each skin
-            fresh_listings = []
-            for skin_name in skin_titles:
-                items = fetch_skin_raw(skin_name, max_items=50)
-                fresh_listings.extend(items)
-
-            if not fresh_listings:
-                print(f"   [{coll}] Could not re-fetch listings, dropping trade-up")
-                continue
-
-            # Rebuild the inputs: keep verified ones, replace sold ones from fresh listings
-            active_inputs = [inp for inp in result["inputs"] if inp.get("_verified") is not False]
-            needed = 10 - len(active_inputs)
-
-            if needed > 0:
-                # Get listing IDs we already have to avoid duplicates
-                used_ids = set(inp.get("listing_id", "") for inp in active_inputs)
-
-                # Process fresh listings through the same float filter
-                for item in sorted(fresh_listings, key=lambda x: x.get("price_usd", 999999)):
-                    if needed <= 0:
-                        break
-                    lid = item.get("listing_id", "")
-                    if lid in used_ids:
-                        continue
-                    # Check float is within max allowed
-                    max_float = result["inputs"][0].get("max_float", 0.38) if result["inputs"] else 0.38
-                    if item.get("float", 1.0) > max_float:
-                        continue
-                    active_inputs.append({
-                        "title": item.get("title", ""),
-                        "price": item.get("price_usd", 0),
-                        "source": "DMarket",
-                        "float": item.get("float", 0),
-                        "listing_id": lid,
-                        "max_float": max_float,
-                        "skin_min": result["inputs"][0].get("skin_min", 0),
-                        "skin_max": result["inputs"][0].get("skin_max", 1),
-                        "_verified": True,
-                        "_fresh": True,
-                    })
-                    used_ids.add(lid)
-                    needed -= 1
-
-            if len(active_inputs) < 10:
-                print(f"   [{coll}] Only {len(active_inputs)} active listings found (need 10), dropping")
-                continue
-
-            # Recalculate cost with fresh inputs
-            active_inputs.sort(key=lambda x: x.get("price", x.get("_best_price", 999999)))
-            top10 = active_inputs[:10]
-            new_cost = sum(inp.get("price", inp.get("_best_price", 0)) for inp in top10)
-            new_ev = result["ev_output"] - new_cost
-            new_roi = (new_ev / new_cost * 100) if new_cost > 0 else 0
-
-            if new_roi < 25.0 or new_ev < 30:
-                print(f"   [{coll}] No longer profitable after re-price (ROI: {new_roi:.1f}%, EV: ${new_ev/100:.2f}), dropping")
-                continue
-
-            fresh_count = sum(1 for inp in top10 if inp.get("_fresh"))
-            result["inputs"] = top10
-            result["input_cost"] = new_cost
-            result["ev"] = new_ev
-            result["roi"] = new_roi
-            print(f"   [{coll}] Refreshed: {fresh_count} new listings, ROI: {new_roi:.1f}%, EV: ${new_ev/100:.2f}")
-        else:
-            print(f"   [{coll}] All {verified_count} listings verified active")
-
-        verified_results.append(result)
-
-    print(f"\n   Verified: {len(verified_results)}/{len(profitable_results)} trade-ups still viable")
-    return verified_results
+    # verify_dmarket_listing and verify_profitable_inputs removed:
+    # User manually checks prices before executing trade-ups.
 
 
 def phase3_fetch_trends(profitable_results):
@@ -2297,14 +2273,13 @@ def main():
     print("\nLoading Skinport prices...")
     skinport_prices = fetch_skinport_prices()
 
-    # Load cache
-    cached_prices, cache_time, cached_sources = load_cache()
-    if cached_prices and is_cache_valid(cache_time):
-        age_mins = (time.time() - cache_time) / 60
-        print(f"[CACHE] Loaded {len(cached_prices)} prices ({age_mins:.0f}m old, valid for 3h)")
+    # Load cache (per-key timestamps, auto-migrates from v1)
+    cached_prices, cached_sources, cached_timestamps = load_cache()
+    if cached_prices:
+        fresh = sum(1 for k in cached_prices if is_price_fresh(k, cached_timestamps))
+        stale = len(cached_prices) - fresh
+        print(f"[CACHE] Loaded {len(cached_prices)} prices ({fresh} fresh, {stale} stale)")
     else:
-        cached_prices = {}
-        cached_sources = {}
         print("[CACHE] Starting fresh")
 
     # Check saved opportunities first
@@ -2318,8 +2293,10 @@ def main():
         return
 
     # PHASE 2: Calculate EVs
-    results, cached_prices, price_sources = phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_prices, skin_float_ranges, cached_sources)
-    save_cache(cached_prices, price_sources)
+    results, cached_prices, price_sources, price_timestamps = phase2_calculate_ev(
+        viable_collections, coll_skins, cached_prices, skinport_prices, skin_float_ranges,
+        cached_sources, cached_timestamps)
+    save_cache(cached_prices, price_sources, price_timestamps)
 
     # Sort by ROI, filter for 25%+ ROI and $0.30+ net profit
     MIN_ROI = 25.0
@@ -2327,13 +2304,6 @@ def main():
     results.sort(key=lambda x: x["roi"], reverse=True)
     profitable = [r for r in results if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and not r.get("unverifiable")]
     unverifiable = [r for r in results if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and r.get("unverifiable")]
-
-    # Verify input listings are still available before showing
-    profitable = verify_profitable_inputs(profitable)
-
-    # Re-sort and re-filter after verification (prices may have changed)
-    profitable.sort(key=lambda x: x["roi"], reverse=True)
-    profitable = [r for r in profitable if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and not r.get("unverifiable")]
 
     # PHASE 3: Fetch trends for profitable only
     profitable = phase3_fetch_trends(profitable)
