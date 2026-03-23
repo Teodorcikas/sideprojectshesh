@@ -1195,7 +1195,7 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
         })
 
     if float_violations > 0:
-        print(f"   [BUG] {float_violations} items passed with float > max_raw_float!")
+        print(f"   [FILTER] {float_violations} items rejected (float > max_raw_float)")
     return processed
 
 
@@ -2361,7 +2361,7 @@ def phase3_fetch_trends(profitable_results):
 
 def main():
     print("=" * 70)
-    print("CS2 TRADE-UP EV CALCULATOR v3.7")
+    print("CS2 TRADE-UP EV CALCULATOR v3.8")
     print("Inputs: DMarket+CSFloat+Waxpeer+Skinport | Outputs: Steam+Skinport (free)")
     print(f"CSFloat budget: {CSFLOAT_INPUT_CAP} inputs / {CSFLOAT_OUTPUT_RESERVE} outputs / {CSFLOAT_BUDGET_RESERVE} reserve")
     print("=" * 70)
