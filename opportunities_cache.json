@@ -1,5 +1,5 @@
 {
-  "timestamp": 1774265859.1720903,
+  "timestamp": 1774266958.0788417,
   "opportunities": [
     {
       "collection": "glove",
@@ -24,7 +24,9 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "29e63529-3b53-52ab-9e90-0c940819f811",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=29e63529-3b53-52ab-9e90-0c940819f811"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=29e63529-3b53-52ab-9e90-0c940819f811",
+          "current_price": 982,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
@@ -36,7 +38,9 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "a92ab4c2-35ed-5c5d-8ce5-4c2ef0de934e",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=a92ab4c2-35ed-5c5d-8ce5-4c2ef0de934e"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=a92ab4c2-35ed-5c5d-8ce5-4c2ef0de934e",
+          "current_price": 1031,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Field-Tested)",
@@ -48,7 +52,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "57cf9a7e-43f0-50d1-b970-e13d1e6f8ad5",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57cf9a7e-43f0-50d1-b970-e13d1e6f8ad5"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57cf9a7e-43f0-50d1-b970-e13d1e6f8ad5",
+          "current_price": 1657,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Field-Tested)",
@@ -60,7 +66,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "2ad39b1a-f34b-5509-8f6c-d6a5fc43f177",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=2ad39b1a-f34b-5509-8f6c-d6a5fc43f177"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=2ad39b1a-f34b-5509-8f6c-d6a5fc43f177",
+          "current_price": 1714,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Minimal Wear)",
@@ -72,7 +80,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "549f7a36-e967-5347-81df-3e2165d6470b",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=549f7a36-e967-5347-81df-3e2165d6470b"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=549f7a36-e967-5347-81df-3e2165d6470b",
+          "current_price": 1891,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
@@ -84,7 +94,9 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "bf119118-d566-57eb-9458-deb986323a7c",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bf119118-d566-57eb-9458-deb986323a7c"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bf119118-d566-57eb-9458-deb986323a7c",
+          "current_price": 2005,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Minimal Wear)",
@@ -96,7 +108,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "57f51d8a-e5c7-5999-a380-f550fd9fc351",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57f51d8a-e5c7-5999-a380-f550fd9fc351"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57f51d8a-e5c7-5999-a380-f550fd9fc351",
+          "current_price": 2086,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Minimal Wear)",
@@ -108,7 +122,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "4ff128e1-4916-5e7a-a25f-6f5a1bc51cfb",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4ff128e1-4916-5e7a-a25f-6f5a1bc51cfb"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4ff128e1-4916-5e7a-a25f-6f5a1bc51cfb",
+          "current_price": 2100,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Minimal Wear)",
@@ -120,7 +136,9 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "c5339551-1ada-5869-9be9-fb1a7de46376",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=c5339551-1ada-5869-9be9-fb1a7de46376"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=c5339551-1ada-5869-9be9-fb1a7de46376",
+          "current_price": 2209,
+          "unverified": true
         },
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Minimal Wear)",
@@ -132,7 +150,9 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "839b60bf-1f7c-5bb3-acbf-b9ef234ff877",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=839b60bf-1f7c-5bb3-acbf-b9ef234ff877"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=839b60bf-1f7c-5bb3-acbf-b9ef234ff877",
+          "current_price": 2210,
+          "unverified": true
         }
       ],
       "outputs": [
@@ -170,7 +190,8 @@
             "median_after_fee": 31227
           }
         }
-      ]
+      ],
+      "verified_at": 1774266958.0788128
     },
     {
       "collection": "limited edition item",
@@ -195,7 +216,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "cce83576-dc7a-52bb-af00-ae5f33fbcb89",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=cce83576-dc7a-52bb-af00-ae5f33fbcb89"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=cce83576-dc7a-52bb-af00-ae5f33fbcb89",
+          "current_price": 194,
+          "unverified": true
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
@@ -207,7 +230,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "0c58761d-4966-5e72-ab71-fa53aa3c898c",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=0c58761d-4966-5e72-ab71-fa53aa3c898c"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=0c58761d-4966-5e72-ab71-fa53aa3c898c",
+          "current_price": 194,
+          "unverified": true
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
@@ -219,7 +244,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "4d3bae26-df95-5a4c-b94d-602e317af19b",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4d3bae26-df95-5a4c-b94d-602e317af19b"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4d3bae26-df95-5a4c-b94d-602e317af19b",
+          "current_price": 194,
+          "unverified": true
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
@@ -231,7 +258,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "4826db86-de9b-5a23-8cf4-4e84f3c03bb3",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4826db86-de9b-5a23-8cf4-4e84f3c03bb3"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4826db86-de9b-5a23-8cf4-4e84f3c03bb3",
+          "current_price": 194,
+          "unverified": true
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
@@ -243,7 +272,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "677c631b-ad94-5956-8195-76fa2846a5b6",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=677c631b-ad94-5956-8195-76fa2846a5b6"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=677c631b-ad94-5956-8195-76fa2846a5b6",
+          "current_price": 194,
+          "unverified": true
         },
         {
           "title": "M4A1-S | Solitude (Field-Tested)",
@@ -255,7 +286,9 @@
           "max_float": 0.26599999999999996,
           "source": "DMarket",
           "listing_id": "08c51c73-3e33-52da-8476-3342f3249afb",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=08c51c73-3e33-52da-8476-3342f3249afb"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=08c51c73-3e33-52da-8476-3342f3249afb",
+          "current_price": 219,
+          "unverified": true
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
@@ -267,7 +300,9 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "d5d07b6c-9c49-5190-811a-1646220be5d9",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=d5d07b6c-9c49-5190-811a-1646220be5d9"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=d5d07b6c-9c49-5190-811a-1646220be5d9",
+          "current_price": 220,
+          "unverified": true
         },
         {
           "title": "M4A1-S | Solitude (Field-Tested)",
@@ -279,7 +314,9 @@
           "max_float": 0.26599999999999996,
           "source": "DMarket",
           "listing_id": "e4d9b8aa-7f2d-5009-9d48-d0c322ff7fa5",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=e4d9b8aa-7f2d-5009-9d48-d0c322ff7fa5"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=e4d9b8aa-7f2d-5009-9d48-d0c322ff7fa5",
+          "current_price": 220,
+          "unverified": true
         },
         {
           "title": "M4A1-S | Solitude (Field-Tested)",
@@ -291,7 +328,9 @@
           "max_float": 0.26599999999999996,
           "source": "DMarket",
           "listing_id": "83fc1b74-9a89-55e7-a155-60beac9cd058",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=83fc1b74-9a89-55e7-a155-60beac9cd058"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=83fc1b74-9a89-55e7-a155-60beac9cd058",
+          "current_price": 220,
+          "unverified": true
         },
         {
           "title": "M4A1-S | Solitude (Field-Tested)",
@@ -303,7 +342,9 @@
           "max_float": 0.26599999999999996,
           "source": "DMarket",
           "listing_id": "3607b1a4-95b2-5b5d-9a5d-91ae5e66421a",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=3607b1a4-95b2-5b5d-9a5d-91ae5e66421a"
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=3607b1a4-95b2-5b5d-9a5d-91ae5e66421a",
+          "current_price": 220,
+          "unverified": true
         }
       ],
       "outputs": [
@@ -324,7 +365,8 @@
             "median_after_fee": 2688
           }
         }
-      ]
+      ],
+      "verified_at": 1774266958.0788364
     }
   ]
 }
