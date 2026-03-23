@@ -473,11 +473,15 @@ def verify_opportunity(opportunity, cached_prices):
     # Recalculate profitability with current prices
     # Get output EV from cached prices
     outputs = opportunity.get("outputs", [])
+    SOURCE_FEES_VERIFY = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
     ev_sum = 0
     for out in outputs:
         cache_key = f"{out['name']}|{out['condition']}"
         price = cached_prices.get(cache_key, out.get("price_raw", 0))
-        price_after_fee = int(price * (1 - CSFLOAT_SELLER_FEE)) if price else 0
+        # Use the correct fee for this output's price source
+        price_source = out.get("price_source", "Steam")
+        fee = SOURCE_FEES_VERIFY.get(price_source, 0.15)
+        price_after_fee = int(price * (1 - fee)) if price else 0
         ev_sum += price_after_fee * out["probability"]
 
     net_ev = ev_sum - total_new_cost
@@ -666,10 +670,13 @@ def fetch_csfloat_listings(float_limits, max_pages_per_rarity=40):
     # (server-side filter is global, client-side will refine per-collection)
     rarity_max_floats = {}  # rarity_int -> max raw float (conservative upper bound)
     for (coll, in_rarity), max_adjusted in float_limits.items():
-        # max_adjusted is normalized 0-1. Convert to a raw float upper bound.
-        # Worst case: skin with range 0.0-1.0 → max_raw = max_adjusted.
-        # For safety, use 0.38 (FT ceiling) as absolute cap since we want FT or better.
-        raw_upper = min(max_adjusted, 0.38)
+        # max_adjusted is normalized 0-1. To get a safe raw float upper bound for
+        # server-side filtering, we need to account for the widest possible skin range.
+        # Worst case: skin with range 0.0-1.0 → max_raw = max_adjusted * 1.0.
+        # But many skins have narrower ranges (e.g., 0.0-0.5) where max_raw would be lower.
+        # Use the adjusted value directly as raw bound (covers the worst case 0-1 range),
+        # capped at 0.45 (WW ceiling) to be safe — client-side filter refines per-skin.
+        raw_upper = min(max_adjusted, 0.45)
         if in_rarity not in rarity_max_floats or raw_upper > rarity_max_floats[in_rarity]:
             rarity_max_floats[in_rarity] = raw_upper
 
@@ -861,6 +868,7 @@ def fetch_skin_raw(skin_name, max_items=1000):
                     "float": fv,
                     "collection": colls[0].lower().replace("the ", "").replace(" collection", "").strip(),
                     "quality": quality,
+                    "source": "DMarket",
                     "listing_id": item_id,
                 })
 
@@ -923,7 +931,8 @@ def fetch_waxpeer_listings(skin_names, skin_db_lookup, max_pages=200):
 
             for item in items:
                 item_name = item.get("name", "")
-                price = item.get("price", 0)  # cents
+                price_raw = item.get("price", 0)  # Waxpeer uses 1$ = 1000 (millicents)
+                price = round(price_raw / 10)  # Convert to cents (100 = $1.00) to match other sources
                 fv = item.get("float")
                 item_id = item.get("item_id", "")
 
@@ -1020,11 +1029,8 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
 
         # Hard filter: reject any item where float exceeds max_raw_float
         if fv > max_raw_float + 0.0001:  # tiny epsilon for float rounding
-            continue
-
-        # Assertion check — should never trigger after the filter above
-        if fv > max_raw_float + 0.0001:
             float_violations += 1
+            continue
 
         # Get price from source
         source_price = item["price_usd"]
@@ -1054,7 +1060,8 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
                 "skin_max": skin_max,
             },
             "_best_price": best_price,
-            "_best_source": item_source,  # Always the real listing source
+            "_best_source": "Skinport" if price_from_skinport else item_source,
+            "_original_source": item_source,  # Where the listing/float came from
             "_price_from_skinport": price_from_skinport,
             "_is_stattrak": is_stattrak,
             "_listing_id": item.get("listing_id", ""),
@@ -1349,11 +1356,14 @@ def fetch_skinport_prices():
 
 
 def get_skinport_price(skinport_prices, skin_name, condition):
-    """Look up price from pre-fetched Skinport data."""
+    """Look up price from pre-fetched Skinport data.
+
+    Returns dict with 'price' and 'quantity' keys, or None if not found.
+    """
     market_hash_name = f"{skin_name} ({condition})"
     price = skinport_prices.get(market_hash_name)
     if price is None:
-        return "ERROR"
+        return None
     return price
 
 
@@ -1533,7 +1543,7 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
             if cached_prices.get(cache_key, 0) > 0:
                 continue
             sp_data = get_skinport_price(skinport_prices, name, cond)
-            if sp_data == "ERROR" or sp_data.get("price", 0) <= 0:
+            if sp_data is None or sp_data.get("price", 0) <= 0:
                 still_missing.append((name, cond))
                 continue
             if sp_data.get("quantity", 0) < 2:
@@ -2229,7 +2239,7 @@ def phase3_fetch_trends(profitable_results):
 
 def main():
     print("=" * 70)
-    print("CS2 TRADE-UP EV CALCULATOR v3.5")
+    print("CS2 TRADE-UP EV CALCULATOR v3.7")
     print("Inputs: DMarket+CSFloat+Waxpeer+Skinport | Outputs: Steam+Skinport (free)")
     print(f"CSFloat budget: {CSFLOAT_INPUT_CAP} inputs / {CSFLOAT_OUTPUT_RESERVE} outputs / {CSFLOAT_BUDGET_RESERVE} reserve")
     print("=" * 70)

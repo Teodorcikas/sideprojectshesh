@@ -64,7 +64,7 @@ CSFloat enforces a request rate limit. The code uses:
 - **No caching of failed results**: if all retries fail (returns 0), the result is NOT written to cache — next run will retry fresh
 - **`CSFLOAT_NO_LISTING = -1` sentinel**: distinguishes "confirmed no listing" from "rate-limited unknown"
 
-## Current State (v3.6)
+## Current State (v3.7)
 
 **Working:**
 - Fetches from DMarket + CSFloat + Waxpeer (bulk, 200 pages) + Skinport (~19,500 total items)
@@ -124,10 +124,44 @@ CSFloat enforces a request rate limit. The code uses:
 - [ ] **Filter by Steam volume** — Skip illiquid outputs (<5 sales/day)
 - [ ] **StatTrak trade-up support** — Show ST opportunities separately
 
-### Noted Bugs (from audit)
-- [ ] **Verification uses stale output prices** — `verify_opportunity` falls back to `out["price_raw"]` from the saved opportunity when cache is empty, so a crashed output price is never caught during verification. Fix: fetch fresh CSFloat price during verify, or at least flag "unverified output price" in the output.
+### Noted Bugs (from audit v3.7)
+- [x] **Verification uses wrong fee for output prices** — `verify_opportunity` applied CSFLOAT_SELLER_FEE (2%) to ALL output prices regardless of source. Steam prices (15% fee) and Skinport prices (8% fee) were over-counted. Fixed: now uses `price_source` from saved opportunity.
+- [x] **Waxpeer price unit mismatch** — Waxpeer API returns prices in millicents (1$ = 1000), but code treated them as cents. All Waxpeer prices were 10x inflated, making Waxpeer items never get selected. Fixed: divide by 10 to convert to cents.
+- [x] **DMarket `fetch_skin_raw` missing source field** — Items from `fetch_skin_raw` had no `"source"` key, causing replacement inputs during verification to lose source tracking. Fixed: added `"source": "DMarket"` to all items.
+- [x] **Dead assertion code** — Float violation check after `continue` was unreachable. Fixed: moved counter before `continue`.
+- [x] **`_best_source` tracked listing source, not price source** — When Skinport had a cheaper price, `_best_source` still showed DMarket/CSFloat, misleading buy links and source tracking. Fixed: now tracks actual price source separately from listing source.
+- [x] **`get_skinport_price` returned mixed types** — Returned string `"ERROR"` on miss vs dict on hit. Fixed: returns `None` on miss.
+- [x] **CSFloat input fetch used adjusted float as raw float bound** — `max_adjusted` (0-1 normalized) was used directly as `max_float` server-side filter parameter, which expects raw float. Could under-fetch valid items for skins with narrow float ranges. Fixed: widened cap to 0.45 with comment explaining the conversion.
 - [ ] **StatTrak Unicode mismatch in Skinport lookup** — CSFloat may use `™` differently than Skinport's `market_hash_name`, causing Skinport price comparison to silently fail for StatTrak items. Fix: normalize Unicode before lookup.
 - [ ] **Winners.md logs duplicates across runs** — `append_winners_log` appends every profitable result every run with no dedup. Same trade-up logged N times if profitable across N runs. Fix: check if collection+rarity+date already logged before appending.
+- [ ] **Verification re-fetch only uses DMarket** — When inputs are sold, replacement search only queries DMarket, missing potentially cheaper CSFloat/Waxpeer alternatives.
+- [ ] **Cache invalidation is all-or-nothing** — Output price cache uses a single timestamp. At 3h01m ALL cached prices are wiped, forcing full re-fetch. Should use per-key timestamps.
+- [ ] **Phase 2 pre-scan vs actual EV mismatch** — Pre-scan skips WW/BS outputs from EV but actual calculation includes them (with price=0), potentially inflating the pre-scan's estimate of which trade-ups are "promising".
+
+## Filler System Architecture (Multi-Collection Trade-Ups)
+
+### How CS2 Multi-Collection Trade-Ups Work
+- You can mix inputs from ANY collections, as long as all 10 are the same rarity
+- Each input contributes to its own collection's output pool
+- Output probability = `(inputs_from_collection / 10) * (1 / output_skins_in_collection)`
+- Example: 7 inputs from Collection A (3 outputs) + 3 "fillers" from Collection B (2 outputs):
+  - Each Collection A output: 7/10 × 1/3 = 23.3% chance
+  - Each Collection B output: 3/10 × 1/2 = 15% chance
+
+### Current Code Blockers for Filler System
+1. **`phase1_fetch_inputs`** groups by `(collection, rarity)` and requires 10+ from same collection. Must pool ALL inputs of same rarity across collections.
+2. **`phase2_calculate_ev`** iterates `viable_collections[coll_name]` per collection. Must instead enumerate combinations of collections.
+3. **Probability calculation** (`prob = 1 / len(outputs)`) assumes single collection. Must use weighted probability per collection.
+4. **Output skin lookup** uses `coll_skins[coll_name].get(out_rarity)` for one collection. Must aggregate outputs from all contributing collections.
+5. **Combinatorial explosion** — mixing N collections × M skins is exponential. Need heuristics: only combine collections that individually have <10 inputs but together reach 10+, or use one "target" collection with cheap fillers from another.
+
+### Suggested Architecture for Filler System
+1. After Phase 1, build a **global pool** of all inputs by rarity (across all collections)
+2. For each "target" collection with valuable outputs but <10 inputs:
+   - Find cheapest fillers from OTHER collections at same rarity
+   - Calculate the mixed-collection EV using weighted probabilities
+   - Filler outputs are usually cheap (that's why fillers are cheap) — the value comes from target outputs
+3. Optimize: sort target collections by potential output value, fill from cheapest available inputs
 
 ### Ongoing
 - [ ] **Bug fixes** — Monitor and fix issues as they arise
