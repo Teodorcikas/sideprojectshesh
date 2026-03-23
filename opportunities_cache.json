@@ -1,5 +1,5 @@
 {
-  "timestamp": 1774257448.3798697,
+  "timestamp": 1774265859.1720903,
   "opportunities": [
     {
       "collection": "glove",
@@ -12,7 +12,7 @@
       "roi": 68.28068213586805,
       "avg_float": 0.21751739233732223,
       "max_adjusted": 0.5428571428571429,
-      "saved_at": 1774257448.37978,
+      "saved_at": 1774265859.1720343,
       "inputs": [
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
@@ -147,10 +147,10 @@
           "price_source": "Steam",
           "probability": 0.5,
           "steam_trend": {
-            "lowest": 35870,
-            "median": 33944,
-            "volume_24h": 11,
-            "median_after_fee": 28852
+            "lowest": 36750,
+            "median": 36801,
+            "volume_24h": 13,
+            "median_after_fee": 31280
           }
         },
         {
@@ -165,9 +165,9 @@
           "probability": 0.5,
           "steam_trend": {
             "lowest": 36800,
-            "median": 35500,
-            "volume_24h": 4,
-            "median_after_fee": 30175
+            "median": 36738,
+            "volume_24h": 5,
+            "median_after_fee": 31227
           }
         }
       ]
@@ -183,7 +183,7 @@
       "roi": 39.777670372160465,
       "avg_float": 0.2557285875082016,
       "max_adjusted": 0.38,
-      "saved_at": 1774257448.3798413,
+      "saved_at": 1774265859.1720712,
       "inputs": [
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
@@ -318,10 +318,10 @@
           "price_source": "Steam",
           "probability": 1.0,
           "steam_trend": {
-            "lowest": 3213,
-            "median": 3193,
-            "volume_24h": 174,
-            "median_after_fee": 2714
+            "lowest": 3189,
+            "median": 3163,
+            "volume_24h": 169,
+            "median_after_fee": 2688
           }
         }
       ]
