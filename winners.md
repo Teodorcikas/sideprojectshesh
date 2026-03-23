@@ -753,3 +753,16 @@ Profitable trade-ups found with ROI >= 25% and EV >= $0.30.
   - MAG-7 | Core Breach (Fi, ~0.3167) — $1.27 [Skinport]
 
 ---
+
+## 2026-03-23
+
+### Glove | Classified → Covert [STATTRAK] | +68.3% ROI | EV: $122.12
+- **Input:** 10x StatTrak™ P90 | Shallow Grave (Field-Tested) @ $9.82 each = $178.85 total
+- **Max input float:** 0.4071
+- **Avg input float:** 0.2175 (max adjusted allowed: 0.5429)
+- **Expected output value:** $300.97 (after platform fees)
+- **Outputs (1/2 each):**
+  - M4A4 | Buzz Kill (Fi, ~0.2089) — $353.17 [Steam] ← jackpot
+  - SSG 08 | Dragonfire (Mi, ~0.1492) — $355.00 [Steam] ← jackpot
+
+---
