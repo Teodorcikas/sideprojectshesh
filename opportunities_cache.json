@@ -1,18 +1,18 @@
 {
-  "timestamp": 1774266958.0788417,
+  "timestamp": 1774267180.6898253,
   "opportunities": [
     {
       "collection": "glove",
       "in_rarity": 4,
       "out_rarity": 5,
       "is_stattrak": true,
-      "input_cost": 17885,
+      "input_cost": 16234,
       "ev_output": 30097.0,
-      "ev": 12212.0,
-      "roi": 68.28068213586805,
+      "ev": 13863.0,
+      "roi": 85.39485031415548,
       "avg_float": 0.21751739233732223,
       "max_adjusted": 0.5428571428571429,
-      "saved_at": 1774265859.1720343,
+      "saved_at": 1774267180.6896873,
       "inputs": [
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
@@ -24,9 +24,7 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "29e63529-3b53-52ab-9e90-0c940819f811",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=29e63529-3b53-52ab-9e90-0c940819f811",
-          "current_price": 982,
-          "unverified": true
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=29e63529-3b53-52ab-9e90-0c940819f811"
         },
         {
           "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
@@ -38,37 +36,67 @@
           "max_float": 0.4071428571428572,
           "source": "DMarket",
           "listing_id": "a92ab4c2-35ed-5c5d-8ce5-4c2ef0de934e",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=a92ab4c2-35ed-5c5d-8ce5-4c2ef0de934e",
-          "current_price": 1031,
-          "unverified": true
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=a92ab4c2-35ed-5c5d-8ce5-4c2ef0de934e"
+        },
+        {
+          "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
+          "price": 1420,
+          "float": 0.33360427618026733,
+          "adjusted_float": 0.44480570157368976,
+          "skin_min": 0.0,
+          "skin_max": 0.75,
+          "max_float": 0.4071428571428572,
+          "source": "Skinport",
+          "listing_id": "bf119118-d566-57eb-9458-deb986323a7c",
+          "url": ""
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Field-Tested)",
-          "price": 1657,
+          "price": 1609,
           "float": 0.2973552644252777,
           "adjusted_float": 0.4247932348932539,
           "skin_min": 0.0,
           "skin_max": 0.7,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "57cf9a7e-43f0-50d1-b970-e13d1e6f8ad5",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57cf9a7e-43f0-50d1-b970-e13d1e6f8ad5",
-          "current_price": 1657,
-          "unverified": true
+          "url": ""
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Field-Tested)",
-          "price": 1714,
+          "price": 1609,
           "float": 0.21003872156143188,
           "adjusted_float": 0.30005531651633127,
           "skin_min": 0.0,
           "skin_max": 0.7,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "2ad39b1a-f34b-5509-8f6c-d6a5fc43f177",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=2ad39b1a-f34b-5509-8f6c-d6a5fc43f177",
-          "current_price": 1714,
-          "unverified": true
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 P90 | Shallow Grave (Minimal Wear)",
+          "price": 1753,
+          "float": 0.14798897504806519,
+          "adjusted_float": 0.19731863339742026,
+          "skin_min": 0.0,
+          "skin_max": 0.75,
+          "max_float": 0.4071428571428572,
+          "source": "Skinport",
+          "listing_id": "c5339551-1ada-5869-9be9-fb1a7de46376",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 P90 | Shallow Grave (Minimal Wear)",
+          "price": 1753,
+          "float": 0.14563505351543427,
+          "adjusted_float": 0.19418007135391235,
+          "skin_min": 0.0,
+          "skin_max": 0.75,
+          "max_float": 0.4071428571428572,
+          "source": "Skinport",
+          "listing_id": "839b60bf-1f7c-5bb3-acbf-b9ef234ff877",
+          "url": ""
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Minimal Wear)",
@@ -80,23 +108,7 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "549f7a36-e967-5347-81df-3e2165d6470b",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=549f7a36-e967-5347-81df-3e2165d6470b",
-          "current_price": 1891,
-          "unverified": true
-        },
-        {
-          "title": "StatTrak\u2122 P90 | Shallow Grave (Field-Tested)",
-          "price": 2005,
-          "float": 0.33360427618026733,
-          "adjusted_float": 0.44480570157368976,
-          "skin_min": 0.0,
-          "skin_max": 0.75,
-          "max_float": 0.4071428571428572,
-          "source": "DMarket",
-          "listing_id": "bf119118-d566-57eb-9458-deb986323a7c",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bf119118-d566-57eb-9458-deb986323a7c",
-          "current_price": 2005,
-          "unverified": true
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=549f7a36-e967-5347-81df-3e2165d6470b"
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Minimal Wear)",
@@ -108,9 +120,7 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "57f51d8a-e5c7-5999-a380-f550fd9fc351",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57f51d8a-e5c7-5999-a380-f550fd9fc351",
-          "current_price": 2086,
-          "unverified": true
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=57f51d8a-e5c7-5999-a380-f550fd9fc351"
         },
         {
           "title": "StatTrak\u2122 Sawed-Off | Wasteland Princess (Minimal Wear)",
@@ -122,37 +132,7 @@
           "max_float": 0.38,
           "source": "DMarket",
           "listing_id": "4ff128e1-4916-5e7a-a25f-6f5a1bc51cfb",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4ff128e1-4916-5e7a-a25f-6f5a1bc51cfb",
-          "current_price": 2100,
-          "unverified": true
-        },
-        {
-          "title": "StatTrak\u2122 P90 | Shallow Grave (Minimal Wear)",
-          "price": 2209,
-          "float": 0.14798897504806519,
-          "adjusted_float": 0.19731863339742026,
-          "skin_min": 0.0,
-          "skin_max": 0.75,
-          "max_float": 0.4071428571428572,
-          "source": "DMarket",
-          "listing_id": "c5339551-1ada-5869-9be9-fb1a7de46376",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=c5339551-1ada-5869-9be9-fb1a7de46376",
-          "current_price": 2209,
-          "unverified": true
-        },
-        {
-          "title": "StatTrak\u2122 P90 | Shallow Grave (Minimal Wear)",
-          "price": 2210,
-          "float": 0.14563505351543427,
-          "adjusted_float": 0.19418007135391235,
-          "skin_min": 0.0,
-          "skin_max": 0.75,
-          "max_float": 0.4071428571428572,
-          "source": "DMarket",
-          "listing_id": "839b60bf-1f7c-5bb3-acbf-b9ef234ff877",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=839b60bf-1f7c-5bb3-acbf-b9ef234ff877",
-          "current_price": 2210,
-          "unverified": true
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4ff128e1-4916-5e7a-a25f-6f5a1bc51cfb"
         }
       ],
       "outputs": [
@@ -190,168 +170,523 @@
             "median_after_fee": 31227
           }
         }
+      ]
+    },
+    {
+      "collection": "glove",
+      "in_rarity": 3,
+      "out_rarity": 4,
+      "is_stattrak": true,
+      "input_cost": 2240,
+      "ev_output": 3535.6666666666665,
+      "ev": 1295.6666666666665,
+      "roi": 57.84226190476189,
+      "avg_float": 0.21281791292130947,
+      "max_adjusted": 0.5066666666666667,
+      "saved_at": 1774267180.6897264,
+      "inputs": [
+        {
+          "title": "StatTrak\u2122 Dual Berettas | Royal Consorts (Well-Worn)",
+          "price": 175,
+          "float": 0.41265860199928284,
+          "adjusted_float": 0.41265860199928284,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.5066666666666667,
+          "source": "Skinport",
+          "listing_id": "6b221a5c-e90b-5a78-8247-d8f72d0cf6ae",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Dual Berettas | Royal Consorts (Well-Worn)",
+          "price": 175,
+          "float": 0.4197119176387787,
+          "adjusted_float": 0.4197119176387787,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.5066666666666667,
+          "source": "Skinport",
+          "listing_id": "cb78882d-1106-5d21-8c1f-fff5c7d2eda6",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Dual Berettas | Royal Consorts (Well-Worn)",
+          "price": 175,
+          "float": 0.40307170152664185,
+          "adjusted_float": 0.40307170152664185,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.5066666666666667,
+          "source": "Skinport",
+          "listing_id": "e85898ab-eb33-5c68-b1c4-2ca1fced0caa",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Nova | Gila (Minimal Wear)",
+          "price": 175,
+          "float": 0.12831833958625793,
+          "adjusted_float": 0.4277277986208598,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.152,
+          "source": "Skinport",
+          "listing_id": "82cf0b30-85bd-573c-a62d-25f8dfe11550",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Nova | Gila (Minimal Wear)",
+          "price": 175,
+          "float": 0.07623575627803802,
+          "adjusted_float": 0.2541191875934601,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.152,
+          "source": "Skinport",
+          "listing_id": "4fcc023a-5016-530b-bb7b-9775849bcea3",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Dual Berettas | Royal Consorts (Field-Tested)",
+          "price": 185,
+          "float": 0.3209993839263916,
+          "adjusted_float": 0.3209993839263916,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.5066666666666667,
+          "source": "DMarket",
+          "listing_id": "ff48e8d4-5ab6-551e-801a-6eb482ef3fd5",
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=ff48e8d4-5ab6-551e-801a-6eb482ef3fd5"
+        },
+        {
+          "title": "StatTrak\u2122 Dual Berettas | Royal Consorts (Field-Tested)",
+          "price": 202,
+          "float": 0.21603530645370483,
+          "adjusted_float": 0.21603530645370483,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.5066666666666667,
+          "source": "Skinport",
+          "listing_id": "883fd5bf-d354-5222-bc74-32159d07eab2",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Nova | Gila (Factory New)",
+          "price": 326,
+          "float": 0.053746990859508514,
+          "adjusted_float": 0.17915663619836172,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.152,
+          "source": "Skinport",
+          "listing_id": "079748f5-2e9b-5def-83ed-043e47e5cb00",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Nova | Gila (Factory New)",
+          "price": 326,
+          "float": 0.06459647417068481,
+          "adjusted_float": 0.2153215805689494,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.152,
+          "source": "Skinport",
+          "listing_id": "15aadb4d-f065-5fff-a9eb-d522c4a3d31c",
+          "url": ""
+        },
+        {
+          "title": "StatTrak\u2122 Nova | Gila (Factory New)",
+          "price": 326,
+          "float": 0.03280465677380562,
+          "adjusted_float": 0.1093488559126854,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.152,
+          "source": "Skinport",
+          "listing_id": "5b31752b-fc5e-5471-95fd-b4891963b6a5",
+          "url": ""
+        }
       ],
-      "verified_at": 1774266958.0788128
+      "outputs": [
+        {
+          "name": "FAMAS | Mecha Industries",
+          "condition": "Minimal Wear",
+          "float": 0.1479075485219558,
+          "float_min": 0.0,
+          "float_max": 0.5,
+          "price_raw": 4528,
+          "price_after_fee": 3848,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 4641,
+            "median": 4497,
+            "volume_24h": 19,
+            "median_after_fee": 3822
+          }
+        },
+        {
+          "name": "P90 | Shallow Grave",
+          "condition": "Field-Tested",
+          "float": 0.22186132278293372,
+          "float_min": 0.0,
+          "float_max": 0.75,
+          "price_raw": 3954,
+          "price_after_fee": 3360,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 3999,
+            "median": 3993,
+            "volume_24h": 47,
+            "median_after_fee": 3394
+          }
+        },
+        {
+          "name": "Sawed-Off | Wasteland Princess",
+          "condition": "Field-Tested",
+          "float": 0.20707056793073814,
+          "float_min": 0.0,
+          "float_max": 0.7,
+          "price_raw": 3999,
+          "price_after_fee": 3399,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 3970,
+            "median": 3953,
+            "volume_24h": 26,
+            "median_after_fee": 3360
+          }
+        }
+      ]
+    },
+    {
+      "collection": "prisma",
+      "in_rarity": 3,
+      "out_rarity": 4,
+      "is_stattrak": false,
+      "input_cost": 663,
+      "ev_output": 1041.6666666666665,
+      "ev": 378.6666666666665,
+      "roi": 57.11412770236297,
+      "avg_float": 0.19055815190076827,
+      "max_adjusted": 0.23636363636363636,
+      "saved_at": 1774267180.6897442,
+      "inputs": [
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.22271332144737244,
+          "adjusted_float": 0.22271332144737244,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "91118e56-536e-55fe-9a0d-4eebf1406e61",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.16466300189495087,
+          "adjusted_float": 0.16466300189495087,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "16896f26-21c0-54df-ba8b-cde3f13cc5d5",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.21100422739982605,
+          "adjusted_float": 0.21100422739982605,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "3086d225-7cef-5cdd-9656-cc442b17635c",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.22073741257190704,
+          "adjusted_float": 0.22073741257190704,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "3124093c-f7a7-59af-b69e-2ce10fd96693",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.20867639780044556,
+          "adjusted_float": 0.20867639780044556,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "a95b8fd2-3e7d-503a-8272-990ea8223531",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.16421133279800415,
+          "adjusted_float": 0.16421133279800415,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "94ef4254-9f4e-5413-a33e-07636a6a36e0",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Gauss (Field-Tested)",
+          "price": 63,
+          "float": 0.17561006546020508,
+          "adjusted_float": 0.17561006546020508,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.23636363636363636,
+          "source": "Skinport",
+          "listing_id": "f8def87a-f52c-54b4-bfa9-d5a5c71e7e94",
+          "url": ""
+        },
+        {
+          "title": "Tec-9 | Bamboozle (Field-Tested)",
+          "price": 74,
+          "float": 0.1751738339662552,
+          "adjusted_float": 0.21896729245781898,
+          "skin_min": 0.0,
+          "skin_max": 0.8,
+          "max_float": 0.1890909090909091,
+          "source": "Skinport",
+          "listing_id": "6f423652-e30b-5d30-9ce7-760893a6d02f",
+          "url": ""
+        },
+        {
+          "title": "Tec-9 | Bamboozle (Field-Tested)",
+          "price": 74,
+          "float": 0.1798679083585739,
+          "adjusted_float": 0.2248348854482174,
+          "skin_min": 0.0,
+          "skin_max": 0.8,
+          "max_float": 0.1890909090909091,
+          "source": "Skinport",
+          "listing_id": "2bcc88f4-cde3-5b40-909e-8baaca82da7f",
+          "url": ""
+        },
+        {
+          "title": "Tec-9 | Bamboozle (Field-Tested)",
+          "price": 74,
+          "float": 0.18292401731014252,
+          "adjusted_float": 0.22865502163767815,
+          "skin_min": 0.0,
+          "skin_max": 0.8,
+          "max_float": 0.1890909090909091,
+          "source": "Skinport",
+          "listing_id": "12fbcb12-1b98-5f34-8be7-8e2efe6641fc",
+          "url": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUG | Momentum",
+          "condition": "Field-Tested",
+          "float": 0.24380693109706042,
+          "float_min": 0.05,
+          "float_max": 1,
+          "price_raw": 719,
+          "price_after_fee": 611,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 805,
+            "median": 789,
+            "volume_24h": 91,
+            "median_after_fee": 670
+          }
+        },
+        {
+          "name": "R8 Revolver | Skull Crusher",
+          "condition": "Field-Tested",
+          "float": 0.3622040127404034,
+          "float_min": 0.25,
+          "float_max": 0.8,
+          "price_raw": 2360,
+          "price_after_fee": 2006,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 1451,
+            "median": 1401,
+            "volume_24h": 46,
+            "median_after_fee": 1190
+          }
+        },
+        {
+          "name": "XM1014 | Incinegator",
+          "condition": "Field-Tested",
+          "float": 0.24404372090473772,
+          "float_min": 0.14,
+          "float_max": 0.65,
+          "price_raw": 598,
+          "price_after_fee": 508,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 750,
+            "median": 758,
+            "volume_24h": 110,
+            "median_after_fee": 644
+          }
+        }
+      ]
     },
     {
       "collection": "limited edition item",
       "in_rarity": 4,
       "out_rarity": 5,
       "is_stattrak": false,
-      "input_cost": 2069,
+      "input_cost": 1880,
       "ev_output": 2892.0,
-      "ev": 823.0,
-      "roi": 39.777670372160465,
-      "avg_float": 0.2557285875082016,
+      "ev": 1012.0,
+      "roi": 53.829787234042556,
+      "avg_float": 0.2876263976097107,
       "max_adjusted": 0.38,
-      "saved_at": 1774265859.1720712,
+      "saved_at": 1774267180.6897602,
       "inputs": [
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
-          "price": 194,
+          "price": 188,
           "float": 0.3122793436050415,
           "adjusted_float": 0.3122793436050415,
           "skin_min": 0.0,
           "skin_max": 1,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "cce83576-dc7a-52bb-af00-ae5f33fbcb89",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=cce83576-dc7a-52bb-af00-ae5f33fbcb89",
-          "current_price": 194,
-          "unverified": true
+          "url": ""
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
-          "price": 194,
+          "price": 188,
           "float": 0.2400992512702942,
           "adjusted_float": 0.2400992512702942,
           "skin_min": 0.0,
           "skin_max": 1,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "0c58761d-4966-5e72-ab71-fa53aa3c898c",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=0c58761d-4966-5e72-ab71-fa53aa3c898c",
-          "current_price": 194,
-          "unverified": true
+          "url": ""
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
-          "price": 194,
+          "price": 188,
           "float": 0.2525315284729004,
           "adjusted_float": 0.2525315284729004,
           "skin_min": 0.0,
           "skin_max": 1,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "4d3bae26-df95-5a4c-b94d-602e317af19b",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4d3bae26-df95-5a4c-b94d-602e317af19b",
-          "current_price": 194,
-          "unverified": true
+          "url": ""
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
-          "price": 194,
+          "price": 188,
           "float": 0.32619863748550415,
           "adjusted_float": 0.32619863748550415,
           "skin_min": 0.0,
           "skin_max": 1,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "4826db86-de9b-5a23-8cf4-4e84f3c03bb3",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4826db86-de9b-5a23-8cf4-4e84f3c03bb3",
-          "current_price": 194,
-          "unverified": true
+          "url": ""
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
-          "price": 194,
+          "price": 188,
           "float": 0.2664822041988373,
           "adjusted_float": 0.2664822041988373,
           "skin_min": 0.0,
           "skin_max": 1,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "677c631b-ad94-5956-8195-76fa2846a5b6",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=677c631b-ad94-5956-8195-76fa2846a5b6",
-          "current_price": 194,
-          "unverified": true
-        },
-        {
-          "title": "M4A1-S | Solitude (Field-Tested)",
-          "price": 219,
-          "float": 0.26529374718666077,
-          "adjusted_float": 0.3789910674095154,
-          "skin_min": 0.0,
-          "skin_max": 0.7,
-          "max_float": 0.26599999999999996,
-          "source": "DMarket",
-          "listing_id": "08c51c73-3e33-52da-8476-3342f3249afb",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=08c51c73-3e33-52da-8476-3342f3249afb",
-          "current_price": 219,
-          "unverified": true
+          "url": ""
         },
         {
           "title": "Desert Eagle | Heat Treated (Field-Tested)",
-          "price": 220,
+          "price": 188,
           "float": 0.18279489874839783,
           "adjusted_float": 0.18279489874839783,
           "skin_min": 0.0,
           "skin_max": 1,
           "max_float": 0.38,
-          "source": "DMarket",
+          "source": "Skinport",
           "listing_id": "d5d07b6c-9c49-5190-811a-1646220be5d9",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=d5d07b6c-9c49-5190-811a-1646220be5d9",
-          "current_price": 220,
-          "unverified": true
+          "url": ""
         },
         {
-          "title": "M4A1-S | Solitude (Field-Tested)",
-          "price": 220,
-          "float": 0.24448548257350922,
-          "adjusted_float": 0.3492649751050132,
+          "title": "Desert Eagle | Heat Treated (Field-Tested)",
+          "price": 188,
+          "float": 0.3003528118133545,
+          "adjusted_float": 0.3003528118133545,
           "skin_min": 0.0,
-          "skin_max": 0.7,
-          "max_float": 0.26599999999999996,
-          "source": "DMarket",
-          "listing_id": "e4d9b8aa-7f2d-5009-9d48-d0c322ff7fa5",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=e4d9b8aa-7f2d-5009-9d48-d0c322ff7fa5",
-          "current_price": 220,
-          "unverified": true
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "30d6060b-f2b4-5cb9-a883-764682f671c4",
+          "url": ""
         },
         {
-          "title": "M4A1-S | Solitude (Field-Tested)",
-          "price": 220,
-          "float": 0.2658730447292328,
-          "adjusted_float": 0.37981863532747545,
+          "title": "Desert Eagle | Heat Treated (Field-Tested)",
+          "price": 188,
+          "float": 0.30278468132019043,
+          "adjusted_float": 0.30278468132019043,
           "skin_min": 0.0,
-          "skin_max": 0.7,
-          "max_float": 0.26599999999999996,
-          "source": "DMarket",
-          "listing_id": "83fc1b74-9a89-55e7-a155-60beac9cd058",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=83fc1b74-9a89-55e7-a155-60beac9cd058",
-          "current_price": 220,
-          "unverified": true
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "4e995fba-0ba1-5853-98f0-b69c57874b0f",
+          "url": ""
         },
         {
-          "title": "M4A1-S | Solitude (Field-Tested)",
-          "price": 220,
-          "float": 0.20124773681163788,
-          "adjusted_float": 0.2874967668737684,
+          "title": "Desert Eagle | Heat Treated (Field-Tested)",
+          "price": 188,
+          "float": 0.36998966336250305,
+          "adjusted_float": 0.36998966336250305,
           "skin_min": 0.0,
-          "skin_max": 0.7,
-          "max_float": 0.26599999999999996,
-          "source": "DMarket",
-          "listing_id": "3607b1a4-95b2-5b5d-9a5d-91ae5e66421a",
-          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=3607b1a4-95b2-5b5d-9a5d-91ae5e66421a",
-          "current_price": 220,
-          "unverified": true
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "6c43cfef-ce85-57a7-8187-7b6d7113c76e",
+          "url": ""
+        },
+        {
+          "title": "Desert Eagle | Heat Treated (Field-Tested)",
+          "price": 188,
+          "float": 0.3227509558200836,
+          "adjusted_float": 0.3227509558200836,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "192f7660-25fd-5ead-8904-480eb34ec02c",
+          "url": ""
         }
       ],
       "outputs": [
         {
           "name": "AK-47 | Aphrodite",
           "condition": "Field-Tested",
-          "float": 0.2975957308496748,
+          "float": 0.2876263976097107,
           "float_min": 0.0,
           "float_max": 1,
           "price_raw": 3403,
@@ -359,14 +694,628 @@
           "price_source": "Steam",
           "probability": 1.0,
           "steam_trend": {
-            "lowest": 3189,
+            "lowest": 3191,
             "median": 3163,
             "volume_24h": 169,
             "median_after_fee": 2688
           }
         }
+      ]
+    },
+    {
+      "collection": "2018 inferno",
+      "in_rarity": 1,
+      "out_rarity": 2,
+      "is_stattrak": false,
+      "input_cost": 70,
+      "ev_output": 104.25,
+      "ev": 34.25,
+      "roi": 48.92857142857142,
+      "avg_float": 0.2644469395279884,
+      "max_adjusted": 0.38,
+      "saved_at": 1774267180.6897745,
+      "inputs": [
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.3531199097633362,
+          "adjusted_float": 0.3531199097633362,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "fe5749a3-76c0-5e48-a7ec-b2b7bb4f17ce",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.25362831354141235,
+          "adjusted_float": 0.25362831354141235,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "656f0720-9cba-5801-b37c-f48c1e15134b",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.289944589138031,
+          "adjusted_float": 0.289944589138031,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "c82aa95b-29a4-5308-9efa-64dadf281571",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.35579913854599,
+          "adjusted_float": 0.35579913854599,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "1e9edc45-ecd1-5b83-a86a-4396a03090ba",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.3032401502132416,
+          "adjusted_float": 0.3032401502132416,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "76a9b059-0d1f-5936-8b7c-ca76488050e5",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.31937602162361145,
+          "adjusted_float": 0.31937602162361145,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "5261dfdd-27c9-5fc4-9ca6-1f3ab3d074a6",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.2987123429775238,
+          "adjusted_float": 0.2987123429775238,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "b3914443-e278-55bf-9e50-460477b3a458",
+          "url": ""
+        },
+        {
+          "title": "MAC-10 | Calf Skin (Field-Tested)",
+          "price": 7,
+          "float": 0.2980425953865051,
+          "adjusted_float": 0.2980425953865051,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "47a309a9-fc23-5c40-9cb4-135314508c11",
+          "url": ""
+        },
+        {
+          "title": "PP-Bizon | Candy Apple (Minimal Wear)",
+          "price": 7,
+          "float": 0.0947369784116745,
+          "adjusted_float": 0.31578992803891504,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.11399999999999999,
+          "source": "Skinport",
+          "listing_id": "42c9a200-6dff-537d-b046-3f106ffd3a11",
+          "url": ""
+        },
+        {
+          "title": "PP-Bizon | Candy Apple (Minimal Wear)",
+          "price": 7,
+          "float": 0.07786935567855835,
+          "adjusted_float": 0.25956451892852783,
+          "skin_min": 0.0,
+          "skin_max": 0.3,
+          "max_float": 0.11399999999999999,
+          "source": "Skinport",
+          "listing_id": "2306c02f-164e-5f4f-af0a-215cc74b1208",
+          "url": ""
+        }
       ],
-      "verified_at": 1774266958.0788364
+      "outputs": [
+        {
+          "name": "M4A4 | Converter",
+          "condition": "Minimal Wear",
+          "float": 0.1218887003262838,
+          "float_min": 0.0,
+          "float_max": 0.4,
+          "price_raw": 128,
+          "price_after_fee": 108,
+          "price_source": "Steam",
+          "probability": 0.25,
+          "steam_trend": {
+            "lowest": 142,
+            "median": 133,
+            "volume_24h": 408,
+            "median_after_fee": 113
+          }
+        },
+        {
+          "name": "Sawed-Off | Brake Light",
+          "condition": "Factory New",
+          "float": 0.024377740065256757,
+          "float_min": 0.0,
+          "float_max": 0.08,
+          "price_raw": 143,
+          "price_after_fee": 121,
+          "price_source": "Steam",
+          "probability": 0.25,
+          "steam_trend": {
+            "lowest": 140,
+            "median": 143,
+            "volume_24h": 374,
+            "median_after_fee": 121
+          }
+        },
+        {
+          "name": "SSG 08 | Hand Brake",
+          "condition": "Field-Tested",
+          "float": 0.30472175081570946,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 119,
+          "price_after_fee": 101,
+          "price_source": "Steam",
+          "probability": 0.25,
+          "steam_trend": {
+            "lowest": 122,
+            "median": 120,
+            "volume_24h": 240,
+            "median_after_fee": 102
+          }
+        },
+        {
+          "name": "USP-S | Check Engine",
+          "condition": "Field-Tested",
+          "float": 0.18283305048942566,
+          "float_min": 0.0,
+          "float_max": 0.6,
+          "price_raw": 103,
+          "price_after_fee": 87,
+          "price_source": "Steam",
+          "probability": 0.25,
+          "steam_trend": {
+            "lowest": 99,
+            "median": 104,
+            "volume_24h": 596,
+            "median_after_fee": 88
+          }
+        }
+      ]
+    },
+    {
+      "collection": "gamma",
+      "in_rarity": 3,
+      "out_rarity": 4,
+      "is_stattrak": false,
+      "input_cost": 1261,
+      "ev_output": 1750.6666666666665,
+      "ev": 489.6666666666665,
+      "roi": 38.831615120274904,
+      "avg_float": 0.26669257283210757,
+      "max_adjusted": 0.38,
+      "saved_at": 1774267180.6897907,
+      "inputs": [
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.3715022802352905,
+          "adjusted_float": 0.3715022802352905,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "30edf56b-2179-5f92-8f98-e47dd14a591a",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.18851618468761444,
+          "adjusted_float": 0.18851618468761444,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "84b42884-3f8a-5bd8-9ad1-3b992c548324",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.313718318939209,
+          "adjusted_float": 0.313718318939209,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "eef586ad-42a8-5a3c-9fba-07fecc265415",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.3212718367576599,
+          "adjusted_float": 0.3212718367576599,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "2e249008-ae30-5032-812b-89e52fe2c0f5",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.28269731998443604,
+          "adjusted_float": 0.28269731998443604,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "e8ffce16-ab58-54ea-a3ef-31d2e0623ad6",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.21189484000205994,
+          "adjusted_float": 0.21189484000205994,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "904869ca-9e01-50a3-b8b8-da7c603fe973",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.20068617165088654,
+          "adjusted_float": 0.20068617165088654,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "981cb6f2-c961-5f4c-9d70-0630046e62ae",
+          "url": ""
+        },
+        {
+          "title": "R8 Revolver | Reboot (Field-Tested)",
+          "price": 125,
+          "float": 0.33014267683029175,
+          "adjusted_float": 0.33014267683029175,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "102c072a-eb81-5ae2-bdef-360a2fe413b8",
+          "url": ""
+        },
+        {
+          "title": "P90 | Chopper (Field-Tested)",
+          "price": 125,
+          "float": 0.22592444717884064,
+          "adjusted_float": 0.37654074529806775,
+          "skin_min": 0.0,
+          "skin_max": 0.6,
+          "max_float": 0.22799999999999998,
+          "source": "DMarket",
+          "listing_id": "2ac0f265-4f56-52b7-9360-cd8f679851f3",
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=2ac0f265-4f56-52b7-9360-cd8f679851f3"
+        },
+        {
+          "title": "P90 | Chopper (Field-Tested)",
+          "price": 136,
+          "float": 0.22057165205478668,
+          "adjusted_float": 0.36761942009131116,
+          "skin_min": 0.0,
+          "skin_max": 0.6,
+          "max_float": 0.22799999999999998,
+          "source": "Skinport",
+          "listing_id": "ab11e8f4-9710-5efb-9d0d-3a682fe8cf96",
+          "url": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "P2000 | Imperial Dragon",
+          "condition": "Field-Tested",
+          "float": 0.18676915705204009,
+          "float_min": 0.0,
+          "float_max": 0.63,
+          "price_raw": 2707,
+          "price_after_fee": 2300,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 1727,
+            "median": 2707,
+            "volume_24h": 27,
+            "median_after_fee": 2300
+          }
+        },
+        {
+          "name": "M4A4 | Desolate Space",
+          "condition": "Field-Tested",
+          "float": 0.2964589794476827,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 1830,
+          "price_after_fee": 1555,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 2085,
+            "median": 1922,
+            "volume_24h": 214,
+            "median_after_fee": 1633
+          }
+        },
+        {
+          "name": "SCAR-20 | Bloodsport",
+          "condition": "Minimal Wear",
+          "float": 0.13340654075145722,
+          "float_min": 0.0,
+          "float_max": 0.45,
+          "price_raw": 1644,
+          "price_after_fee": 1397,
+          "price_source": "Steam",
+          "probability": 0.3333333333333333,
+          "steam_trend": {
+            "lowest": 1596,
+            "median": 1461,
+            "volume_24h": 19,
+            "median_after_fee": 1241
+          }
+        }
+      ]
+    },
+    {
+      "collection": "genesis",
+      "in_rarity": 2,
+      "out_rarity": 3,
+      "is_stattrak": false,
+      "input_cost": 122,
+      "ev_output": 153.20000000000002,
+      "ev": 31.200000000000017,
+      "roi": 25.573770491803295,
+      "avg_float": 0.28828406482934954,
+      "max_adjusted": 0.38,
+      "saved_at": 1774267180.6898055,
+      "inputs": [
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.3169901967048645,
+          "adjusted_float": 0.3169901967048645,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "934788062439932338",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.342606782913208,
+          "adjusted_float": 0.342606782913208,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "913464325681841960",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.29881036281585693,
+          "adjusted_float": 0.29881036281585693,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "934788063459148219",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.32759523391723633,
+          "adjusted_float": 0.32759523391723633,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "896284299807032899",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.36635512113571167,
+          "adjusted_float": 0.36635512113571167,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "907365070089096201",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.27315306663513184,
+          "adjusted_float": 0.27315306663513184,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "938213356467261109",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.3095855712890625,
+          "adjusted_float": 0.3095855712890625,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "896714562227799255",
+          "url": ""
+        },
+        {
+          "title": "MP5-SD | Focus (Field-Tested)",
+          "price": 12,
+          "float": 0.16070254147052765,
+          "adjusted_float": 0.16070254147052765,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "Skinport",
+          "listing_id": "941689373131408593",
+          "url": ""
+        },
+        {
+          "title": "MAG-7 | MAGnitude (Field-Tested)",
+          "price": 13,
+          "float": 0.23146981000900269,
+          "adjusted_float": 0.23146981000900269,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "DMarket",
+          "listing_id": "5bf1710e-1ac4-580b-bc3f-5d21051e9c60",
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=5bf1710e-1ac4-580b-bc3f-5d21051e9c60"
+        },
+        {
+          "title": "MAG-7 | MAGnitude (Field-Tested)",
+          "price": 13,
+          "float": 0.25557196140289307,
+          "adjusted_float": 0.25557196140289307,
+          "skin_min": 0.0,
+          "skin_max": 1,
+          "max_float": 0.38,
+          "source": "DMarket",
+          "listing_id": "45e9d096-c4c4-5b46-9dbe-119f83553a2b",
+          "url": "https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=45e9d096-c4c4-5b46-9dbe-119f83553a2b"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Dual Berettas | Angel Eyes",
+          "condition": "Field-Tested",
+          "float": 0.28828406482934954,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 111,
+          "price_after_fee": 94,
+          "price_source": "Steam",
+          "probability": 0.2,
+          "steam_trend": {
+            "lowest": 112,
+            "median": 106,
+            "volume_24h": 182,
+            "median_after_fee": 90
+          }
+        },
+        {
+          "name": "M4A1-S | Liquidation",
+          "condition": "Field-Tested",
+          "float": 0.28828406482934954,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 450,
+          "price_after_fee": 382,
+          "price_source": "Steam",
+          "probability": 0.2,
+          "steam_trend": {
+            "lowest": 422,
+            "median": 416,
+            "volume_24h": 526,
+            "median_after_fee": 353
+          }
+        },
+        {
+          "name": "MAC-10 | Cat Fight",
+          "condition": "Field-Tested",
+          "float": 0.28828406482934954,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 114,
+          "price_after_fee": 96,
+          "price_source": "Steam",
+          "probability": 0.2,
+          "steam_trend": {
+            "lowest": 115,
+            "median": 112,
+            "volume_24h": 216,
+            "median_after_fee": 95
+          }
+        },
+        {
+          "name": "Nova | Ocular",
+          "condition": "Field-Tested",
+          "float": 0.28828406482934954,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 115,
+          "price_after_fee": 97,
+          "price_source": "Steam",
+          "probability": 0.2,
+          "steam_trend": {
+            "lowest": 114,
+            "median": 106,
+            "volume_24h": 155,
+            "median_after_fee": 90
+          }
+        },
+        {
+          "name": "UMP-45 | Continuum",
+          "condition": "Field-Tested",
+          "float": 0.28828406482934954,
+          "float_min": 0.0,
+          "float_max": 1,
+          "price_raw": 115,
+          "price_after_fee": 97,
+          "price_source": "Steam",
+          "probability": 0.2,
+          "steam_trend": {
+            "lowest": 122,
+            "median": 107,
+            "volume_24h": 161,
+            "median_after_fee": 90
+          }
+        }
+      ]
     }
   ]
 }

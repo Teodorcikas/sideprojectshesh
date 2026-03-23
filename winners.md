@@ -779,3 +779,46 @@ Profitable trade-ups found with ROI >= 25% and EV >= $0.30.
   - SSG 08 | Dragonfire (Mi, ~0.1492) — $355.00 [Steam] ← jackpot
 
 ---
+
+## 2026-03-23
+
+### Glove | Classified → Covert [STATTRAK] | +85.4% ROI | EV: $138.63
+- **Input:** 10x StatTrak™ P90 | Shallow Grave (Field-Tested) @ $9.82 each = $162.34 total
+- **Max input float:** 0.4071
+- **Avg input float:** 0.2175 (max adjusted allowed: 0.5429)
+- **Expected output value:** $300.97 (after platform fees)
+- **Outputs (1/2 each):**
+  - M4A4 | Buzz Kill (Fi, ~0.2089) — $353.17 [Steam] ← jackpot
+  - SSG 08 | Dragonfire (Mi, ~0.1492) — $355.00 [Steam] ← jackpot
+
+### Glove | Restricted → Classified [STATTRAK] | +57.8% ROI | EV: $12.96
+- **Input:** 10x StatTrak™ Dual Berettas | Royal Consorts (Well-Worn) @ $1.75 each = $22.40 total
+- **Max input float:** 0.5067
+- **Avg input float:** 0.2128 (max adjusted allowed: 0.5067)
+- **Expected output value:** $35.36 (after platform fees)
+- **Outputs (1/3 each):**
+  - FAMAS | Mecha Industries (Mi, ~0.1479) — $45.28 [Steam] ← jackpot
+  - P90 | Shallow Grave (Fi, ~0.2219) — $39.54 [Steam] ← jackpot
+  - Sawed-Off | Wasteland Princess (Fi, ~0.2071) — $39.99 [Steam] ← jackpot
+
+### Prisma | Restricted → Classified | +57.1% ROI | EV: $3.79
+- **Input:** 10x MP5-SD | Gauss (Field-Tested) @ $0.63 each = $6.63 total
+- **Max input float:** 0.2364
+- **Avg input float:** 0.1906 (max adjusted allowed: 0.2364)
+- **Expected output value:** $10.42 (after platform fees)
+- **Outputs (1/3 each):**
+  - AUG | Momentum (Fi, ~0.2438) — $7.19 [Steam]
+  - R8 Revolver | Skull Crusher (Fi, ~0.3622) — $23.60 [Steam] ← jackpot
+  - XM1014 | Incinegator (Fi, ~0.2440) — $5.98 [Steam]
+
+### Gamma | Restricted → Classified | +38.8% ROI | EV: $4.90
+- **Input:** 10x R8 Revolver | Reboot (Field-Tested) @ $1.25 each = $12.61 total
+- **Max input float:** 0.3800
+- **Avg input float:** 0.2667 (max adjusted allowed: 0.3800)
+- **Expected output value:** $17.51 (after platform fees)
+- **Outputs (1/3 each):**
+  - P2000 | Imperial Dragon (Fi, ~0.1868) — $27.07 [Steam] ← jackpot
+  - M4A4 | Desolate Space (Fi, ~0.2965) — $18.30 [Steam] ← jackpot
+  - SCAR-20 | Bloodsport (Mi, ~0.1334) — $16.44 [Steam] ← jackpot
+
+---
