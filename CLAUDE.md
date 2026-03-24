@@ -80,7 +80,7 @@ CSFloat enforces a request rate limit. The code uses:
 - **Price source persistence**: `price_cache.json` stores both prices AND their source, so cached prices keep correct fee labels across runs
 - **Skinport singleton filter (outputs)**: Rejects Skinport output prices with qty=1 (unreliable)
 - **Skinport 3× sanity check**: Rejects Skinport output price if > 3× Steam median for same skin
-- **CSFloat budget split**: 150 inputs / 50 outputs / 10 reserve. Smart output allocation only fetches CSFloat for promising trade-ups (EV pre-scan).
+- **CSFloat budget split**: 140 inputs / 50 outputs / 10 reserve = 200 total. Smart output allocation only fetches CSFloat for promising trade-ups (EV pre-scan).
 - **Unverifiable EV detection**: Trade-ups with any output skin missing a price are excluded from profitable results and shown separately
 - **UNVERIFIED ON CSFLOAT warning**: Trade-ups where all output prices come from Steam/Skinport (no CSFloat verification) are flagged in results
 - **Float violation hard skip**: Trade-ups where inputs exceed MaxFloat are skipped with ERROR log, not silently included
@@ -102,10 +102,10 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **Skinport output fallback** — Done (qty ≥ 2 guard, NO_CSFLOAT_LISTINGS exclusion)
 - [x] **Fix CSFloat input pagination** — Fixed: price cursor got stuck on price clusters, now advances by 1 cent past clusters instead of breaking.
 - [x] **Add Waxpeer as input source** — Done. Bulk fetch (200 pages), ~4,600 items with floats, 6h cache.
-- [x] **CSFloat budget split** — Done. 150 inputs / 50 outputs / 10 reserve. Smart output allocation pre-scans EV before spending budget.
+- [x] **CSFloat budget split** — Done. 140 inputs / 50 outputs / 10 reserve = 200 total. Smart output allocation pre-scans EV before spending budget.
 - [x] **Steam 429 retry** — Done. 3 retries with 5s/10s/15s backoff, 1.5s between requests.
 - [x] **Price source persistence** — Done. Cache stores source alongside price, correct fees applied across runs.
-- [ ] **Multi-collection trade-ups** — Currently only analyzes trade-ups within a single collection. CS2 trade-ups can mix inputs from ANY collections of the same rarity. Supporting multi-collection trade-ups would massively expand the number of possible profitable combinations. Biggest win for finding new opportunities.
+- [ ] **Multi-collection trade-ups — BROKEN, NEEDS FIX** — Initial implementation exists (`phase2_multi_collection_ev`) but only checked 32 combinations on last run, far too few. Problem: the target+filler heuristic is too restrictive — only considers collections with <10 inputs as targets and picks cheapest fillers, missing most profitable combos. Needs rework: enumerate more combinations, consider ALL collections as potential targets (even those with 10+ inputs might be better mixed), try different fill ratios (not just fill to 10), and consider filler collections with valuable outputs too. Should check hundreds/thousands of combos, not 32.
 - [ ] **Sell on Skinport (output)** — Currently if CSFloat has no listing for an output it's dead. Enabling Skinport as a valid sell platform (with qty ≥ 2 guard, minus Skinport fee) would unlock many collections currently skipped as NO_CSFLOAT_LISTINGS.
 - [ ] **Rarity expansion** — Support all rarity tiers more broadly
 - [ ] **Quick execution solution** — Auto-buy inputs or one-click purchase flow
@@ -219,7 +219,7 @@ MIN_ROI = 25.0                    # Only show 25%+ ROI — do not lower
 MIN_EV = 30                       # Only show $0.30+ net profit (in cents)
 CSFLOAT_SELLER_FEE = 0.02         # 2% when selling on CSFloat
 CSFLOAT_BUDGET_RESERVE = 10       # Keep 10 requests in reserve
-CSFLOAT_INPUT_CAP = 150           # Max requests for input fetching
+CSFLOAT_INPUT_CAP = 140           # Max requests for input fetching (140+50+10=200)
 CSFLOAT_OUTPUT_RESERVE = 50       # Reserved for output price verification
 CSFLOAT_NO_LISTING = -1           # Sentinel: confirmed no CSFloat listing
 SOURCE_FEES = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
