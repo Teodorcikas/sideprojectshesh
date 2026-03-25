@@ -1552,7 +1552,6 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
             print(f"   Fetching {len(needs_steam)} Steam reference prices (no DMarket data)...")
             for name, cond, cache_key in needs_steam:
                 trend = fetch_steam_trend(name, cond)
-                time.sleep(0.5)
                 if trend:
                     steam_ref = trend.get("median") or trend.get("lowest")
                     if steam_ref and steam_ref > 0:
@@ -1797,7 +1796,6 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 else:
                     # Not pre-fetched — try Steam on the fly
                     trend = fetch_steam_trend(name, cond)
-                    time.sleep(0.5)
                     if trend:
                         steam_ref = trend.get("median") or trend.get("lowest")
                         if steam_ref and steam_ref > 0:
@@ -2171,7 +2169,6 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                 if cached_prices.get(cache_key, 0) > 0:
                     continue
                 trend = fetch_steam_trend(name, cond)
-                time.sleep(0.5)
                 if trend:
                     steam_ref = trend.get("median") or trend.get("lowest")
                     if steam_ref and steam_ref > 0:
@@ -2506,7 +2503,6 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                                 price_after_fee = 0
                                 price_source = "none"
                                 has_missing = True
-                            time.sleep(0.5)
 
                         ev_sum += price_after_fee * prob
                         out_info.append({
@@ -2621,7 +2617,7 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
 # ============ PHASE 3: FETCH TRENDS FOR PROFITABLE ============
 
 def fetch_steam_trend(skin_name, condition):
-    """Fetch Steam 30-day trend data. Bails after 3 consecutive 429s."""
+    """Fetch Steam 30-day trend data. Bails after too many 429s (total, not just consecutive)."""
     global _steam_consecutive_429s, _steam_blocked
 
     if _steam_blocked:
@@ -2630,20 +2626,28 @@ def fetch_steam_trend(skin_name, condition):
     market_hash_name = f"{skin_name} ({condition})"
     params = {"appid": 730, "currency": 1, "market_hash_name": market_hash_name}
 
+    # Pace requests: wait 3s before each Steam call to avoid triggering rate limit
+    time.sleep(3)
+
     for attempt in range(3):
         try:
             r = requests.get(STEAM_URL, params=params, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
             if r.status_code == 429:
                 _steam_consecutive_429s += 1
-                if _steam_consecutive_429s >= 3:
+                # Bail after 6 total 429s (not consecutive — a single success shouldn't
+                # reset the counter to 0 because Steam rate limits are per-IP/window)
+                if _steam_consecutive_429s >= 6:
                     _steam_blocked = True
-                    print(f"   [STEAM] Blocked after {_steam_consecutive_429s} consecutive 429s — skipping all remaining Steam fetches")
+                    print(f"   [STEAM] Blocked after {_steam_consecutive_429s} total 429s — skipping all remaining Steam fetches")
                     print(f"   [STEAM] Falling back to Skinport + CSFloat prices only")
                     return None
-                print(f"   [STEAM] Rate limited, pausing 10s...")
-                time.sleep(10)
+                backoff = [5, 15, 30][attempt]
+                print(f"   [STEAM] Rate limited, pausing {backoff}s... ({_steam_consecutive_429s} total 429s)")
+                time.sleep(backoff)
                 continue
-            _steam_consecutive_429s = 0  # Reset on any non-429 response
+            # Don't fully reset — decrement by 1 on success (acknowledges partial recovery)
+            if _steam_consecutive_429s > 0:
+                _steam_consecutive_429s -= 1
             if r.ok:
                 data = r.json()
                 if data.get("success"):
