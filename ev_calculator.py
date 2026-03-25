@@ -1455,6 +1455,10 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
         limit = _csfloat_budget["limit"]
     if remaining is not None:
         print(f"\n   [CSFLOAT BUDGET] {remaining}/{limit} requests remaining ({CSFLOAT_OUTPUT_RESERVE} reserved for outputs, {CSFLOAT_BUDGET_RESERVE} reserve)")
+    else:
+        # Warm cache — no CSFloat API calls made yet, full budget available
+        remaining = 200
+        print(f"\n   [CSFLOAT BUDGET] Full budget available (no API calls made yet, cache was warm)")
     print(f"\n[PHASE 2] Pre-fetching output prices...")
     all_output_pairs = set()
     for coll_name, rarities in viable_collections.items():
@@ -1665,7 +1669,9 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
             # Collect output pairs prioritized by trade-up ROI, up to budget
             with _csfloat_budget["lock"]:
                 remaining = _csfloat_budget["remaining"]
-            available_budget = max(0, (remaining or 0) - CSFLOAT_BUDGET_RESERVE)
+            # When remaining is None (warm cache, no API calls yet), assume full 200 budget
+            effective_remaining = remaining if remaining is not None else 200
+            available_budget = max(0, effective_remaining - CSFLOAT_BUDGET_RESERVE)
 
             to_fetch = []
             seen = set()
@@ -2193,7 +2199,9 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
         if _csfloat_has_budget():
             with _csfloat_budget["lock"]:
                 remaining = _csfloat_budget["remaining"]
-            available = max(0, (remaining or 0) - CSFLOAT_BUDGET_RESERVE)
+            # When remaining is None (warm cache, no API calls yet), assume full 200 budget
+            effective_remaining = remaining if remaining is not None else 200
+            available = max(0, effective_remaining - CSFLOAT_BUDGET_RESERVE)
 
             if available > 0:
                 # Collect outputs that have a price but NOT from CSFloat — prioritize highest value
