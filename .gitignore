@@ -1,2 +1,10 @@
 __pycache__/
 *.pyc
+price_cache.json
+skinport_cache.json
+dmarket_cache.json
+csfloat_input_cache.json
+waxpeer_cache.json
+opportunities_cache.json
+skinport_lastcall.txt
+last_run_output.txt
