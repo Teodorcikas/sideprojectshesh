@@ -2185,6 +2185,64 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
             if steam_filled:
                 print(f"   [MULTI-COLL] Steam: filled {steam_filled} output prices")
 
+        # Step 3: Use remaining CSFloat budget to verify/upgrade the most valuable output prices
+        # CSFloat has 2% fee vs Skinport 8% / Steam 15%, so verifying here improves net EV
+        if _csfloat_has_budget():
+            with _csfloat_budget["lock"]:
+                remaining = _csfloat_budget["remaining"]
+            available = max(0, (remaining or 0) - CSFLOAT_BUDGET_RESERVE)
+
+            if available > 0:
+                # Collect outputs that have a price but NOT from CSFloat — prioritize highest value
+                csfloat_candidates = []
+                for name, cond in all_needed_output_pairs:
+                    cache_key = f"{name}|{cond}"
+                    price = cached_prices.get(cache_key, 0)
+                    source = price_sources.get(cache_key, "")
+                    if price > 0 and source != "CSFloat":
+                        csfloat_candidates.append((price, name, cond))
+                # Also include outputs that were already cached from Phase 2 but not CSFloat-verified
+                for key, price in cached_prices.items():
+                    if price > 0 and price_sources.get(key, "") != "CSFloat" and "|" in key:
+                        parts = key.rsplit("|", 1)
+                        if len(parts) == 2:
+                            name, cond = parts
+                            candidate = (price, name, cond)
+                            if candidate not in csfloat_candidates:
+                                csfloat_candidates.append(candidate)
+
+                # Sort by price descending — verify most valuable outputs first
+                csfloat_candidates.sort(key=lambda x: x[0], reverse=True)
+                to_verify = csfloat_candidates[:available]
+
+                if to_verify:
+                    print(f"   [MULTI-COLL] CSFloat verification: {len(to_verify)} outputs (budget: {available})")
+                    csfloat_ok = 0
+                    csfloat_replaced = 0
+
+                    def _fetch_multi_output(item):
+                        _, name, cond = item
+                        return (name, cond), fetch_csfloat_price(name, cond)
+
+                    with ThreadPoolExecutor(max_workers=2) as executor:
+                        futures = {executor.submit(_fetch_multi_output, item): item for item in to_verify}
+                        for future in as_completed(futures):
+                            (name, cond), price = future.result()
+                            cache_key = f"{name}|{cond}"
+                            if price > 0:
+                                had_price = cache_key in cached_prices and cached_prices[cache_key] > 0
+                                cached_prices[cache_key] = price
+                                price_sources[cache_key] = "CSFloat"
+                                csfloat_ok += 1
+                                if had_price:
+                                    csfloat_replaced += 1
+                            elif price == CSFLOAT_NO_LISTING:
+                                if cache_key not in cached_prices or cached_prices[cache_key] <= 0:
+                                    cached_prices[cache_key] = CSFLOAT_NO_LISTING
+
+                    print(f"   [MULTI-COLL] CSFloat: {csfloat_ok} verified ({csfloat_replaced} replaced Skinport/Steam)")
+                    prices_fetched_multi += csfloat_ok
+
         print(f"   [MULTI-COLL] Total new output prices fetched: {prices_fetched_multi}")
     else:
         print(f"   [MULTI-COLL] All needed output prices already in cache")
@@ -2325,8 +2383,8 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                     # EV contribution per filler input = (1/10) * (out_val / n_outputs)
                     ev_per_input = out_val / (10 * n_outputs) if n_outputs > 0 else 0
                     avg_cost = sum(f.get("_best_price", 999999) for f in f_inputs[:needed]) / min(len(f_inputs), needed)
-                    # Score: EV gained per dollar spent (higher is better)
-                    score = ev_per_input - avg_cost * 0.5  # Balance value vs cost
+                    # Score: net EV per filler input (EV contribution minus cost)
+                    score = ev_per_input - avg_cost
                     filler_coll_scores.append((score, f_coll, f_inputs))
 
                 filler_coll_scores.sort(key=lambda x: x[0], reverse=True)
