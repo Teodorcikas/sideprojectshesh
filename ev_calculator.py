@@ -1550,7 +1550,11 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 needs_steam.append((name, cond, cache_key))
         if needs_steam:
             print(f"   Fetching {len(needs_steam)} Steam reference prices (no DMarket data)...")
-            for name, cond, cache_key in needs_steam:
+            for i, (name, cond, cache_key) in enumerate(needs_steam):
+                if (i + 1) % 25 == 0 or i == 0:
+                    print(f"   [STEAM] Progress: {i+1}/{len(needs_steam)}...")
+                if _steam_blocked:
+                    break
                 trend = fetch_steam_trend(name, cond)
                 if trend:
                     steam_ref = trend.get("median") or trend.get("lowest")
@@ -2164,7 +2168,9 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
         if still_missing_multi:
             steam_filled = 0
             print(f"   [MULTI-COLL] Fetching {len(still_missing_multi)} output prices from Steam...")
-            for name, cond in still_missing_multi:
+            for i, (name, cond) in enumerate(still_missing_multi):
+                if (i + 1) % 25 == 0 or i == 0:
+                    print(f"   [MULTI-COLL STEAM] Progress: {i+1}/{len(still_missing_multi)}...")
                 cache_key = f"{name}|{cond}"
                 if cached_prices.get(cache_key, 0) > 0:
                     continue
@@ -2626,8 +2632,8 @@ def fetch_steam_trend(skin_name, condition):
     market_hash_name = f"{skin_name} ({condition})"
     params = {"appid": 730, "currency": 1, "market_hash_name": market_hash_name}
 
-    # Pace requests: wait 3s before each Steam call to avoid triggering rate limit
-    time.sleep(3)
+    # Pace requests: wait 1.5s before each Steam call to avoid triggering rate limit
+    time.sleep(1.5)
 
     for attempt in range(3):
         try:
