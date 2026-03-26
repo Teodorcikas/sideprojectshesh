@@ -10,7 +10,7 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 | `dmarket_prices.py` | Standalone DMarket price fetcher for low-float FT skins |
 | `pricempire_prices.py` | Pricempire API wrapper (subscription expired, not used) |
 | `winners.md` | Persistent log of all profitable trade-ups found across runs |
-| `price_cache.json` | Auto-generated cache for CSFloat output prices (3h TTL) |
+| `price_cache.json` | Auto-generated cache for output prices (v2: per-key timestamps, source, volume) |
 | `skinport_cache.json` | Auto-generated cache for Skinport prices (3h fresh, 6h stale fallback) |
 | `dmarket_cache.json` | Auto-generated cache for DMarket listings (3h fresh, 6h stale fallback) |
 | `csfloat_input_cache.json` | Auto-generated cache for CSFloat input listings (6h fresh) |
@@ -50,7 +50,7 @@ Tools for finding profitable CS2 trade-up contracts by scanning market prices an
 Output prices are fetched from CSFloat (where we sell). Rules:
 
 1. **CSFloat has listing** → use CSFloat price directly
-2. **CSFloat confirms no listing** (200 OK, empty results) → marked `NO_CSFLOAT_LISTINGS`, excluded from EV. No Skinport fallback. A skin with no CSFloat listings cannot be sold there.
+2. **CSFloat confirms no listing** (200 OK, empty results) → try Skinport as sell platform (qty ≥ 2 guard, 8% fee). If Skinport also unavailable, marked `NO_CSFLOAT_LISTINGS` and excluded from EV.
 3. **CSFloat rate-limited/error** (429 or network fail) → Skinport fallback, but only if Skinport has **≥ 2 listings** (singleton listings are unreliable price signals — e.g. one seller listing at 10× market price)
 
 **Why quantity ≥ 2 for Skinport fallback:** A single Skinport listing can be priced at anything (e.g. SSG 08 Orange Filigree MW had 1 listing at $1,365 vs real market price of ~$53). Multiple listings indicate a real market.
@@ -64,11 +64,11 @@ CSFloat enforces a request rate limit. The code uses:
 - **No caching of failed results**: if all retries fail (returns 0), the result is NOT written to cache — next run will retry fresh
 - **`CSFLOAT_NO_LISTING = -1` sentinel**: distinguishes "confirmed no listing" from "rate-limited unknown"
 
-## Current State (v3.7)
+## Current State (v3.8)
 
 **Working:**
-- Fetches from DMarket + CSFloat + Waxpeer (bulk, 200 pages) + Skinport (~19,500 total items)
-- **Waxpeer bulk fetch**: Paginated bulk fetch (200 pages), gets ~4,600 items with floats. Much faster than per-skin search.
+- Fetches from DMarket + CSFloat + Waxpeer (bulk, 200 pages) + Skinport (~23,800 total items)
+- **Waxpeer bulk fetch**: Paginated bulk fetch (200 pages), gets ~5,000 items with floats. Much faster than per-skin search.
 - **Skin-targeted DMarket fetch**: fetches by exact skin name per collection+rarity instead of weapon type, so rare/expensive skins are not crowded out
 - **Deduplication by listing_id** to prevent counting same listing multiple times
 - **Expanded float filter**: Accepts FN, MW, and FT output conditions (not just MW). Calculates most permissive float limit per collection.
@@ -78,19 +78,28 @@ CSFloat enforces a request rate limit. The code uses:
 - **Steam-first output pricing**: Output prices sourced from Steam (free, 1.5s/req with 429 retry) first, then Skinport fallback, CSFloat only as last resort.
 - **Per-source platform fees**: Steam 15%, Skinport 8%, CSFloat 2% — applied correctly based on price source
 - **Price source persistence**: `price_cache.json` stores both prices AND their source, so cached prices keep correct fee labels across runs
+- **Per-key cache expiry (v2)**: Each cached price has its own `fetched_at` timestamp. Stale entries (3-6h) used as fallback; only truly expired entries re-fetched. No more all-or-nothing cache wipes.
 - **Skinport singleton filter (outputs)**: Rejects Skinport output prices with qty=1 (unreliable)
-- **Skinport 3× sanity check**: Rejects Skinport output price if > 3× Steam median for same skin
+- **Skinport 2× sanity check**: Rejects Skinport output price if > 2× DMarket or Steam reference for same skin
+- **Skinport as output sell platform**: When CSFloat confirms no listing, Skinport used as sell platform (qty ≥ 2 guard, 8% fee). Unlocks collections previously dead.
 - **CSFloat budget split**: 140 inputs / 50 outputs / 10 reserve = 200 total. Smart output allocation only fetches CSFloat for promising trade-ups (EV pre-scan).
 - **Unverifiable EV detection**: Trade-ups with any output skin missing a price are excluded from profitable results and shown separately
 - **UNVERIFIED ON CSFLOAT warning**: Trade-ups where all output prices come from Steam/Skinport (no CSFloat verification) are flagged in results
 - **Float violation hard skip**: Trade-ups where inputs exceed MaxFloat are skipped with ERROR log, not silently included
-- **Steam 429 retry**: `fetch_steam_trend` retries 3× with 5s/10s/15s backoff on rate limit
+- **Steam 429 retry**: `fetch_steam_trend` retries 3× with 5s/15s/30s backoff, bails after 6 total 429s
+- **StatTrak Unicode normalization**: NFKC normalization on both `extract_skin_name()` and `get_skinport_price()` for consistent StatTrak™ matching
+- **Liquidity-weighted EV**: Output prices discounted by Steam 24h trading volume (100+/day=1.0, 10+=0.90, 2+=0.70, <2=0.50, unknown=0.85). Prevents recommending illiquid trade-ups.
+- **Fee-aware sell platform recommendation**: Each output shows net proceeds on CSFloat/Skinport/Steam, ranked best to worst
+- **Reverse search (Phase 0)**: Scans $5+ outputs top-down, works backwards to identify priority collections. Uses only cached data, zero API calls.
+- **Multi-collection trade-ups**: Evaluates 4,500+ target+filler combinations using 3 strategies (cheapest, best EV/dollar, max jackpot). Max 4 collections per trade-up. Pre-computes ev_per_input and max_single_output for efficient scoring.
+- **Winners dedup**: `append_winners_log` checks for existing entries by collection+rarity+date before appending
+- **Multi-source verification**: When inputs are sold, replacement search checks DMarket + Waxpeer cache + CSFloat input cache
 - ROI filter: only shows 25%+ ROI AND $0.30+ EV trade-ups — **do not lower this threshold**
 - WATCH LIST: Shows collections with 5-9 inputs (close to executable)
 - **Opportunity tracking:** Saves profitable trade-ups with exact listing IDs to `opportunities_cache.json`
-- **Verification on startup:** Checks if saved listings still exist and prices remain profitable
-- **Winners log:** Appends all profitable results to `winners.md` with date, ROI, EV, buy links
-- Caching: 6h for inputs, 3h for output prices (with source tracking)
+- **Verification on startup:** Checks if saved listings still exist and prices remain profitable (with liquidity-adjusted EV)
+- **Winners log:** Appends all profitable results to `winners.md` with date, ROI, EV, buy links (deduped)
+- Caching: 6h for inputs, 3h for output prices (per-key timestamps, with source + volume tracking)
 
 ## TODO
 
@@ -105,8 +114,8 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **CSFloat budget split** — Done. 140 inputs / 50 outputs / 10 reserve = 200 total. Smart output allocation pre-scans EV before spending budget.
 - [x] **Steam 429 retry** — Done. 3 retries with 5s/10s/15s backoff, 1.5s between requests.
 - [x] **Price source persistence** — Done. Cache stores source alongside price, correct fees applied across runs.
-- [ ] **Multi-collection trade-ups — BROKEN, NEEDS FIX** — Initial implementation exists (`phase2_multi_collection_ev`) but only checked 32 combinations on last run, far too few. Problem: the target+filler heuristic is too restrictive — only considers collections with <10 inputs as targets and picks cheapest fillers, missing most profitable combos. Needs rework: enumerate more combinations, consider ALL collections as potential targets (even those with 10+ inputs might be better mixed), try different fill ratios (not just fill to 10), and consider filler collections with valuable outputs too. Should check hundreds/thousands of combos, not 32.
-- [ ] **Sell on Skinport (output)** — Currently if CSFloat has no listing for an output it's dead. Enabling Skinport as a valid sell platform (with qty ≥ 2 guard, minus Skinport fee) would unlock many collections currently skipped as NO_CSFLOAT_LISTINGS.
+- [x] **Multi-collection trade-ups** — Done. 3 filler strategies (cheapest, best EV/dollar, max jackpot), evaluates 4,500+ combinations, max 4 collections per trade-up. Pre-computes ev_per_input for efficient scoring.
+- [x] **Sell on Skinport (output)** — Done. When CSFloat has no listing, falls back to Skinport (qty ≥ 2 guard, 8% fee). Unlocks previously dead collections.
 - [ ] **Rarity expansion** — Support all rarity tiers more broadly
 - [ ] **Quick execution solution** — Auto-buy inputs or one-click purchase flow
 
@@ -132,11 +141,11 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **`_best_source` tracked listing source, not price source** — When Skinport had a cheaper price, `_best_source` still showed DMarket/CSFloat, misleading buy links and source tracking. Fixed: now tracks actual price source separately from listing source.
 - [x] **`get_skinport_price` returned mixed types** — Returned string `"ERROR"` on miss vs dict on hit. Fixed: returns `None` on miss.
 - [x] **CSFloat input fetch used adjusted float as raw float bound** — `max_adjusted` (0-1 normalized) was used directly as `max_float` server-side filter parameter, which expects raw float. Could under-fetch valid items for skins with narrow float ranges. Fixed: widened cap to 0.45 with comment explaining the conversion.
-- [ ] **StatTrak Unicode mismatch in Skinport lookup** — CSFloat may use `™` differently than Skinport's `market_hash_name`, causing Skinport price comparison to silently fail for StatTrak items. Fix: normalize Unicode before lookup.
-- [ ] **Winners.md logs duplicates across runs** — `append_winners_log` appends every profitable result every run with no dedup. Same trade-up logged N times if profitable across N runs. Fix: check if collection+rarity+date already logged before appending.
-- [ ] **Verification re-fetch only uses DMarket** — When inputs are sold, replacement search only queries DMarket, missing potentially cheaper CSFloat/Waxpeer alternatives.
-- [ ] **Cache invalidation is all-or-nothing** — Output price cache uses a single timestamp. At 3h01m ALL cached prices are wiped, forcing full re-fetch. Should use per-key timestamps.
-- [ ] **Phase 2 pre-scan vs actual EV mismatch** — Pre-scan skips WW/BS outputs from EV but actual calculation includes them (with price=0), potentially inflating the pre-scan's estimate of which trade-ups are "promising".
+- [x] **StatTrak Unicode mismatch in Skinport lookup** — Fixed: NFKC normalization in both `extract_skin_name()` and `get_skinport_price()`.
+- [x] **Winners.md logs duplicates across runs** — Fixed: dedup by collection+rarity+date before appending.
+- [x] **Verification re-fetch only uses DMarket** — Fixed: now also searches Waxpeer cache and CSFloat input cache for replacements.
+- [x] **Cache invalidation is all-or-nothing** — Fixed: v2 per-key cache format with individual `fetched_at` timestamps. Stale entries used as fallback.
+- [x] **Phase 2 pre-scan vs actual EV mismatch** — Fixed: pre-scan now includes WW/BS outputs (with their cached price, usually 0) matching actual calc.
 
 ## Filler System Architecture (Multi-Collection Trade-Ups)
 
@@ -148,20 +157,16 @@ CSFloat enforces a request rate limit. The code uses:
   - Each Collection A output: 7/10 × 1/3 = 23.3% chance
   - Each Collection B output: 3/10 × 1/2 = 15% chance
 
-### Current Code Blockers for Filler System
-1. **`phase1_fetch_inputs`** groups by `(collection, rarity)` and requires 10+ from same collection. Must pool ALL inputs of same rarity across collections.
-2. **`phase2_calculate_ev`** iterates `viable_collections[coll_name]` per collection. Must instead enumerate combinations of collections.
-3. **Probability calculation** (`prob = 1 / len(outputs)`) assumes single collection. Must use weighted probability per collection.
-4. **Output skin lookup** uses `coll_skins[coll_name].get(out_rarity)` for one collection. Must aggregate outputs from all contributing collections.
-5. **Combinatorial explosion** — mixing N collections × M skins is exponential. Need heuristics: only combine collections that individually have <10 inputs but together reach 10+, or use one "target" collection with cheap fillers from another.
-
-### Suggested Architecture for Filler System
-1. After Phase 1, build a **global pool** of all inputs by rarity (across all collections)
-2. For each "target" collection with valuable outputs but <10 inputs:
-   - Find cheapest fillers from OTHER collections at same rarity
-   - Calculate the mixed-collection EV using weighted probabilities
-   - Filler outputs are usually cheap (that's why fillers are cheap) — the value comes from target outputs
-3. Optimize: sort target collections by potential output value, fill from cheapest available inputs
+### Implemented Filler Algorithm (Phase 2b)
+1. After Phase 1, builds **global pool** of all non-StatTrak inputs by rarity across all collections
+2. Pre-computes `ev_per_input[(coll, rarity)]` and `max_single_output[(coll, rarity)]` for scoring
+3. For each target collection with outputs at next rarity:
+   - Tries all split ratios (1 to max_available target inputs)
+   - 3 filler strategies per ratio: cheapest inputs, best EV/dollar, max jackpot
+   - Max 4 collections per trade-up, dedup by listing ID set
+   - Early pruning: skip if `target_ev_contribution < target_cost * 0.5` for 5+ inputs
+4. Evaluates 4,500+ combinations per run (was ~32 before overhaul)
+5. Probability per output: `(inputs_from_coll / 10) * (1 / outputs_in_coll)`
 
 ### Ongoing
 - [ ] **Bug fixes** — Monitor and fix issues as they arise
@@ -170,9 +175,9 @@ CSFloat enforces a request rate limit. The code uses:
 
 ### Tier 1 — Highest impact, directly unlocks new profits
 
-1. **Multi-collection filler system** — The single biggest limitation. 16 collections sit on watchlist with 5-9 inputs. With fillers, combine e.g., 7 inputs from a valuable collection + 3 cheap fillers from another. Key insight: don't just pick cheapest fillers — pick fillers whose collection ALSO has valuable outputs. 3 inputs from Collection B gives 30% × (1/num_outputs) chance at Collection B's outputs too. Optimize full probability-weighted EV across both collections, not just minimize filler cost.
+1. ~~**Multi-collection filler system**~~ — **DONE (v3.8).** 3 filler strategies, 4,500+ combos evaluated, max 4 collections. Found 8 profitable multi-collection trade-ups on first run.
 
-2. **Reverse search — start from valuable outputs** — Instead of "find cheap inputs → calculate outputs → check profit", flip it: rank all output skins by value ($5+, $10+, $50+ MW/FN skins), work backwards to which collections produce them, check if inputs are available cheaply enough. Targets exactly where profit is possible, skips thousands of low-value collections.
+2. ~~**Reverse search — start from valuable outputs**~~ — **DONE (v3.8).** `phase0_reverse_search()` ranks $5+ outputs, works backwards to priority collections. Zero API calls (cached data only).
 
 3. **Steam sales history for output pricing** — Steam has an endpoint returning actual completed sales (not listings). Median of last 7 days of real sales is far more reliable than any listing price. Listings can be set to anything — sales reflect what people actually pay. Would be the gold standard for output pricing and largely eliminate inflated price problems.
 
@@ -180,11 +185,11 @@ CSFloat enforces a request rate limit. The code uses:
 
 4. **Dynamic float optimization** — The bot picks 10 cheapest inputs below float threshold. But lower floats → better output condition → higher value. There's an optimal float point: 10 inputs at 0.152 might produce low MW ($8 sell) but cost $0.50 each, while 10 at 0.25 produce FT ($2 sell) at $0.02 each. Calculate EV at multiple float points and pick the one maximizing net profit, not just minimizing input cost.
 
-5. **Per-key cache expiry** — Already noted as a bug. When price_cache hits 3h01m, ALL 700+ output prices wiped. Per-key timestamps mean most runs need 0-10 fresh fetches instead of 700. Massive speed improvement on typical runs.
+5. ~~**Per-key cache expiry**~~ — **DONE (v3.8).** v2 cache format with per-entry `fetched_at` timestamps. Stale entries (3-6h) used as fallback; only expired entries re-fetched.
 
-6. **Liquidity-weighted EV** — A $50 output selling 2/day is risky. A $5 output selling 500/day is reliable. Discount EV by liquidity: >100/day = full EV, 10-100 = 90%, <10 = 70%, <2 = 50% or flag as risky. Prevents recommending trade-ups that look profitable but take weeks to sell.
+6. ~~**Liquidity-weighted EV**~~ — **DONE (v3.8).** `liquidity_multiplier()` discounts output prices by Steam 24h volume. Volume persisted in cache. Display shows volume/day rating per output.
 
-7. **Fee-aware sell platform recommendation** — For each output, calculate net on each platform (CSFloat 2%, Skinport 8%, Steam 15%) and recommend the best one. Currently assumes you sell at the source's fee, but you should sell on the cheapest-fee platform with buyers.
+7. ~~**Fee-aware sell platform recommendation**~~ — **DONE (v3.8).** Each output shows `SELL ON: CSFloat $X > Skinport $X > Steam $X` ranked by net proceeds.
 
 ### Tier 3 — Good improvements, lower urgency
 
@@ -223,15 +228,17 @@ CSFLOAT_INPUT_CAP = 140           # Max requests for input fetching (140+50+10=2
 CSFLOAT_OUTPUT_RESERVE = 50       # Reserved for output price verification
 CSFLOAT_NO_LISTING = -1           # Sentinel: confirmed no CSFloat listing
 SOURCE_FEES = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
-# Steam: 1.5s between requests, 3 retries on 429 with 5s/10s/15s backoff
+MAX_COLLECTIONS = 4               # Max collections in multi-collection trade-up
+# Steam: 1.5s between requests, 3 retries on 429 with 5s/15s/30s backoff, bail at 6 total 429s
 # CSFloat: 4 req/s global rate limiter
+# Liquidity multiplier: 100+/day=1.0, 10+=0.90, 2+=0.70, <2=0.50, unknown=0.85
 ```
 
 ## Quick Start
 
 ```bash
-cd "C:\Users\Namai\cs2-bot"
+cd "C:\Users\oskar\Desktop\Claude-code"
 python ev_calculator.py
 ```
 
-First run fetches fresh data (~2 min for output prices at 4 req/s). Subsequent runs within 3h use cache (~10s).
+First run fetches fresh data (~20 min for Steam output prices due to rate limiting). Subsequent runs within 3h use per-key cache (~10s). Cache v2 format means only stale entries are re-fetched, not all 700+.
