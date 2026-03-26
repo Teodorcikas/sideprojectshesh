@@ -1,0 +1,1876 @@
+======================================================================
+CS2 TRADE-UP EV CALCULATOR v3.7
+Inputs: DMarket+CSFloat+Waxpeer+Skinport | Outputs: Steam+Skinport (free)
+CSFloat budget: 140 inputs / 50 outputs / 10 reserve = 200
+======================================================================
+
+Loading CS2 skin database...
+Loaded 92 collections
+Calculated float limits for 361 collection+rarity combos
+
+Loading Skinport prices...
+   [SKINPORT] Fetched fresh (23855 items, cached for 3h)
+[CACHE] Starting fresh
+
+======================================================================
+VERIFYING SAVED OPPORTUNITIES
+======================================================================
+   Verifying achroma...
+      CONFIRMED: ROI 157.0%, EV $0.79
+   Verifying italy...
+      CONFIRMED: ROI 65.2%, EV $0.46
+   Verifying 2018 nuke...
+      CONFIRMED: ROI 28.2%, EV $0.31
+   Verifying limited edition item...
+      CONFIRMED: ROI 26.5%, EV $5.25
+   Verifying genesis...
+      CONFIRMED: ROI 25.0%, EV $0.30
+   Confirmed: 5, Expired: 0
+
+======================================================================
+PHASE 1: Fetching input skins from DMarket + CSFloat + Waxpeer + Skinport
+======================================================================
+   [DMARKET] Fetching 1274 specific skins across all rarity tiers in parallel...
+   [DMARKET] Fetched 65579 raw items across 1274 skins (cached for 6h)
+   [CSFLOAT] Fetching listings (targeted by rarity + float)...
+   [CSFLOAT] consumer grade: 1950 items (max_float=0.4500) [160/200 budget left]
+   [CSFLOAT] industrial grade: 1950 items (max_float=0.4500) [120/200 budget left]
+   [CSFLOAT] mil-spec grade: 1981 items (max_float=0.4500) [80/200 budget left]
+   [CSFLOAT] Input cap hit (140/140), stopping restricted
+   [CSFLOAT] restricted: 929 items (max_float=0.4500) [60/200 budget left]
+   [CSFLOAT] Input cap hit (140/140 requests used), stopping input fetch
+   [CSFLOAT] Total: 6810 items, 140 API requests used
+   [CSFLOAT] Fetched 6810 raw items (cached for 6h)
+   [WAXPEER] Bulk fetching listings (200 pages max, ~2 min)...
+   [WAXPEER] 50 pages, 68 items with float so far...
+   [WAXPEER] 100 pages, 747 items with float so far...
+   [WAXPEER] 150 pages, 2123 items with float so far...
+   [WAXPEER] 200 pages, 4998 items with float so far...
+   [WAXPEER] Fetched 4998 items with floats, 200 pages (14041 no float, 459 not in skin DB)
+   [WAXPEER] Got 4998 items (cached for 6h)
+   [COMBINED] 65579 DMarket + 6810 CSFloat + 4998 Waxpeer = 77387 total
+   [FILTER] 21491 items rejected — float > max_raw_float
+   Total viable inputs (dynamic float ranges): 41737
+   Duplicates skipped: 6
+   Viable collections (10+ inputs): 83
+   Watchlist collections (5-9 inputs): 15
+
+======================================================================
+PHASE 2: Calculating EVs (CSFloat output prices)
+======================================================================
+
+   [CSFLOAT BUDGET] 60/200 requests remaining (50 reserved for outputs, 10 reserve)
+
+[PHASE 2] Pre-fetching output prices...
+   DMarket reference prices: 3226 skins loaded for sanity check
+   Fetching 412 Steam reference prices (no DMarket data)...
+   [STEAM] Progress: 1/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 25/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 50/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 75/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 100/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 125/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 150/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 175/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 200/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 225/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 250/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 275/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 300/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 325/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 350/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 375/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Progress: 400/412...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   Steam refs fetched: 411 available
+   [REJECTED] MP7 | Coral Paisley (Field-Tested): Skinport $0.78 vs DMarket $0.14 (5.6x)
+   [REJECTED] R8 Revolver | Dark Chamber (Field-Tested): Skinport $0.46 vs DMarket $0.09 (5.1x)
+   [REJECTED] PP-Bizon | Rust Coat (Field-Tested): Skinport $115.83 vs Steam $16.23 (7.1x)
+   [REJECTED] P90 | Aeolian Light (Field-Tested): Skinport $1.93 vs DMarket $0.61 (3.2x)
+   [REJECTED] SSG 08 | Calligrafaux (Field-Tested): Skinport $3.05 vs DMarket $0.16 (19.1x)
+   [WARN] Desert Eagle | Hand Cannon (Minimal Wear): Skinport $602.69 — no DMarket/Steam ref to validate
+   [REJECTED] Galil AR | Sky Mandala (Field-Tested): Skinport $1.63 vs Steam $0.71 (2.3x)
+   [REJECTED] Tec-9 | Titanium Bit (Minimal Wear): Skinport $22.29 vs Steam $11.07 (2.0x)
+   Skinport: 697 filled
+   Skinport rejected: 17 singletons (qty=1)
+   Skinport rejected: 7 inflated (>2× DMarket/Steam)
+   CSFloat verification: 50 outputs (60 budget, 50 usable)
+   CSFloat: 50 prices (49 replaced Skinport)
+   Output prices: Skinport=697, CSFloat=50
+   Total: 698 with price, 0 confirmed no listing.
+   [ERROR] phoenix | classified->covert: 6/10 inputs have float > max_raw_float — SKIPPING
+   [ERROR] chroma | classified->covert: 10/10 inputs have float > max_raw_float — SKIPPING
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [ERROR] winter offensive | classified->covert: 4/10 inputs have float > max_raw_float — SKIPPING
+   Prices: 36 fetched, 702 from cache
+   Calculated 228 trade-ups
+
+======================================================================
+PHASE 2b: Multi-collection trade-ups (target + fillers, max 4 collections)
+======================================================================
+   [MULTI-COLL] Need prices for 589 output skins not in cache
+   [MULTI-COLL] Skinport: filled 532 output prices
+   [MULTI-COLL] Fetching 57 output prices from Steam...
+   [MULTI-COLL STEAM] Progress: 1/57...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [MULTI-COLL STEAM] Progress: 25/57...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [MULTI-COLL STEAM] Progress: 50/57...
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [MULTI-COLL] Steam: filled 52 output prices
+   [MULTI-COLL] Total new output prices fetched: 584
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Rate limited, pausing 5s... (1 total 429s)
+   [STEAM] Rate limited, pausing 15s... (2 total 429s)
+   [STEAM] Rate limited, pausing 30s... (3 total 429s)
+   [STEAM] Rate limited, pausing 5s... (4 total 429s)
+   [STEAM] Rate limited, pausing 15s... (5 total 429s)
+   [STEAM] Blocked after 6 total 429s — skipping all remaining Steam fetches
+   [STEAM] Falling back to Skinport + CSFloat prices only
+   Considered 4535 multi-collection combinations
+   Found 8 profitable multi-collection trade-ups (>=25.0% ROI, >=$0.30 EV)
+
+======================================================================
+VERIFYING INPUT LISTINGS (checking if still available)
+======================================================================
+   [esports 2013 winter + kilowatt] All 8 listings verified active
+   [esports 2013 winter + kilowatt] All 9 listings verified active
+   [arms deal 3 + kilowatt] All 8 listings verified active
+   [arms deal 3 + kilowatt] All 7 listings verified active
+   [arms deal 3 + kilowatt] All 6 listings verified active
+   [esports 2013 winter + kilowatt] All 7 listings verified active
+   [esports 2013 winter + kilowatt] All 6 listings verified active
+   [arms deal 3 + kilowatt] All 9 listings verified active
+
+   Verified: 8/8 trade-ups still viable
+
+======================================================================
+PHASE 3: Fetching Steam trends for profitable trade-ups
+======================================================================
+   Steam blocked — skipping trend data
+
+   Saved 8 opportunities to C:\Users\oskar\Desktop\Claude-code\opportunities_cache.json
+   Appended 8 winner(s) to winners.md
+
+======================================================================
+CONFIRMED OPPORTUNITIES (5 from previous scan)
+======================================================================
+
+  [ACHROMA] +157.0% ROI | EV: $0.79
+  Input Cost: $0.50 | Verified: 08:51
+  BUY LINKS:
+    ... and 5 more
+
+  [ITALY] +65.2% ROI | EV: $0.46
+  Input Cost: $0.70 | Verified: 08:51
+  BUY LINKS:
+    ... and 5 more
+
+  [2018 NUKE] +28.2% ROI | EV: $0.31
+  Input Cost: $1.10 | Verified: 08:51
+  BUY LINKS:
+    ... and 5 more
+
+  [LIMITED EDITION ITEM] +26.5% ROI | EV: $5.25
+  Input Cost: $19.84 | Verified: 08:51
+  BUY LINKS:
+    $1.90 | M4A1-S | Solitude (Field-Tested)
+      https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=c0d6ff6c-361a-549c-83bf-288c398a5bd8
+    $1.94 | Desert Eagle | Heat Treated (Field-Teste
+      https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4d3bae26-df95-5a4c-b94d-602e317af19b
+    $1.94 | Desert Eagle | Heat Treated (Field-Teste
+      https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4826db86-de9b-5a23-8cf4-4e84f3c03bb3
+    $1.94 | Desert Eagle | Heat Treated (Field-Teste
+      https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=110df124-5937-5773-b4b5-f9f364e8042f
+    $1.94 | Desert Eagle | Heat Treated (Field-Teste
+      https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=cce83576-dc7a-52bb-af00-ae5f33fbcb89
+    ... and 5 more
+
+  [GENESIS] +25.0% ROI | EV: $0.30
+  Input Cost: $1.20 | Verified: 08:51
+  BUY LINKS:
+    ... and 5 more
+
+======================================================================
+RESULTS: 236 trade-ups analyzed, 15 profitable, 11 with ROI >= 25.0%, 8 with EV >= $0.30 (0 single, 8 multi-coll)
+======================================================================
+
+*** PROFITABLE TRADE-UPS ***
+
+================================================================================
+  [ESPORTS 2013 WINTER + KILOWATT] +41.5% ROI | EV: $2.01 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(8), esports 2013 winter(2)
+  Total Input Cost: $4.84 (10 skins)
+  Average Input Float: 0.2279 (raw)
+  Average Adjusted Float: 0.3211 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $6.85 (after platform fees)
+  Net Profit (EV): $2.01
+  Output Conditions: 1 Minimal Wear, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [10.0% chance] AK-47 | Blue Laminate [esports 2013 winter]
+    Condition: Minimal Wear (expected output float: 0.1420)
+    Skin Float Range: 0.02 - 0.40
+    Price [Skinport -8%]: $24.58 ($19.21 after fee [liq ×0.85])
+    EV Contribution: $1.92 (10% × $19.21)
+    SELL ON: CSFloat $24.08 > Skinport $22.61 > Steam $20.89
+    CSFloat: https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20%28Minimal%20Wear%29&sort_by=lowest_price
+
+    [10.0% chance] P90 | Blind Spot [esports 2013 winter]
+    Condition: Field-Tested (expected output float: 0.1605)
+    Skin Float Range: 0.00 - 0.50
+    Price [Skinport -8%]: $58.51 ($45.74 after fee [liq ×0.85])
+    EV Contribution: $4.57 (10% × $45.74)
+    SELL ON: CSFloat $57.33 > Skinport $53.82 > Steam $49.73
+    CSFloat: https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3211)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.06 (16% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2157)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.08 (16% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3211)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.08 (16% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3211)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.07 (16% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.1987)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.06 (16% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra:
+    Buy: 2x Minimal Wear (max float: 0.1064)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 2x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  MAC-10 | Light Box:
+    Buy: 1x Field-Tested (max float: 0.3800)
+
+  Output conditions at overall avg float 0.2279 (adj 0.3211):
+    Blue Lamin=MW, Blind Spot=FT, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.17   0.1253    0.4475    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  2   $  2.17   0.1111    0.3970    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  3   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  4   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  5   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  6   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  7   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  8   $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+  9   $  0.07   0.2014    0.2238    0.3420 CSFloat            Tec-9 | Slag
+  10  $  0.07   0.2726    0.2726    0.3800 CSFloat            MAC-10 | Light Box
+
+  AVERAGE: Raw Float = 0.2279, Adjusted Float = 0.3211
+  * (SP$) = 2 items use Skinport price (cheaper), float from DMarket/CSFloat listing
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra (2x needed):
+    Direct listings:
+      [DMarket] $2.17 @ 0.1253: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bc6a8e25-0d0d-503b-823d-20d706799d8a
+      [DMarket] $2.17 @ 0.1111: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=739d5ae9-aa6b-5e08-bba0-ca5d9442f547
+    Search (max float 0.1064, condition: Minimal Wear):
+      Skinport: https://skinport.com/market/730?search=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&max_float=0.1064&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=G3SG1+%257C+Azure+Zebra+(Minimal+Wear)&exterior=minimal-wear
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+      [CSFloat] $0.07 @ 0.2014: https://csfloat.com/item/957060213943439076
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  MAC-10 | Light Box (1x needed):
+    Direct listings:
+      [CSFloat] $0.07 @ 0.2726: https://csfloat.com/item/957090510936344455
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=MAC-10+%257C+Light+Box+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    AK-47 | Blue Laminate (Mi) - expected float ~0.1420:
+      https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20(Minimal%20Wear)&min_float=0.13&max_float=0.15&sort_by=lowest_price&type=buy_now&category=1
+    P90 | Blind Spot (Fi) - expected float ~0.1605:
+      https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20(Field-Tested)&min_float=0.15&max_float=0.18&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3211:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2157:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.21&max_float=0.24&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3211:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3211:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.1987:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.19&max_float=0.22&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ESPORTS 2013 WINTER + KILOWATT] +33.0% ROI | EV: $0.90 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(9), esports 2013 winter(1)
+  Total Input Cost: $2.74 (10 skins)
+  Average Input Float: 0.2428 (raw)
+  Average Adjusted Float: 0.3074 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $3.64 (after platform fees)
+  Net Profit (EV): $0.90
+  Output Conditions: 1 Minimal Wear, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [5.0% chance] AK-47 | Blue Laminate [esports 2013 winter]
+    Condition: Minimal Wear (expected output float: 0.1368)
+    Skin Float Range: 0.02 - 0.40
+    Price [Skinport -8%]: $24.58 ($19.21 after fee [liq ×0.85])
+    EV Contribution: $0.96 (5% × $19.21)
+    SELL ON: CSFloat $24.08 > Skinport $22.61 > Steam $20.89
+    CSFloat: https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20%28Minimal%20Wear%29&sort_by=lowest_price
+
+    [5.0% chance] P90 | Blind Spot [esports 2013 winter]
+    Condition: Field-Tested (expected output float: 0.1537)
+    Skin Float Range: 0.00 - 0.50
+    Price [Skinport -8%]: $58.51 ($45.74 after fee [liq ×0.85])
+    EV Contribution: $2.29 (5% × $45.74)
+    SELL ON: CSFloat $57.33 > Skinport $53.82 > Steam $49.73
+    CSFloat: https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3074)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.07 (18% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2065)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.09 (18% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3074)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.09 (18% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3074)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.08 (18% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.1902)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.07 (18% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra:
+    Buy: 1x Minimal Wear (max float: 0.1064)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 2x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  MAC-10 | Light Box:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Output conditions at overall avg float 0.2428 (adj 0.3074):
+    Blue Lamin=MW, Blind Spot=FT, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.17   0.1253    0.4475    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  2   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  3   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  4   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  5   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  6   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  7   $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+  8   $  0.07   0.2014    0.2238    0.3420 CSFloat            Tec-9 | Slag
+  9   $  0.07   0.2726    0.2726    0.3800 CSFloat            MAC-10 | Light Box
+  10  $  0.07   0.2600    0.2600    0.3800 CSFloat            MAC-10 | Light Box
+
+  AVERAGE: Raw Float = 0.2428, Adjusted Float = 0.3074
+  * (SP$) = 1 items use Skinport price (cheaper), float from DMarket/CSFloat listing
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra (1x needed):
+    Direct listings:
+      [DMarket] $2.17 @ 0.1253: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bc6a8e25-0d0d-503b-823d-20d706799d8a
+    Search (max float 0.1064, condition: Minimal Wear):
+      Skinport: https://skinport.com/market/730?search=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&max_float=0.1064&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=G3SG1+%257C+Azure+Zebra+(Minimal+Wear)&exterior=minimal-wear
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+      [CSFloat] $0.07 @ 0.2014: https://csfloat.com/item/957060213943439076
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  MAC-10 | Light Box (2x needed):
+    Direct listings:
+      [CSFloat] $0.07 @ 0.2726: https://csfloat.com/item/957090510936344455
+      [CSFloat] $0.07 @ 0.2600: https://csfloat.com/item/957131764592149866
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=MAC-10+%257C+Light+Box+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    AK-47 | Blue Laminate (Mi) - expected float ~0.1368:
+      https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20(Minimal%20Wear)&min_float=0.13&max_float=0.15&sort_by=lowest_price&type=buy_now&category=1
+    P90 | Blind Spot (Fi) - expected float ~0.1537:
+      https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20(Field-Tested)&min_float=0.14&max_float=0.17&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3074:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.30&max_float=0.33&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2065:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.20&max_float=0.23&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3074:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.30&max_float=0.33&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3074:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.30&max_float=0.33&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.1902:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.18&max_float=0.21&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ARMS DEAL 3 + KILOWATT] +33.0% ROI | EV: $1.79 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(8), arms deal 3(2)
+  Total Input Cost: $5.42 (10 skins)
+  Average Input Float: 0.2522 (raw)
+  Average Adjusted Float: 0.3057 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $7.21 (after platform fees)
+  Net Profit (EV): $1.79
+  Output Conditions: 3 Factory New, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [5.0% chance] CZ75-Auto | Tread Plate [arms deal 3]
+    Condition: Factory New (expected output float: 0.0611)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $23.39 ($18.28 after fee [liq ×0.85])
+    EV Contribution: $0.91 (5% × $18.28)
+    SELL ON: CSFloat $22.92 > Skinport $21.51 > Steam $19.88
+    CSFloat: https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20%28Factory%20New%29&sort_by=lowest_price
+
+    [5.0% chance] Desert Eagle | Heirloom [arms deal 3]
+    Condition: Field-Tested (expected output float: 0.2446)
+    Skin Float Range: 0.00 - 0.80
+    Price [Skinport -8%]: $10.71 ($8.37 after fee [liq ×0.85])
+    EV Contribution: $0.42 (5% × $8.37)
+    SELL ON: CSFloat $10.49 > Skinport $9.85 > Steam $9.10
+    CSFloat: https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20%28Field-Tested%29&sort_by=lowest_price
+
+    [5.0% chance] Five-SeveN | Copper Galaxy [arms deal 3]
+    Condition: Factory New (expected output float: 0.0611)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $55.95 ($43.74 after fee [liq ×0.85])
+    EV Contribution: $2.19 (5% × $43.74)
+    SELL ON: CSFloat $54.83 > Skinport $51.47 > Steam $47.55
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20%28Factory%20New%29&sort_by=lowest_price
+
+    [5.0% chance] Tec-9 | Titanium Bit [arms deal 3]
+    Condition: Factory New (expected output float: 0.0611)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $85.32 ($66.71 after fee [liq ×0.85])
+    EV Contribution: $3.34 (5% × $66.71)
+    SELL ON: CSFloat $83.61 > Skinport $78.49 > Steam $72.52
+    CSFloat: https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20%28Factory%20New%29&sort_by=lowest_price
+
+    [16.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3057)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.06 (16% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2054)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.08 (16% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3057)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.08 (16% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3057)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.07 (16% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [16.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.1892)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.06 (16% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure:
+    Buy: 2x Field-Tested (max float: 0.2576)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 2x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  MAC-10 | Light Box:
+    Buy: 1x Field-Tested (max float: 0.3800)
+
+  Output conditions at overall avg float 0.2522 (adj 0.3057):
+    Tread Plat=FN, Heirloom=FT, Copper Gal=FN, Titanium B=FN, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.46   0.2042    0.2773    0.2576 DMarket            Glock-18 | Blue Fissure
+  2   $  2.46   0.2753    0.4141    0.2576 DMarket            Glock-18 | Blue Fissure
+  3   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  4   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  5   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  6   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  7   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  8   $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+  9   $  0.07   0.2014    0.2238    0.3420 CSFloat            Tec-9 | Slag
+  10  $  0.07   0.2726    0.2726    0.3800 CSFloat            MAC-10 | Light Box
+
+  AVERAGE: Raw Float = 0.2522, Adjusted Float = 0.3057
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure (2x needed):
+    Direct listings:
+      [DMarket] $2.46 @ 0.2042: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=b0efdb43-4670-53f2-b26f-354413cf5457
+      [DMarket] $2.46 @ 0.2753: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=5a4b87fd-4547-5471-ad6e-0a719f7fe14d
+    Search (max float 0.2576, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&max_float=0.2576&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Glock-18+%257C+Blue+Fissure+(Field-Tested)&exterior=field-tested
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+      [CSFloat] $0.07 @ 0.2014: https://csfloat.com/item/957060213943439076
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  MAC-10 | Light Box (1x needed):
+    Direct listings:
+      [CSFloat] $0.07 @ 0.2726: https://csfloat.com/item/957090510936344455
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=MAC-10+%257C+Light+Box+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    CZ75-Auto | Tread Plate (Fa) - expected float ~0.0611:
+      https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Desert Eagle | Heirloom (Fi) - expected float ~0.2446:
+      https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20(Field-Tested)&min_float=0.23&max_float=0.26&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Copper Galaxy (Fa) - expected float ~0.0611:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Tec-9 | Titanium Bit (Fa) - expected float ~0.0611:
+      https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3057:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.30&max_float=0.33&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2054:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.20&max_float=0.23&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3057:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.30&max_float=0.33&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3057:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.30&max_float=0.33&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.1892:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.18&max_float=0.21&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ARMS DEAL 3 + KILOWATT] +32.4% ROI | EV: $2.59 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(7), arms deal 3(3)
+  Total Input Cost: $8.00 (10 skins)
+  Average Input Float: 0.2549 (raw)
+  Average Adjusted Float: 0.3246 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $10.59 (after platform fees)
+  Net Profit (EV): $2.59
+  Output Conditions: 3 Factory New, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [7.5% chance] CZ75-Auto | Tread Plate [arms deal 3]
+    Condition: Factory New (expected output float: 0.0649)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $23.39 ($18.28 after fee [liq ×0.85])
+    EV Contribution: $1.37 (8% × $18.28)
+    SELL ON: CSFloat $22.92 > Skinport $21.51 > Steam $19.88
+    CSFloat: https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20%28Factory%20New%29&sort_by=lowest_price
+
+    [7.5% chance] Desert Eagle | Heirloom [arms deal 3]
+    Condition: Field-Tested (expected output float: 0.2597)
+    Skin Float Range: 0.00 - 0.80
+    Price [Skinport -8%]: $10.71 ($8.37 after fee [liq ×0.85])
+    EV Contribution: $0.63 (8% × $8.37)
+    SELL ON: CSFloat $10.49 > Skinport $9.85 > Steam $9.10
+    CSFloat: https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20%28Field-Tested%29&sort_by=lowest_price
+
+    [7.5% chance] Five-SeveN | Copper Galaxy [arms deal 3]
+    Condition: Factory New (expected output float: 0.0649)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $55.95 ($43.74 after fee [liq ×0.85])
+    EV Contribution: $3.28 (8% × $43.74)
+    SELL ON: CSFloat $54.83 > Skinport $51.47 > Steam $47.55
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20%28Factory%20New%29&sort_by=lowest_price
+
+    [7.5% chance] Tec-9 | Titanium Bit [arms deal 3]
+    Condition: Factory New (expected output float: 0.0649)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $85.32 ($66.71 after fee [liq ×0.85])
+    EV Contribution: $5.00 (8% × $66.71)
+    SELL ON: CSFloat $83.61 > Skinport $78.49 > Steam $72.52
+    CSFloat: https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20%28Factory%20New%29&sort_by=lowest_price
+
+    [14.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3246)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.05 (14% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2181)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.07 (14% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3246)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.07 (14% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3246)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.06 (14% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2009)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.05 (14% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure:
+    Buy: 3x Field-Tested (max float: 0.2576)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 2x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  Output conditions at overall avg float 0.2549 (adj 0.3246):
+    Tread Plat=FN, Heirloom=FT, Copper Gal=FN, Titanium B=FN, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.46   0.2042    0.2773    0.2576 DMarket            Glock-18 | Blue Fissure
+  2   $  2.46   0.2753    0.4141    0.2576 DMarket            Glock-18 | Blue Fissure
+  3   $  2.65   0.2998    0.4612    0.2576 DMarket            Glock-18 | Blue Fissure
+  4   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  5   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  6   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  7   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  8   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  9   $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+  10  $  0.07   0.2014    0.2238    0.3420 CSFloat            Tec-9 | Slag
+
+  AVERAGE: Raw Float = 0.2549, Adjusted Float = 0.3246
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure (3x needed):
+    Direct listings:
+      [DMarket] $2.46 @ 0.2042: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=b0efdb43-4670-53f2-b26f-354413cf5457
+      [DMarket] $2.46 @ 0.2753: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=5a4b87fd-4547-5471-ad6e-0a719f7fe14d
+      [DMarket] $2.65 @ 0.2998: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=0b23538f-1a23-5c7f-bcbc-2f8f02cad9f3
+    Search (max float 0.2576, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&max_float=0.2576&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Glock-18+%257C+Blue+Fissure+(Field-Tested)&exterior=field-tested
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+      [CSFloat] $0.07 @ 0.2014: https://csfloat.com/item/957060213943439076
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    CZ75-Auto | Tread Plate (Fa) - expected float ~0.0649:
+      https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Desert Eagle | Heirloom (Fi) - expected float ~0.2597:
+      https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20(Field-Tested)&min_float=0.25&max_float=0.28&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Copper Galaxy (Fa) - expected float ~0.0649:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Tec-9 | Titanium Bit (Fa) - expected float ~0.0649:
+      https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3246:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2181:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.21&max_float=0.24&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3246:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3246:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.2009:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.19&max_float=0.22&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ARMS DEAL 3 + KILOWATT] +32.1% ROI | EV: $3.39 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(6), arms deal 3(4)
+  Total Input Cost: $10.58 (10 skins)
+  Average Input Float: 0.2618 (raw)
+  Average Adjusted Float: 0.3426 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $13.97 (after platform fees)
+  Net Profit (EV): $3.39
+  Output Conditions: 3 Factory New, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [10.0% chance] CZ75-Auto | Tread Plate [arms deal 3]
+    Condition: Factory New (expected output float: 0.0685)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $23.39 ($18.28 after fee [liq ×0.85])
+    EV Contribution: $1.83 (10% × $18.28)
+    SELL ON: CSFloat $22.92 > Skinport $21.51 > Steam $19.88
+    CSFloat: https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20%28Factory%20New%29&sort_by=lowest_price
+
+    [10.0% chance] Desert Eagle | Heirloom [arms deal 3]
+    Condition: Field-Tested (expected output float: 0.2740)
+    Skin Float Range: 0.00 - 0.80
+    Price [Skinport -8%]: $10.71 ($8.37 after fee [liq ×0.85])
+    EV Contribution: $0.84 (10% × $8.37)
+    SELL ON: CSFloat $10.49 > Skinport $9.85 > Steam $9.10
+    CSFloat: https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20%28Field-Tested%29&sort_by=lowest_price
+
+    [10.0% chance] Five-SeveN | Copper Galaxy [arms deal 3]
+    Condition: Factory New (expected output float: 0.0685)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $55.95 ($43.74 after fee [liq ×0.85])
+    EV Contribution: $4.37 (10% × $43.74)
+    SELL ON: CSFloat $54.83 > Skinport $51.47 > Steam $47.55
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20%28Factory%20New%29&sort_by=lowest_price
+
+    [10.0% chance] Tec-9 | Titanium Bit [arms deal 3]
+    Condition: Factory New (expected output float: 0.0685)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $85.32 ($66.71 after fee [liq ×0.85])
+    EV Contribution: $6.67 (10% × $66.71)
+    SELL ON: CSFloat $83.61 > Skinport $78.49 > Steam $72.52
+    CSFloat: https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20%28Factory%20New%29&sort_by=lowest_price
+
+    [12.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3426)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.04 (12% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2302)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.06 (12% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3426)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.06 (12% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3426)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.05 (12% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2120)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.04 (12% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure:
+    Buy: 4x Field-Tested (max float: 0.2576)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 1x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  Output conditions at overall avg float 0.2618 (adj 0.3426):
+    Tread Plat=FN, Heirloom=FT, Copper Gal=FN, Titanium B=FN, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.46   0.2042    0.2773    0.2576 DMarket            Glock-18 | Blue Fissure
+  2   $  2.46   0.2753    0.4141    0.2576 DMarket            Glock-18 | Blue Fissure
+  3   $  2.65   0.2998    0.4612    0.2576 DMarket            Glock-18 | Blue Fissure
+  4   $  2.65   0.2696    0.4032    0.2576 DMarket            Glock-18 | Blue Fissure
+  5   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  6   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  7   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  8   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  9   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  10  $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+
+  AVERAGE: Raw Float = 0.2618, Adjusted Float = 0.3426
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure (4x needed):
+    Direct listings:
+      [DMarket] $2.46 @ 0.2042: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=b0efdb43-4670-53f2-b26f-354413cf5457
+      [DMarket] $2.46 @ 0.2753: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=5a4b87fd-4547-5471-ad6e-0a719f7fe14d
+      [DMarket] $2.65 @ 0.2998: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=0b23538f-1a23-5c7f-bcbc-2f8f02cad9f3
+      [DMarket] $2.65 @ 0.2696: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=d241ff1c-30ee-597d-a67e-ee65c6eafe22
+    Search (max float 0.2576, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&max_float=0.2576&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Glock-18+%257C+Blue+Fissure+(Field-Tested)&exterior=field-tested
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    CZ75-Auto | Tread Plate (Fa) - expected float ~0.0685:
+      https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20(Factory%20New)&min_float=0.06&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Desert Eagle | Heirloom (Fi) - expected float ~0.2740:
+      https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20(Field-Tested)&min_float=0.26&max_float=0.29&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Copper Galaxy (Fa) - expected float ~0.0685:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20(Factory%20New)&min_float=0.06&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Tec-9 | Titanium Bit (Fa) - expected float ~0.0685:
+      https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20(Factory%20New)&min_float=0.06&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3426:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.33&max_float=0.36&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2302:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.22&max_float=0.25&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3426:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.33&max_float=0.36&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3426:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.33&max_float=0.36&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.2120:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.20&max_float=0.23&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ESPORTS 2013 WINTER + KILOWATT] +31.0% ROI | EV: $2.38 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(7), esports 2013 winter(3)
+  Total Input Cost: $7.67 (10 skins)
+  Average Input Float: 0.2136 (raw)
+  Average Adjusted Float: 0.3196 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $10.05 (after platform fees)
+  Net Profit (EV): $2.38
+  Output Conditions: 1 Minimal Wear, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [15.0% chance] AK-47 | Blue Laminate [esports 2013 winter]
+    Condition: Minimal Wear (expected output float: 0.1415)
+    Skin Float Range: 0.02 - 0.40
+    Price [Skinport -8%]: $24.58 ($19.21 after fee [liq ×0.85])
+    EV Contribution: $2.88 (15% × $19.21)
+    SELL ON: CSFloat $24.08 > Skinport $22.61 > Steam $20.89
+    CSFloat: https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20%28Minimal%20Wear%29&sort_by=lowest_price
+
+    [15.0% chance] P90 | Blind Spot [esports 2013 winter]
+    Condition: Field-Tested (expected output float: 0.1598)
+    Skin Float Range: 0.00 - 0.50
+    Price [Skinport -8%]: $58.51 ($45.74 after fee [liq ×0.85])
+    EV Contribution: $6.86 (15% × $45.74)
+    SELL ON: CSFloat $57.33 > Skinport $53.82 > Steam $49.73
+    CSFloat: https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3196)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.05 (14% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2147)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.07 (14% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3196)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.07 (14% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3196)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.06 (14% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [14.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.1978)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.05 (14% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra:
+    Buy: 2x Minimal Wear (max float: 0.1064)
+
+  PP-Bizon | Water Sigil:
+    Buy: 1x Minimal Wear (max float: 0.1900)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 2x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  Output conditions at overall avg float 0.2136 (adj 0.3196):
+    Blue Lamin=MW, Blind Spot=FT, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.17   0.1253    0.4475    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  2   $  2.17   0.1111    0.3970    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  3   $  2.90   0.1291    0.2581    0.1900 Skinport (SP$)     PP-Bizon | Water Sigil
+  4   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  5   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  6   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  7   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  8   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  9   $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+  10  $  0.07   0.2014    0.2238    0.3420 CSFloat            Tec-9 | Slag
+
+  AVERAGE: Raw Float = 0.2136, Adjusted Float = 0.3196
+  * (SP$) = 3 items use Skinport price (cheaper), float from DMarket/CSFloat listing
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra (2x needed):
+    Direct listings:
+      [DMarket] $2.17 @ 0.1253: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bc6a8e25-0d0d-503b-823d-20d706799d8a
+      [DMarket] $2.17 @ 0.1111: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=739d5ae9-aa6b-5e08-bba0-ca5d9442f547
+    Search (max float 0.1064, condition: Minimal Wear):
+      Skinport: https://skinport.com/market/730?search=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&max_float=0.1064&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=G3SG1+%257C+Azure+Zebra+(Minimal+Wear)&exterior=minimal-wear
+
+  PP-Bizon | Water Sigil (1x needed):
+    Direct listings:
+      [DMarket] $2.90 @ 0.1291: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=d94fd70d-571a-5ab3-8351-69ca0ef9e079
+    Search (max float 0.1900, condition: Minimal Wear):
+      Skinport: https://skinport.com/market/730?search=PP-Bizon%20%7C%20Water%20Sigil%20(Minimal%20Wear)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=PP-Bizon%20%7C%20Water%20Sigil%20(Minimal%20Wear)&max_float=0.1900&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=PP-Bizon+%257C+Water+Sigil+(Minimal+Wear)&exterior=minimal-wear
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+      [CSFloat] $0.07 @ 0.2014: https://csfloat.com/item/957060213943439076
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    AK-47 | Blue Laminate (Mi) - expected float ~0.1415:
+      https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20(Minimal%20Wear)&min_float=0.13&max_float=0.15&sort_by=lowest_price&type=buy_now&category=1
+    P90 | Blind Spot (Fi) - expected float ~0.1598:
+      https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20(Field-Tested)&min_float=0.15&max_float=0.18&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3196:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2147:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.20&max_float=0.23&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3196:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3196:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.1978:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.19&max_float=0.22&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ESPORTS 2013 WINTER + KILOWATT] +26.2% ROI | EV: $2.75 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(6), esports 2013 winter(4)
+  Total Input Cost: $10.50 (10 skins)
+  Average Input Float: 0.2067 (raw)
+  Average Adjusted Float: 0.3238 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $13.25 (after platform fees)
+  Net Profit (EV): $2.75
+  Output Conditions: 1 Minimal Wear, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [20.0% chance] AK-47 | Blue Laminate [esports 2013 winter]
+    Condition: Minimal Wear (expected output float: 0.1430)
+    Skin Float Range: 0.02 - 0.40
+    Price [Skinport -8%]: $24.58 ($19.21 after fee [liq ×0.85])
+    EV Contribution: $3.84 (20% × $19.21)
+    SELL ON: CSFloat $24.08 > Skinport $22.61 > Steam $20.89
+    CSFloat: https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20%28Minimal%20Wear%29&sort_by=lowest_price
+
+    [20.0% chance] P90 | Blind Spot [esports 2013 winter]
+    Condition: Field-Tested (expected output float: 0.1619)
+    Skin Float Range: 0.00 - 0.50
+    Price [Skinport -8%]: $58.51 ($45.74 after fee [liq ×0.85])
+    EV Contribution: $9.15 (20% × $45.74)
+    SELL ON: CSFloat $57.33 > Skinport $53.82 > Steam $49.73
+    CSFloat: https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3238)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.04 (12% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2175)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.06 (12% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3238)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.06 (12% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.3238)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.05 (12% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [12.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2004)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.04 (12% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra:
+    Buy: 2x Minimal Wear (max float: 0.1064)
+
+  PP-Bizon | Water Sigil:
+    Buy: 2x Minimal Wear (max float: 0.1900)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 1x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  Output conditions at overall avg float 0.2067 (adj 0.3238):
+    Blue Lamin=MW, Blind Spot=FT, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.17   0.1253    0.4475    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  2   $  2.17   0.1111    0.3970    0.1064 Skinport (SP$)     G3SG1 | Azure Zebra
+  3   $  2.90   0.1291    0.2581    0.1900 Skinport (SP$)     PP-Bizon | Water Sigil
+  4   $  2.90   0.1326    0.2652    0.1900 Skinport (SP$)     PP-Bizon | Water Sigil
+  5   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  6   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  7   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  8   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  9   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  10  $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+
+  AVERAGE: Raw Float = 0.2067, Adjusted Float = 0.3238
+  * (SP$) = 4 items use Skinport price (cheaper), float from DMarket/CSFloat listing
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  G3SG1 | Azure Zebra (2x needed):
+    Direct listings:
+      [DMarket] $2.17 @ 0.1253: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=bc6a8e25-0d0d-503b-823d-20d706799d8a
+      [DMarket] $2.17 @ 0.1111: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=739d5ae9-aa6b-5e08-bba0-ca5d9442f547
+    Search (max float 0.1064, condition: Minimal Wear):
+      Skinport: https://skinport.com/market/730?search=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=G3SG1%20%7C%20Azure%20Zebra%20(Minimal%20Wear)&max_float=0.1064&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=G3SG1+%257C+Azure+Zebra+(Minimal+Wear)&exterior=minimal-wear
+
+  PP-Bizon | Water Sigil (2x needed):
+    Direct listings:
+      [DMarket] $2.90 @ 0.1291: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=d94fd70d-571a-5ab3-8351-69ca0ef9e079
+      [DMarket] $2.90 @ 0.1326: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=4f9478c4-6b6d-5296-a47c-07e1b9349c3c
+    Search (max float 0.1900, condition: Minimal Wear):
+      Skinport: https://skinport.com/market/730?search=PP-Bizon%20%7C%20Water%20Sigil%20(Minimal%20Wear)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=PP-Bizon%20%7C%20Water%20Sigil%20(Minimal%20Wear)&max_float=0.1900&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=PP-Bizon+%257C+Water+Sigil+(Minimal+Wear)&exterior=minimal-wear
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    AK-47 | Blue Laminate (Mi) - expected float ~0.1430:
+      https://csfloat.com/search?market_hash_name=AK-47%20%7C%20Blue%20Laminate%20(Minimal%20Wear)&min_float=0.13&max_float=0.15&sort_by=lowest_price&type=buy_now&category=1
+    P90 | Blind Spot (Fi) - expected float ~0.1619:
+      https://csfloat.com/search?market_hash_name=P90%20%7C%20Blind%20Spot%20(Field-Tested)&min_float=0.15&max_float=0.18&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.3238:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.2175:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.21&max_float=0.24&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.3238:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.3238:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.31&max_float=0.34&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.2004:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.19&max_float=0.22&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+================================================================================
+  [ARMS DEAL 3 + KILOWATT] +26.2% ROI | EV: $0.79 !! UNVERIFIED ON CSFLOAT !!
+================================================================================
+  WARNING: All output prices from Skinport — not verified on CSFloat
+  Rarity: MIL-SPEC GRADE -> RESTRICTED
+  Collection Mix: kilowatt(9), arms deal 3(1)
+  Total Input Cost: $3.03 (10 skins)
+  Average Input Float: 0.2507 (raw)
+  Average Adjusted Float: 0.2903 (normalized)
+  Max Adjusted Allowed: 0.3800 (for FT ceiling)
+  Expected Output Value: $3.82 (after platform fees)
+  Net Profit (EV): $0.79
+  Output Conditions: 3 Factory New, 6 Field-Tested
+
+  ----------------------------------------------------------------------------
+  POSSIBLE OUTPUTS:
+  ----------------------------------------------------------------------------
+
+    [2.5% chance] CZ75-Auto | Tread Plate [arms deal 3]
+    Condition: Factory New (expected output float: 0.0581)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $23.39 ($18.28 after fee [liq ×0.85])
+    EV Contribution: $0.46 (2% × $18.28)
+    SELL ON: CSFloat $22.92 > Skinport $21.51 > Steam $19.88
+    CSFloat: https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20%28Factory%20New%29&sort_by=lowest_price
+
+    [2.5% chance] Desert Eagle | Heirloom [arms deal 3]
+    Condition: Field-Tested (expected output float: 0.2323)
+    Skin Float Range: 0.00 - 0.80
+    Price [Skinport -8%]: $10.71 ($8.37 after fee [liq ×0.85])
+    EV Contribution: $0.21 (2% × $8.37)
+    SELL ON: CSFloat $10.49 > Skinport $9.85 > Steam $9.10
+    CSFloat: https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20%28Field-Tested%29&sort_by=lowest_price
+
+    [2.5% chance] Five-SeveN | Copper Galaxy [arms deal 3]
+    Condition: Factory New (expected output float: 0.0581)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $55.95 ($43.74 after fee [liq ×0.85])
+    EV Contribution: $1.09 (2% × $43.74)
+    SELL ON: CSFloat $54.83 > Skinport $51.47 > Steam $47.55
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20%28Factory%20New%29&sort_by=lowest_price
+
+    [2.5% chance] Tec-9 | Titanium Bit [arms deal 3]
+    Condition: Factory New (expected output float: 0.0581)
+    Skin Float Range: 0.00 - 0.20
+    Price [Skinport -8%]: $85.32 ($66.71 after fee [liq ×0.85])
+    EV Contribution: $1.67 (2% × $66.71)
+    SELL ON: CSFloat $83.61 > Skinport $78.49 > Steam $72.52
+    CSFloat: https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20%28Factory%20New%29&sort_by=lowest_price
+
+    [18.0% chance] Five-SeveN | Hybrid [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2903)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.07 (18% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] Glock-18 | Block-18 [kilowatt]
+    Condition: Field-Tested (expected output float: 0.1951)
+    Skin Float Range: 0.00 - 0.67
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.09 (18% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] M4A4 | Etch Lord [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2903)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.68 ($0.52 after fee [liq ×0.85])
+    EV Contribution: $0.09 (18% × $0.52)
+    SELL ON: CSFloat $0.66 > Skinport $0.62 > Steam $0.57
+    CSFloat: https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] MP7 | Just Smile [kilowatt]
+    Condition: Field-Tested (expected output float: 0.2903)
+    Skin Float Range: 0.00 - 1.00
+    Price [Skinport -8%]: $0.55 ($0.42 after fee [liq ×0.85])
+    EV Contribution: $0.08 (18% × $0.42)
+    SELL ON: CSFloat $0.53 > Skinport $0.50 > Steam $0.46
+    CSFloat: https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20%28Field-Tested%29&sort_by=lowest_price
+
+    [18.0% chance] Sawed-Off | Analog Input [kilowatt]
+    Condition: Field-Tested (expected output float: 0.1797)
+    Skin Float Range: 0.00 - 0.62
+    Price [Skinport -8%]: $0.48 ($0.37 after fee [liq ×0.85])
+    EV Contribution: $0.07 (18% × $0.37)
+    SELL ON: CSFloat $0.47 > Skinport $0.44 > Steam $0.40
+    CSFloat: https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20%28Field-Tested%29&sort_by=lowest_price
+
+  ----------------------------------------------------------------------------
+  INPUT REQUIREMENTS (October 2025 Algorithm):
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure:
+    Buy: 1x Field-Tested (max float: 0.2576)
+
+  Dual Berettas | Hideout:
+    Buy: 1x Field-Tested (max float: 0.2654)
+
+  SSG 08 | Dezastre:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Tec-9 | Slag:
+    Buy: 2x Field-Tested (max float: 0.3420)
+
+  Nova | Dark Sigil:
+    Buy: 2x Field-Tested (max float: 0.2654)
+
+  MAC-10 | Light Box:
+    Buy: 2x Field-Tested (max float: 0.3800)
+
+  Output conditions at overall avg float 0.2507 (adj 0.2903):
+    Tread Plat=FN, Heirloom=FT, Copper Gal=FN, Titanium B=FN, Hybrid=FT, Block-18=FT, Etch Lord=FT, Just Smile=FT, Analog Inp=FT
+
+  ----------------------------------------------------------------------------
+  EXACT LISTINGS USED IN CALCULATION:
+  ----------------------------------------------------------------------------
+  #     Price    Float  Adjusted  MaxFloat Source             Skin
+  --- ------- -------- --------- --------- ------------------ -------------------------
+  1   $  2.46   0.2042    0.2773    0.2576 DMarket            Glock-18 | Blue Fissure
+  2   $  0.06   0.2203    0.3154    0.2654 CSFloat            Dual Berettas | Hideout
+  3   $  0.06   0.3198    0.3198    0.3800 CSFloat            SSG 08 | Dezastre
+  4   $  0.06   0.2431    0.2701    0.3420 CSFloat            Tec-9 | Slag
+  5   $  0.06   0.3708    0.3708    0.3800 CSFloat            SSG 08 | Dezastre
+  6   $  0.06   0.2047    0.2931    0.2654 CSFloat            Nova | Dark Sigil
+  7   $  0.06   0.2099    0.3005    0.2654 CSFloat            Nova | Dark Sigil
+  8   $  0.07   0.2014    0.2238    0.3420 CSFloat            Tec-9 | Slag
+  9   $  0.07   0.2726    0.2726    0.3800 CSFloat            MAC-10 | Light Box
+  10  $  0.07   0.2600    0.2600    0.3800 CSFloat            MAC-10 | Light Box
+
+  AVERAGE: Raw Float = 0.2507, Adjusted Float = 0.2903
+
+  ----------------------------------------------------------------------------
+  DIRECT LINKS TO LISTINGS:
+  ----------------------------------------------------------------------------
+
+  Glock-18 | Blue Fissure (1x needed):
+    Direct listings:
+      [DMarket] $2.46 @ 0.2042: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId=b0efdb43-4670-53f2-b26f-354413cf5457
+    Search (max float 0.2576, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Blue%20Fissure%20(Field-Tested)&max_float=0.2576&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Glock-18+%257C+Blue+Fissure+(Field-Tested)&exterior=field-tested
+
+  Dual Berettas | Hideout (1x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2203: https://csfloat.com/item/957139272509555414
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Dual%20Berettas%20%7C%20Hideout%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Dual+Berettas+%257C+Hideout+(Field-Tested)&exterior=field-tested
+
+  SSG 08 | Dezastre (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.3198: https://csfloat.com/item/957139275571397368
+      [CSFloat] $0.06 @ 0.3708: https://csfloat.com/item/957139280113828669
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=SSG%2008%20%7C%20Dezastre%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=SSG+08+%257C+Dezastre+(Field-Tested)&exterior=field-tested
+
+  Tec-9 | Slag (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2431: https://csfloat.com/item/957139277899236130
+      [CSFloat] $0.07 @ 0.2014: https://csfloat.com/item/957060213943439076
+    Search (max float 0.3420, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Tec-9%20%7C%20Slag%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Slag%20(Field-Tested)&max_float=0.3420&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Tec-9+%257C+Slag+(Field-Tested)&exterior=field-tested
+
+  Nova | Dark Sigil (2x needed):
+    Direct listings:
+      [CSFloat] $0.06 @ 0.2047: https://csfloat.com/item/957139280667476802
+      [CSFloat] $0.06 @ 0.2099: https://csfloat.com/item/957139282345198418
+    Search (max float 0.2654, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=Nova%20%7C%20Dark%20Sigil%20(Field-Tested)&max_float=0.2654&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=Nova+%257C+Dark+Sigil+(Field-Tested)&exterior=field-tested
+
+  MAC-10 | Light Box (2x needed):
+    Direct listings:
+      [CSFloat] $0.07 @ 0.2726: https://csfloat.com/item/957090510936344455
+      [CSFloat] $0.07 @ 0.2600: https://csfloat.com/item/957131764592149866
+    Search (max float 0.3800, condition: Field-Tested):
+      Skinport: https://skinport.com/market/730?search=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&sort=price&order=asc
+      CSFloat:  https://csfloat.com/search?market_hash_name=MAC-10%20%7C%20Light%20Box%20(Field-Tested)&max_float=0.3800&sort_by=lowest_price&type=buy_now
+      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title=MAC-10+%257C+Light+Box+(Field-Tested)&exterior=field-tested
+
+  ----------------------------------------------------------------------------
+  SELL LINKS (check current prices for outputs):
+  ----------------------------------------------------------------------------
+    CZ75-Auto | Tread Plate (Fa) - expected float ~0.0581:
+      https://csfloat.com/search?market_hash_name=CZ75-Auto%20%7C%20Tread%20Plate%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Desert Eagle | Heirloom (Fi) - expected float ~0.2323:
+      https://csfloat.com/search?market_hash_name=Desert%20Eagle%20%7C%20Heirloom%20(Field-Tested)&min_float=0.22&max_float=0.25&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Copper Galaxy (Fa) - expected float ~0.0581:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Copper%20Galaxy%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Tec-9 | Titanium Bit (Fa) - expected float ~0.0581:
+      https://csfloat.com/search?market_hash_name=Tec-9%20%7C%20Titanium%20Bit%20(Factory%20New)&min_float=0.05&max_float=0.07&sort_by=lowest_price&type=buy_now&category=1
+    Five-SeveN | Hybrid (Fi) - expected float ~0.2903:
+      https://csfloat.com/search?market_hash_name=Five-SeveN%20%7C%20Hybrid%20(Field-Tested)&min_float=0.28&max_float=0.31&sort_by=lowest_price&type=buy_now&category=1
+    Glock-18 | Block-18 (Fi) - expected float ~0.1951:
+      https://csfloat.com/search?market_hash_name=Glock-18%20%7C%20Block-18%20(Field-Tested)&min_float=0.19&max_float=0.22&sort_by=lowest_price&type=buy_now&category=1
+    M4A4 | Etch Lord (Fi) - expected float ~0.2903:
+      https://csfloat.com/search?market_hash_name=M4A4%20%7C%20Etch%20Lord%20(Field-Tested)&min_float=0.28&max_float=0.31&sort_by=lowest_price&type=buy_now&category=1
+    MP7 | Just Smile (Fi) - expected float ~0.2903:
+      https://csfloat.com/search?market_hash_name=MP7%20%7C%20Just%20Smile%20(Field-Tested)&min_float=0.28&max_float=0.31&sort_by=lowest_price&type=buy_now&category=1
+    Sawed-Off | Analog Input (Fi) - expected float ~0.1797:
+      https://csfloat.com/search?market_hash_name=Sawed-Off%20%7C%20Analog%20Input%20(Field-Tested)&min_float=0.17&max_float=0.20&sort_by=lowest_price&type=buy_now&category=1
+
+================================================================================
+
+
+======================================================================
+WATCH LIST: Collections with 5-9 inputs (need more to execute)
+======================================================================
+
+Collection                Rarity                     Found  Need  Est.ROI Sources
+------------------------------------------------------------------------------------------
+cobblestone               res->cla                       8     2   -42.1% Skinport:4, DMarket:4
+mirage                    ind->mil                       8     2   -53.7% Skinport:5, DMarket:3
+chop shop                 res->cla                       5     5   -55.9% Skinport:4, DMarket:1
+arms deal 3               res->cla                       7     3   -65.2% DMarket:3, Skinport:4
+esports 2013              res->cla                       8     2   -72.6% DMarket:2, Skinport:6
+2021 vertigo              mil->res                       7     3   -77.9% DMarket:3, Skinport:4
+vertigo                   ind->mil                       5     5   -79.9% Skinport:5
+militia                   con->ind                       6     4   -85.2% Skinport:1, DMarket:5
+winter offensive          mil->res                       8     2   -89.8% Skinport:3, DMarket:5
+alpha                     mil->res                       6     4   -93.3% DMarket:3, Skinport:3
+vertigo                   con->ind                       5     5   -96.2% DMarket:5
+rising sun                cla->cov                       5     5   -97.5% DMarket:3, Skinport:2
+inferno                   ind->mil                       8     2   -98.1% DMarket:2, Skinport:6
+
+   * Est.ROI assumes similar prices for remaining inputs
+   * Enable Skinport to find more listings and potentially complete these
