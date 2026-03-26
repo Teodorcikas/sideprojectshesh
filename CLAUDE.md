@@ -64,7 +64,7 @@ CSFloat enforces a request rate limit. The code uses:
 - **No caching of failed results**: if all retries fail (returns 0), the result is NOT written to cache — next run will retry fresh
 - **`CSFLOAT_NO_LISTING = -1` sentinel**: distinguishes "confirmed no listing" from "rate-limited unknown"
 
-## Current State (v3.8)
+## Current State (v3.9)
 
 **Working:**
 - Fetches from DMarket + CSFloat + Waxpeer (bulk, 200 pages) + Skinport (~23,800 total items)
@@ -82,7 +82,9 @@ CSFloat enforces a request rate limit. The code uses:
 - **Skinport singleton filter (outputs)**: Rejects Skinport output prices with qty=1 (unreliable)
 - **Skinport 2× sanity check**: Rejects Skinport output price if > 2× DMarket or Steam reference for same skin
 - **Skinport as output sell platform**: When CSFloat confirms no listing, Skinport used as sell platform (qty ≥ 2 guard, 8% fee). Unlocks collections previously dead.
-- **CSFloat budget split**: 140 inputs / 50 outputs / 10 reserve = 200 total. Smart output allocation only fetches CSFloat for promising trade-ups (EV pre-scan).
+- **Multi-key CSFloat**: Supports multiple API keys via `CSFLOAT_API_KEYS` env var (comma-separated). Round-robin rotation with 60s cooldown on 429. Budget scales dynamically: N keys × 200 = total (50% inputs, 45% outputs, 5% reserve). Falls back to single `CSFLOAT_API_KEY`.
+- **Two-pass EV system**: Pass 1 (broad scan) evaluates ALL single + multi-collection trade-ups using only cached/free data (zero API calls). Pass 2 (deep verify) uses CSFloat-primary verification on top candidates. CSFloat budget focused on highest-ROI outputs.
+- **Waxpeer targeted fetch (Phase 1b)**: After initial input fetch, queries Waxpeer by exact skin name for near-viable (5-9 input) collections. Promotes watchlist collections to viable.
 - **Unverifiable EV detection**: Trade-ups with any output skin missing a price are excluded from profitable results and shown separately
 - **UNVERIFIED ON CSFLOAT warning**: Trade-ups where all output prices come from Steam/Skinport (no CSFloat verification) are flagged in results
 - **Float violation hard skip**: Trade-ups where inputs exceed MaxFloat are skipped with ERROR log, not silently included
@@ -223,9 +225,10 @@ CACHE_STALE_EXPIRY = 6 * 60 * 60  # 6 hours stale fallback
 MIN_ROI = 25.0                    # Only show 25%+ ROI — do not lower
 MIN_EV = 30                       # Only show $0.30+ net profit (in cents)
 CSFLOAT_SELLER_FEE = 0.02         # 2% when selling on CSFloat
-CSFLOAT_BUDGET_RESERVE = 10       # Keep 10 requests in reserve
-CSFLOAT_INPUT_CAP = 140           # Max requests for input fetching (140+50+10=200)
-CSFLOAT_OUTPUT_RESERVE = 50       # Reserved for output price verification
+# Dynamic budget: N keys × 200 total, split 50/45/5%
+CSFLOAT_BUDGET_RESERVE = max(10, total * 0.05)
+CSFLOAT_INPUT_CAP = max(140, total * 0.50)
+CSFLOAT_OUTPUT_RESERVE = max(50, total * 0.45)
 CSFLOAT_NO_LISTING = -1           # Sentinel: confirmed no CSFloat listing
 SOURCE_FEES = {"Steam": 0.15, "Skinport": 0.08, "CSFloat": 0.02}
 MAX_COLLECTIONS = 4               # Max collections in multi-collection trade-up
