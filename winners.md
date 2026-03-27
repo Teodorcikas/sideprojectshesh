@@ -1067,3 +1067,18 @@ Profitable trade-ups found with ROI >= 25% and EV >= $0.30.
   - Sawed-Off | Analog Input (Fi, ~0.1797) — $0.48 [Skinport]
 
 ---
+
+## 2026-03-26
+
+### Canals | Industrial Grade → Mil-Spec Grade | +207.7% ROI | EV: $133.35
+- **Input:** 10x AK-47 | Baroque Purple (Well-Worn) @ $6.37 each = $64.19 total
+- **Max input float:** 0.7600
+- **Avg input float:** 0.4180 (max adjusted allowed: 0.7600)
+- **Expected output value:** $197.54 (after platform fees)
+- **Outputs (1/4 each):**
+  - Dual Berettas | Emerald (Fa, ~0.0334) — $66.40 [CSFloat] ← jackpot
+  - G3SG1 | Violet Murano (Fi, ~0.2090) — $33.99 [CSFloat] ← jackpot
+  - P90 | Baroque Red (Fi, ~0.2090) — $809.33 [CSFloat] ← jackpot
+  - SSG 08 | Orange Filigree (Fi, ~0.2090) — $38.88 [CSFloat] ← jackpot
+
+---
