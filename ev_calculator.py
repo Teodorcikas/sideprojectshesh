@@ -1755,20 +1755,21 @@ def fetch_csfloat_price(skin_name, condition):
     """Fetch lowest CSFloat buy-now price for a skin+condition.
 
     Returns:
-      price > 0          — CSFloat has an active listing at this price (cents)
-      CSFLOAT_NO_LISTING — CSFloat responded 200 OK but zero listings; skin not sellable here
-      0                  — Rate-limited after all retries, or network error; do NOT cache
+      (price, count) where:
+        price > 0, count >= 1  — CSFloat has listing(s) at this price
+        (CSFLOAT_NO_LISTING, 0) — CSFloat responded 200 OK but zero listings
+        (0, 0)                  — Rate-limited/error; do NOT cache
 
     Uses the global MultiKeyRateLimiter for key rotation and rate limiting.
     Retries on 429 with key rotation and exponential backoff.
     """
     if not _csfloat_has_budget():
-        return 0  # Budget exhausted — don't waste remaining reserve
+        return 0, 0  # Budget exhausted — don't waste remaining reserve
     market_hash_name = f"{skin_name} ({condition})"
     params = {
         "market_hash_name": market_hash_name,
         "sort_by": "lowest_price",
-        "limit": 1,
+        "limit": 5,  # Fetch a few to detect singletons for sanity check
         "type": "buy_now",
     }
     max_attempts = 5
@@ -1788,7 +1789,7 @@ def fetch_csfloat_price(skin_name, condition):
                     wait_time = max(1, rl_reset - int(time.time()) + 1)
                     if wait_time > 300:
                         print(f"   [CSFLOAT 429] attempt {attempt+1}/{max_attempts} key#{key_idx} | {rl_remaining}/{rl_limit} remaining, reset in {wait_time}s (>5m, giving up)")
-                        return 0
+                        return 0, 0
                 else:
                     wait_time = min(5 * (2 ** attempt), 60)
                 print(f"   [CSFLOAT 429] attempt {attempt+1}/{max_attempts} key#{key_idx} | {rl_remaining}/{rl_limit} remaining | waiting {wait_time}s")
@@ -1796,17 +1797,17 @@ def fetch_csfloat_price(skin_name, condition):
                 continue
             if r.status_code in (401, 403):
                 print(f"   [CSFLOAT] Auth error {r.status_code} key#{key_idx} for '{market_hash_name}' — check API key")
-                return 0  # Don't retry auth errors
+                return 0, 0  # Don't retry auth errors
             if r.ok:
                 listings = r.json().get("data", [])
                 if listings:
-                    return int(listings[0].get("price", 0))
+                    return int(listings[0].get("price", 0)), len(listings)
                 else:
-                    return CSFLOAT_NO_LISTING  # Confirmed: CSFloat has no listing for this skin
+                    return CSFLOAT_NO_LISTING, 0  # Confirmed: CSFloat has no listing for this skin
             # Other non-OK status (5xx etc.) — treat as transient, retry
         except (requests.RequestException, json.JSONDecodeError, KeyError, ValueError):
             pass  # Network error — retry
-    return 0  # All retries exhausted — do NOT cache this result
+    return 0, 0  # All retries exhausted — do NOT cache this result
 
 
 def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_prices, skin_float_ranges, cached_sources=None, cache_timestamps=None, cache_volumes=None):
@@ -2067,7 +2068,7 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
                 with ThreadPoolExecutor(max_workers=2) as executor:
                     futures = {executor.submit(_fetch_output_price, pair): pair for pair in to_fetch}
                     for future in as_completed(futures):
-                        (name, cond), price = future.result()
+                        (name, cond), (price, count) = future.result()
                         cache_key = f"{name}|{cond}"
                         if price > 0:
                             had_price = cache_key in cached_prices and cached_prices[cache_key] > 0
@@ -2823,6 +2824,19 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
     csfloat_no_listing = 0
     csfloat_failed = 0
 
+    # Pre-load DMarket refs for sanity check
+    dmarket_refs_for_sanity = {}
+    dmarket_items_raw, _, _ = load_dmarket_cache()
+    if dmarket_items_raw:
+        for item in dmarket_items_raw:
+            title = item.get("title", "")
+            dm_price = item.get("price_usd", 0)
+            if title and dm_price > 0:
+                if title not in dmarket_refs_for_sanity or dm_price < dmarket_refs_for_sanity[title]:
+                    dmarket_refs_for_sanity[title] = dm_price
+
+    csfloat_rejected_inflated = 0
+
     if to_verify:
         def _fetch_output_price(name_cond):
             name, cond = name_cond
@@ -2831,9 +2845,42 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
         with ThreadPoolExecutor(max_workers=2) as executor:
             futures = {executor.submit(_fetch_output_price, pair): pair for pair in to_verify}
             for future in as_completed(futures):
-                (name, cond), price = future.result()
+                (name, cond), (price, count) = future.result()
                 cache_key = f"{name}|{cond}"
                 if price > 0:
+                    # Sanity check: cross-reference against Steam/Skinport/DMarket
+                    ref_price = None
+                    ref_source = None
+
+                    # Check Steam cache
+                    if cache_key in cached_prices and price_sources.get(cache_key) == "Steam" and cached_prices[cache_key] > 0:
+                        ref_price = cached_prices[cache_key]
+                        ref_source = "Steam"
+
+                    # Check Skinport
+                    if ref_price is None:
+                        sp_data = get_skinport_price(skinport_prices, name, cond)
+                        if sp_data and sp_data.get("price", 0) > 0 and sp_data.get("quantity", 0) >= 2:
+                            ref_price = sp_data["price"]
+                            ref_source = "Skinport"
+
+                    # Check DMarket cache
+                    if ref_price is None:
+                        dm_title = f"{name} ({cond})"
+                        dm_price = dmarket_refs_for_sanity.get(dm_title)
+                        if dm_price and dm_price > 0:
+                            ref_price = dm_price
+                            ref_source = "DMarket"
+
+                    # Apply sanity check: reject singleton at 3x+ reference
+                    if ref_price and ref_price > 0 and price > ref_price * 3:
+                        if count <= 1:
+                            print(f"   [REJECTED] {name} ({cond}): CSFloat ${price/100:.2f} (1 listing) vs {ref_source} ${ref_price/100:.2f} ({price/ref_price:.1f}x)")
+                            csfloat_rejected_inflated += 1
+                            continue  # Don't cache — let it be retried next run
+                        else:
+                            print(f"   [WARN] {name} ({cond}): CSFloat ${price/100:.2f} ({count} listings) vs {ref_source} ${ref_price/100:.2f} ({price/ref_price:.1f}x)")
+
                     cached_prices[cache_key] = price
                     price_sources[cache_key] = "CSFloat"
                     cache_timestamps[cache_key] = time.time()
@@ -2848,6 +2895,8 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
                     csfloat_failed += 1
 
         print(f"   CSFloat: {csfloat_ok} priced, {csfloat_no_listing} no listing, {csfloat_failed} failed")
+        if csfloat_rejected_inflated:
+            print(f"   CSFloat rejected: {csfloat_rejected_inflated} inflated singletons (>3x reference)")
 
     # Fetch Steam volume data for verified outputs (liquidity only, ~50-100 calls)
     steam_volume_fetched = 0
@@ -3324,7 +3373,7 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                     with ThreadPoolExecutor(max_workers=2) as executor:
                         futures = {executor.submit(_fetch_multi_output, item): item for item in to_verify}
                         for future in as_completed(futures):
-                            (name, cond), price = future.result()
+                            (name, cond), (price, count) = future.result()
                             cache_key = f"{name}|{cond}"
                             if price > 0:
                                 had_price = cache_key in cached_prices and cached_prices[cache_key] > 0
