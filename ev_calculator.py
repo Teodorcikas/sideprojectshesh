@@ -2663,8 +2663,22 @@ def phase2_pass1_broad_scan(viable_collections, all_inputs_by_collection, coll_s
                 continue
 
             target_ev_per_slot = ev_per_input.get((target_coll, out_rarity), 0)
+            # Don't skip ev=0 targets — they may have unpriced valuable outputs
+            # that Pass 2 will verify. Only skip if ALL outputs confirmed NO_LISTINGS.
             if target_ev_per_slot <= 0:
-                continue
+                all_no_listing = True
+                target_outputs = coll_skins.get(target_coll, {}).get(out_rarity, [])
+                for out in target_outputs:
+                    for try_cond in ["Factory New", "Minimal Wear", "Field-Tested"]:
+                        cache_key = f"{out['name']}|{try_cond}"
+                        cached_val = cached_prices.get(cache_key, 0)
+                        if cached_val != CSFLOAT_NO_LISTING:
+                            all_no_listing = False
+                            break
+                    if not all_no_listing:
+                        break
+                if all_no_listing and len(target_outputs) > 0:
+                    continue  # All outputs confirmed dead
 
             max_from_target = min(len(target_normal), 9)
             for n_target in range(1, max_from_target + 1):
@@ -2677,10 +2691,10 @@ def phase2_pass1_broad_scan(viable_collections, all_inputs_by_collection, coll_s
                 target_listing_ids = {x.get("_listing_id", "") for x in target_selected}
 
                 target_ev_contribution = target_ev_per_slot * n_target
-                if target_ev_contribution < target_cost * 0.5 and n_target >= 5:
+                if target_ev_contribution < target_cost * 0.5 and n_target >= 5 and target_ev_per_slot > 0:
                     continue
 
-                # Cheapest filler strategy only for Pass 1 (speed)
+                # Cheapest filler + low-float filler strategies for Pass 1
                 filler_by_coll = defaultdict(list)
                 for inp, inp_coll in pool:
                     if inp_coll == target_coll:
@@ -2697,70 +2711,117 @@ def phase2_pass1_broad_scan(viable_collections, all_inputs_by_collection, coll_s
                         raw_float = extra.get("floatValue", 0)
                         if max_raw is not None and raw_float > max_raw + 0.0001:
                             continue
+                    else:
+                        extra = inp.get("extra", {})
+                        skin_min = extra.get("skin_min", 0)
+                        skin_max = extra.get("skin_max", 1)
+                        raw_float = extra.get("floatValue", 0)
+
+                    # Pre-compute adjusted float for low-float filler strategy
+                    skin_range = skin_max - skin_min
+                    if skin_range > 0:
+                        inp["_adj_float"] = (raw_float - skin_min) / skin_range
+                    else:
+                        inp["_adj_float"] = 0.0
+
                     filler_by_coll[inp_coll].append(inp)
 
                 if not filler_by_coll:
                     continue
 
-                # Strategy A only (cheapest) for broad scan speed
+                # Collect candidate filler sets from multiple strategies
+                candidate_fills = []
+
+                # Strategy A: cheapest average filler cost
                 def _avg_cost(item):
                     f_coll, f_inputs = item
                     n = min(len(f_inputs), needed)
                     return -(sum(f.get("_best_price", 999999) for f in f_inputs[:n]) / n) if n > 0 else 0
-                fillers = _select_fillers(filler_by_coll, needed, target_listing_ids, MAX_COLLECTIONS - 1, _avg_cost)
-                if len(fillers) < needed:
+                fillers_a = _select_fillers(filler_by_coll, needed, target_listing_ids, MAX_COLLECTIONS - 1, _avg_cost)
+                if len(fillers_a) >= needed:
+                    candidate_fills.append(fillers_a)
+
+                # Strategy D: lowest adjusted float (push output condition up)
+                filler_by_coll_low_float = {}
+                for f_coll, f_inputs in filler_by_coll.items():
+                    filler_by_coll_low_float[f_coll] = sorted(
+                        f_inputs, key=lambda x: x.get("_adj_float", 1.0)
+                    )
+                def _lowest_adj_float(item):
+                    f_coll, f_inputs = item
+                    n = min(len(f_inputs), needed)
+                    avg_adj = sum(f.get("_adj_float", 1.0) for f in f_inputs[:n]) / n if n > 0 else 1.0
+                    return -avg_adj
+                fillers_d = _select_fillers(filler_by_coll_low_float, needed, target_listing_ids, MAX_COLLECTIONS - 1, _lowest_adj_float)
+                if len(fillers_d) >= needed:
+                    ids_d = {f[0].get("_listing_id", "") for f in fillers_d}
+                    ids_a = {f[0].get("_listing_id", "") for f in fillers_a} if len(fillers_a) >= needed else set()
+                    if ids_d != ids_a:
+                        candidate_fills.append(fillers_d)
+
+                if not candidate_fills:
                     continue
 
-                all_10_items = list(target_selected) + [f[0] for f in fillers]
-                all_10_colls = [(inp, target_coll) for inp in target_selected] + fillers
+                for fillers in candidate_fills:
+                    all_10_items = list(target_selected) + [f[0] for f in fillers]
+                    all_10_colls = [(inp, target_coll) for inp in target_selected] + fillers
 
-                listing_ids = sorted(x.get("_listing_id", "") for x in all_10_items)
-                non_empty = [lid for lid in listing_ids if lid]
-                if len(non_empty) < 10:
-                    dedup_key = tuple(sorted(
-                        f"{x.get('_listing_id', '')}_{x.get('_best_price', 0)}"
-                        for x in all_10_items
-                    ))
-                else:
-                    dedup_key = tuple(non_empty)
-                if dedup_key in seen_tradeups:
-                    continue
-                seen_tradeups.add(dedup_key)
+                    listing_ids = sorted(x.get("_listing_id", "") for x in all_10_items)
+                    non_empty = [lid for lid in listing_ids if lid]
+                    if len(non_empty) < 10:
+                        dedup_key = tuple(sorted(
+                            f"{x.get('_listing_id', '')}_{x.get('_best_price', 0)}"
+                            for x in all_10_items
+                        ))
+                    else:
+                        dedup_key = tuple(non_empty)
+                    if dedup_key in seen_tradeups:
+                        continue
+                    seen_tradeups.add(dedup_key)
 
-                coll_counts = defaultdict(int)
-                for inp, coll in all_10_colls:
-                    coll_counts[coll] += 1
+                    coll_counts = defaultdict(int)
+                    for inp, coll in all_10_colls:
+                        coll_counts[coll] += 1
 
-                result = _evaluate_tradeup(
-                    all_10_items, coll_skins, out_rarity, cached_prices, cached_sources,
-                    skinport_prices, cache_timestamps, cache_volumes,
-                    apply_liquidity=False, relaxed_filters=True,
-                    coll_counts=dict(coll_counts)
-                )
-                if result is None:
-                    continue
+                    result = _evaluate_tradeup(
+                        all_10_items, coll_skins, out_rarity, cached_prices, cached_sources,
+                        skinport_prices, cache_timestamps, cache_volumes,
+                        apply_liquidity=False, relaxed_filters=True,
+                        coll_counts=dict(coll_counts)
+                    )
+                    if result is None:
+                        # Mark unpriced outputs for verification if cheap trade-up
+                        total_input_cost = sum(x.get("_best_price", 0) for x in all_10_items)
+                        if total_input_cost > 0 and total_input_cost < 5000:  # <$50 input cost
+                            for coll in coll_counts:
+                                for out in coll_skins.get(coll, {}).get(out_rarity, []):
+                                    for try_cond in ["Factory New", "Minimal Wear", "Field-Tested"]:
+                                        ck = f"{out['name']}|{try_cond}"
+                                        if cached_prices.get(ck, 0) <= 0:
+                                            outputs_to_verify.add((out["name"], try_cond))
+                        continue
 
-                multi_count += 1
-                filler_names = sorted(c for c in coll_counts if c != target_coll)
-                coll_label = f"{target_coll} + {' + '.join(filler_names)}"
-                mix_desc = ", ".join(f"{c}({n})" for c, n in sorted(coll_counts.items(), key=lambda x: -x[1]))
+                    multi_count += 1
+                    filler_names = sorted(c for c in coll_counts if c != target_coll)
+                    coll_label = f"{target_coll} + {' + '.join(filler_names)}"
+                    mix_desc = ", ".join(f"{c}({n})" for c, n in sorted(coll_counts.items(), key=lambda x: -x[1]))
 
-                result["collection"] = coll_label
-                result["target_collection"] = target_coll
-                result["coll_mix"] = mix_desc
-                result["in_rarity"] = in_rarity
-                result["out_rarity"] = out_rarity
-                result["is_stattrak"] = False
-                result["multi_collection"] = True
-                result["inputs_raw"] = all_10_items
-                result["inputs_raw_with_colls"] = all_10_colls
-                candidates.append(result)
+                    result["collection"] = coll_label
+                    result["target_collection"] = target_coll
+                    result["coll_mix"] = mix_desc
+                    result["in_rarity"] = in_rarity
+                    result["out_rarity"] = out_rarity
+                    result["is_stattrak"] = False
+                    result["multi_collection"] = True
+                    result["inputs_raw"] = all_10_items
+                    result["inputs_raw_with_colls"] = all_10_colls
+                    candidates.append(result)
 
-                for o in result["outputs"]:
-                    if o["price_raw"] > 0 and o["confidence"] != "high":
-                        outputs_to_verify.add((o["name"], o["condition"]))
-                    elif o["price_raw"] <= 0 and o["price_source"] != "NO_LISTINGS":
-                        outputs_to_verify.add((o["name"], o["condition"]))
+                    for o in result["outputs"]:
+                        if o["price_raw"] > 0 and o["confidence"] != "high":
+                            outputs_to_verify.add((o["name"], o["condition"]))
+                        elif o["price_raw"] <= 0 and o["price_source"] != "NO_LISTINGS":
+                            outputs_to_verify.add((o["name"], o["condition"]))
 
     print(f"   Multi-collection candidates: {multi_count}")
 
@@ -3506,11 +3567,23 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
             # Enumerate ALL split ratios: 1 to min(9, available) inputs from target
             max_from_target = min(len(target_normal), 9)
 
-            # Early pruning: skip targets with no output value at all
+            # Early pruning: skip targets where ALL outputs confirmed NO_LISTINGS
             target_ev_per_slot = ev_per_input.get((target_coll, out_rarity), 0)
             if target_ev_per_slot <= 0:
-                skipped_no_outputs += 1
-                continue
+                all_no_listing = True
+                target_outputs = coll_skins.get(target_coll, {}).get(out_rarity, [])
+                for out in target_outputs:
+                    for try_cond in ["Factory New", "Minimal Wear", "Field-Tested"]:
+                        cache_key = f"{out['name']}|{try_cond}"
+                        cached_val = cached_prices.get(cache_key, 0)
+                        if cached_val != CSFLOAT_NO_LISTING:
+                            all_no_listing = False
+                            break
+                    if not all_no_listing:
+                        break
+                if all_no_listing and len(target_outputs) > 0:
+                    skipped_no_outputs += 1
+                    continue  # All outputs confirmed dead
 
             for n_target in range(1, max_from_target + 1):
                 needed = 10 - n_target
@@ -3525,7 +3598,7 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                 target_ev_contribution = target_ev_per_slot * n_target
                 # Upper bound: assume best possible fillers add their max ev_per_input
                 # If target contribution alone < target_cost * 0.5, skip (fillers rarely make up 2x)
-                if target_ev_contribution < target_cost * 0.5 and n_target >= 5:
+                if target_ev_contribution < target_cost * 0.5 and n_target >= 5 and target_ev_per_slot > 0:
                     continue
 
                 # Collect candidate fillers by collection (same logic, preserving float checks)
@@ -3550,6 +3623,18 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                         raw_float = extra.get("floatValue", 0)
                         if max_raw is not None and raw_float > max_raw + 0.0001:
                             continue
+                    else:
+                        extra = inp_item.get("extra", {})
+                        skin_min = extra.get("skin_min", 0)
+                        skin_max = extra.get("skin_max", 1)
+                        raw_float = extra.get("floatValue", 0)
+
+                    # Pre-compute adjusted float for Strategy D
+                    skin_range = skin_max - skin_min
+                    if skin_range > 0:
+                        inp_item["_adj_float"] = (raw_float - skin_min) / skin_range
+                    else:
+                        inp_item["_adj_float"] = 0.0
                     filler_by_coll[inp_coll].append(inp_item)
 
                 if not filler_by_coll:
@@ -3596,6 +3681,24 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
                     ids_prev = [{f[0].get("_listing_id", "") for f in fl} for fl in candidate_fills]
                     if ids_c not in ids_prev:
                         candidate_fills.append(fillers_c)
+
+                # Strategy D: lowest adjusted float (push output condition up)
+                filler_by_coll_low_float = {}
+                for f_coll, f_inputs in filler_by_coll.items():
+                    filler_by_coll_low_float[f_coll] = sorted(
+                        f_inputs, key=lambda x: x.get("_adj_float", 1.0)
+                    )
+                def _lowest_adj_float(item):
+                    f_coll, f_inputs = item
+                    n = min(len(f_inputs), needed)
+                    avg_adj = sum(f.get("_adj_float", 1.0) for f in f_inputs[:n]) / n if n > 0 else 1.0
+                    return -avg_adj
+                fillers_d = _select_fillers(filler_by_coll_low_float, needed, target_listing_ids, MAX_COLLECTIONS - 1, _lowest_adj_float)
+                if len(fillers_d) >= needed:
+                    ids_d = {f[0].get("_listing_id", "") for f in fillers_d}
+                    ids_prev = [{f[0].get("_listing_id", "") for f in fl} for fl in candidate_fills]
+                    if ids_d not in ids_prev:
+                        candidate_fills.append(fillers_d)
 
                 if not candidate_fills:
                     skipped_no_fillers += 1
