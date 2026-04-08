@@ -64,7 +64,7 @@ CSFloat enforces a request rate limit. The code uses:
 - **No caching of failed results**: if all retries fail (returns 0), the result is NOT written to cache — next run will retry fresh
 - **`CSFLOAT_NO_LISTING = -1` sentinel**: distinguishes "confirmed no listing" from "rate-limited unknown"
 
-## Current State (v3.9)
+## Current State (v4.0)
 
 **Working:**
 - Fetches from DMarket + CSFloat + Waxpeer (bulk, 200 pages) + Skinport (~23,800 total items)
@@ -93,7 +93,9 @@ CSFloat enforces a request rate limit. The code uses:
 - **Liquidity-weighted EV**: Output prices discounted by Steam 24h trading volume (100+/day=1.0, 10+=0.90, 2+=0.70, <2=0.50, unknown=0.85). Prevents recommending illiquid trade-ups.
 - **Fee-aware sell platform recommendation**: Each output shows net proceeds on CSFloat/Skinport/Steam, ranked best to worst
 - **Reverse search (Phase 0)**: Scans $5+ outputs top-down, works backwards to identify priority collections. Uses only cached data, zero API calls.
-- **Multi-collection trade-ups**: Evaluates 4,500+ target+filler combinations using 3 strategies (cheapest, best EV/dollar, max jackpot). Max 4 collections per trade-up. Pre-computes ev_per_input and max_single_output for efficient scoring.
+- **CSFloat output price sanity check**: Cross-references CSFloat prices against Steam/Skinport/DMarket. Rejects singleton listings priced >3x the reference price. Prevents fake profitable trade-ups from inflated listings (e.g. single $809 listing for a $5 skin).
+- **Multi-collection trade-ups**: Evaluates 4,500+ target+filler combinations using 4 strategies (cheapest, best EV/dollar, max jackpot, lowest adjusted float). Max 4 collections per trade-up. Pre-computes ev_per_input and max_single_output for efficient scoring. Collections with unpriced outputs no longer blanket-skipped — only those with ALL outputs confirmed NO_LISTINGS are excluded.
+- **Low adjusted float filler strategy (Strategy D)**: Picks fillers with lowest adjusted floats to push output conditions higher (FT→MW, MW→FN), dramatically increasing output value. Added to both Pass 1 broad scan and Phase 2b.
 - **Winners dedup**: `append_winners_log` checks for existing entries by collection+rarity+date before appending
 - **Multi-source verification**: When inputs are sold, replacement search checks DMarket + Waxpeer cache + CSFloat input cache
 - ROI filter: only shows 25%+ ROI AND $0.30+ EV trade-ups — **do not lower this threshold**
@@ -120,6 +122,8 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **Sell on Skinport (output)** — Done. When CSFloat has no listing, falls back to Skinport (qty ≥ 2 guard, 8% fee). Unlocks previously dead collections.
 - [ ] **Rarity expansion** — Support all rarity tiers more broadly
 - [ ] **Quick execution solution** — Auto-buy inputs or one-click purchase flow
+- [ ] **Fix multi-collection combo count** — "Calculated float limits for 361 collection+rarity combos" is wrong. 361 = 92 collections × ~4 rarities, but that's single-collection combos. Multi-collection trade-ups can mix ANY collections of the same rarity, so the real search space is combinatorial (92×91×90×89 for 4-collection mixes). The float limit calculation and candidate enumeration need to account for cross-collection combinations, not just per-collection limits.
+- [ ] **Exclude non-tradeable items** — Limited Edition items and Souvenir items cannot be used in trade-up contracts. The bot currently includes them. Filter these out during Phase 1 input collection and exclude their collections from output calculations.
 
 ### Medium Priority
 - [x] **Steam output price fallback** — Done. Steam is now the primary output price source (free, based on actual sales, minus 15% fee). Skinport is secondary fallback (minus 8% fee), CSFloat last resort.
@@ -148,6 +152,8 @@ CSFloat enforces a request rate limit. The code uses:
 - [x] **Verification re-fetch only uses DMarket** — Fixed: now also searches Waxpeer cache and CSFloat input cache for replacements.
 - [x] **Cache invalidation is all-or-nothing** — Fixed: v2 per-key cache format with individual `fetched_at` timestamps. Stale entries used as fallback.
 - [x] **Phase 2 pre-scan vs actual EV mismatch** — Fixed: pre-scan now includes WW/BS outputs (with their cached price, usually 0) matching actual calc.
+- [x] **CSFloat output prices accepted without sanity check** — A single inflated listing (e.g. P90 Baroque Red at $809 vs real ~$5) produced fake profitable trade-ups like Canals +207% ROI. Fixed: cross-references against Steam/Skinport/DMarket, rejects singleton listings >3x reference.
+- [x] **Multi-collection candidates = 0 for unpriced targets** — `ev_per_input=0` caused all unpriced collections to be skipped, producing zero multi-collection candidates on fresh cache. Fixed: only skip when ALL outputs confirmed NO_LISTINGS.
 
 ## Filler System Architecture (Multi-Collection Trade-Ups)
 
@@ -164,7 +170,7 @@ CSFloat enforces a request rate limit. The code uses:
 2. Pre-computes `ev_per_input[(coll, rarity)]` and `max_single_output[(coll, rarity)]` for scoring
 3. For each target collection with outputs at next rarity:
    - Tries all split ratios (1 to max_available target inputs)
-   - 3 filler strategies per ratio: cheapest inputs, best EV/dollar, max jackpot
+   - 4 filler strategies per ratio: cheapest inputs, best EV/dollar, max jackpot, lowest adjusted float
    - Max 4 collections per trade-up, dedup by listing ID set
    - Early pruning: skip if `target_ev_contribution < target_cost * 0.5` for 5+ inputs
 4. Evaluates 4,500+ combinations per run (was ~32 before overhaul)
@@ -177,7 +183,7 @@ CSFloat enforces a request rate limit. The code uses:
 
 ### Tier 1 — Highest impact, directly unlocks new profits
 
-1. ~~**Multi-collection filler system**~~ — **DONE (v3.8).** 3 filler strategies, 4,500+ combos evaluated, max 4 collections. Found 8 profitable multi-collection trade-ups on first run.
+1. ~~**Multi-collection filler system**~~ — **DONE (v3.8, improved v4.0).** 4 filler strategies (cheapest, best EV/dollar, max jackpot, lowest adjusted float), 4,500+ combos evaluated, max 4 collections. v4.0: Strategy D optimizes for lowest adjusted float to push output conditions higher (FT→MW). Collections with unpriced outputs no longer blanket-skipped.
 
 2. ~~**Reverse search — start from valuable outputs**~~ — **DONE (v3.8).** `phase0_reverse_search()` ranks $5+ outputs, works backwards to priority collections. Zero API calls (cached data only).
 

@@ -142,6 +142,7 @@ CACHE_EXPIRY = 3 * 60 * 60  # 3 hours for output prices
 CACHE_STALE_EXPIRY = 6 * 60 * 60  # 6 hours (keep stale data as fallback)
 INPUT_CACHE_EXPIRY = 6 * 60 * 60  # 6 hours for input listings (don't change fast)
 INPUT_CACHE_STALE_EXPIRY = 12 * 60 * 60  # 12 hours stale fallback for input listings
+VOLUME_CACHE_EXPIRY = 24 * 60 * 60  # 24 hours for volume data (changes slowly)
 SKINPORT_COOLDOWN = 60  # 1 minute between Skinport API calls
 # Dynamic CSFloat budget based on number of API keys
 # Each key has ~200 request budget per reset period
@@ -286,7 +287,7 @@ def load_cache():
     Expired entries (>6h) are dropped on load. Stale entries (3-6h) are kept as fallback.
     """
     if not os.path.exists(CACHE_FILE):
-        return {}, {}, {}
+        return {}, {}, {}, {}, {}
     try:
         with open(CACHE_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -296,46 +297,54 @@ def load_cache():
         if data.get("version") == 2:
             # v2: per-key timestamps
             entries = data.get("entries", {})
-            prices, sources, timestamps, volumes = {}, {}, {}, {}
+            prices, sources, timestamps, volumes, vol_timestamps = {}, {}, {}, {}, {}
             for key, entry in entries.items():
                 fetched_at = entry.get("fetched_at", 0)
+                vol_fetched_at = entry.get("volume_fetched_at", fetched_at)
+                # Preserve volume data for 24h even if price expired
+                if "volume_24h" in entry and now - vol_fetched_at < VOLUME_CACHE_EXPIRY:
+                    volumes[key] = entry["volume_24h"]
+                    vol_timestamps[key] = vol_fetched_at
                 if now - fetched_at > CACHE_STALE_EXPIRY:
-                    continue  # expired, drop
+                    continue  # price expired, drop price but volume already preserved
                 prices[key] = entry.get("price", 0)
                 sources[key] = entry.get("source", "")
                 timestamps[key] = fetched_at
-                if "volume_24h" in entry:
-                    volumes[key] = entry["volume_24h"]
-            return prices, timestamps, sources, volumes
+            return prices, timestamps, sources, volumes, vol_timestamps
         else:
             # v1: migrate global timestamp to per-key
             ts = data.get("timestamp", 0)
             if now - ts > CACHE_STALE_EXPIRY:
-                return {}, {}, {}, {}  # all expired
+                return {}, {}, {}, {}, {}  # all expired
             prices = data.get("prices", {})
             sources = data.get("sources", {})
             timestamps = {key: ts for key in prices}
-            return prices, timestamps, sources, {}
+            return prices, timestamps, sources, {}, {}
     except (IOError, json.JSONDecodeError, ValueError):
-        return {}, {}, {}, {}
+        return {}, {}, {}, {}, {}
 
 
-def save_cache(prices, sources=None, timestamps=None, volumes=None):
+def save_cache(prices, sources=None, timestamps=None, volumes=None, volume_timestamps=None):
     """Save output price cache in v2 per-key format."""
     now = time.time()
     sources = sources or {}
     timestamps = timestamps or {}
     volumes = volumes or {}
+    volume_timestamps = volume_timestamps or {}
+    # Include volume-only entries (price expired but volume still valid for 24h)
+    all_keys = set(prices.keys()) | set(volumes.keys())
     entries = {}
-    for key, price in prices.items():
-        entry = {
-            "price": price,
-            "source": sources.get(key, ""),
-            "fetched_at": timestamps.get(key, now),
-        }
+    for key in all_keys:
+        entry = {}
+        if key in prices:
+            entry["price"] = prices[key]
+            entry["source"] = sources.get(key, "")
+            entry["fetched_at"] = timestamps.get(key, now)
         if key in volumes:
             entry["volume_24h"] = volumes[key]
-        entries[key] = entry
+            entry["volume_fetched_at"] = volume_timestamps.get(key, timestamps.get(key, now))
+        if entry:
+            entries[key] = entry
     data = {"version": 2, "entries": entries}
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f)
@@ -344,7 +353,7 @@ def save_cache(prices, sources=None, timestamps=None, volumes=None):
 def liquidity_multiplier(volume_24h):
     """Discount factor based on trading volume. High-volume = reliable price, low-volume = risky."""
     if volume_24h is None:
-        return 0.85  # Unknown volume — slight discount
+        return 0.90  # Unknown volume — slight discount
     if volume_24h >= 100:
         return 1.0
     if volume_24h >= 10:
@@ -2870,12 +2879,13 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
     # Sort outputs by priority (highest ROI first)
     prioritized_outputs = sorted(output_priority.keys(), key=lambda k: output_priority[k], reverse=True)
 
-    # Determine budget
+    # Determine budget -- reallocate unused input budget to outputs
     with _csfloat_budget["lock"]:
         remaining = _csfloat_budget["remaining"]
     available_budget = max(0, (remaining or CSFLOAT_OUTPUT_RESERVE) - CSFLOAT_BUDGET_RESERVE)
-    # Also cap at CSFLOAT_OUTPUT_RESERVE to not eat into input budget for next run
-    budget = min(len(prioritized_outputs), CSFLOAT_OUTPUT_RESERVE, available_budget)
+    # Use up to available_budget (includes unused input allocation), cap at 90% of total
+    max_output_budget = int(_CSFLOAT_TOTAL_BUDGET * 0.90)
+    budget = min(len(prioritized_outputs), max_output_budget, available_budget)
 
     to_verify = prioritized_outputs[:budget]
     print(f"   Verifying {len(to_verify)}/{len(prioritized_outputs)} output skins (budget: {budget})")
@@ -2932,6 +2942,18 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
                         if dm_price and dm_price > 0:
                             ref_price = dm_price
                             ref_source = "DMarket"
+
+                    # Cross-condition reference: if no same-condition ref, check other conditions of same skin
+                    if ref_price is None:
+                        for alt_cond in ["Factory New", "Minimal Wear", "Field-Tested", "Well-Worn", "Battle-Scarred"]:
+                            if alt_cond == cond:
+                                continue
+                            alt_key = f"{name}|{alt_cond}"
+                            alt_price = cached_prices.get(alt_key, 0)
+                            if alt_price and alt_price > 0:
+                                ref_price = alt_price
+                                ref_source = f"same-skin {alt_cond}"
+                                break
 
                     # Apply sanity check: reject singleton at 3x+ reference
                     if ref_price and ref_price > 0 and price > ref_price * 3:
@@ -3083,7 +3105,10 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
         ) if priced_outputs else "Unknown"
 
         has_csfloat_price = any(o.get("price_source") == "CSFloat" for o in result["outputs"] if o["price_raw"] > 0)
-        has_missing_prices = any(o["price_raw"] <= 0 and o["price_source"] != "NO_LISTINGS" for o in result["outputs"])
+        # Soft unverifiable: only exclude if >30% of probability has missing prices
+        missing_prob = sum(o.get("probability", 0) for o in result["outputs"]
+                          if o["price_raw"] <= 0 and o["price_source"] != "NO_LISTINGS")
+        has_missing_prices = missing_prob > 0.30
 
         final_result = {
             "collection": cand["collection"],
@@ -4156,33 +4181,44 @@ def verify_profitable_inputs(profitable_results):
     return verified_results
 
 
-def phase3_fetch_trends(profitable_results):
-    """Fetch Steam trends only for profitable trade-ups."""
+def phase3_fetch_trends(profitable_results, cache_volumes=None):
+    """Fetch Steam trends only for profitable trade-ups. Skips outputs with cached volume."""
     print("\n" + "=" * 70)
     print("PHASE 3: Fetching Steam trends for profitable trade-ups")
     print("=" * 70)
+
+    cache_volumes = cache_volumes or {}
 
     if not profitable_results:
         print("   No profitable trade-ups to analyze")
         return profitable_results
 
     if _steam_blocked:
-        print("   Steam blocked — skipping trend data")
+        print("   Steam blocked -- skipping trend data")
         return profitable_results
 
     print(f"   Fetching trends for {len(profitable_results)} profitable trade-ups...")
 
+    fetched = 0
+    skipped = 0
     for result in profitable_results:
         for out in result["outputs"]:
+            cache_key = f"{out['name']}|{out['condition']}"
+            if cache_key in cache_volumes:
+                out["steam_trend"] = {"volume_24h": cache_volumes[cache_key]}
+                skipped += 1
+                continue
             trend = fetch_steam_trend(out["name"], out["condition"])
             if trend:
-                # Adjust median for 15% Steam fee
                 if trend.get("median"):
                     trend["median_after_fee"] = int(trend["median"] * (1 - STEAM_SELLER_FEE))
                 out["steam_trend"] = trend
-            time.sleep(0.1)  # Rate limit
+                if trend.get("volume_24h") is not None:
+                    cache_volumes[cache_key] = trend["volume_24h"]
+                fetched += 1
+            time.sleep(0.1)
 
-    print("   Done fetching trends")
+    print(f"   Done fetching trends ({fetched} fetched, {skipped} from cache)")
     return profitable_results
 
 
@@ -4251,7 +4287,7 @@ def main():
     skinport_prices = fetch_skinport_prices()
 
     # Load cache (v2: per-key timestamps)
-    cached_prices, cache_timestamps, cached_sources, cache_volumes = load_cache()
+    cached_prices, cache_timestamps, cached_sources, cache_volumes, _volume_timestamps = load_cache()
     if cached_prices:
         fresh_count = sum(1 for t in cache_timestamps.values() if is_entry_fresh(t))
         stale_count = len(cached_prices) - fresh_count
@@ -4309,7 +4345,7 @@ def main():
         cached_prices, cached_sources, skinport_prices, skin_float_ranges,
         cache_timestamps, cache_volumes
     )
-    save_cache(cached_prices, price_sources, cache_timestamps, cache_volumes)
+    save_cache(cached_prices, price_sources, cache_timestamps, cache_volumes, _volume_timestamps)
 
     # Sort by ROI, filter for 25%+ ROI and $0.30+ net profit
     MIN_ROI = 25.0
@@ -4326,7 +4362,7 @@ def main():
     profitable = [r for r in profitable if r["ev"] > 0 and r["roi"] >= MIN_ROI and r["ev"] >= MIN_EV and not r.get("unverifiable")]
 
     # PHASE 3: Fetch trends for profitable only
-    profitable = phase3_fetch_trends(profitable)
+    profitable = phase3_fetch_trends(profitable, cache_volumes)
 
     # Save profitable opportunities
     save_profitable_opportunities(profitable)
@@ -4563,19 +4599,7 @@ def main():
             for skin_name, data in skin_listings.items():
                 print(f"\n  {skin_name} ({data['count']}x needed):")
 
-                # Show ALL direct listing links
-                if data["listings"]:
-                    print(f"    Direct listings:")
-                    for src, lid, price, flt in data["listings"]:
-                        if src == "CSFloat":
-                            print(f"      [{src}] ${price/100:.2f} @ {flt:.4f}: https://csfloat.com/item/{lid}")
-                        elif src == "DMarket":
-                            print(f"      [{src}] ${price/100:.2f} @ {flt:.4f}: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId={lid}")
-                        elif src == "Waxpeer" and lid.startswith("waxpeer_"):
-                            waxpeer_id = lid[len("waxpeer_"):]
-                            print(f"      [{src}] ${price/100:.2f} @ {flt:.4f}: https://waxpeer.com/item/{waxpeer_id}")
-
-                # Show search links with correct condition/exterior
+                # Show search links first (always work, unlike direct listing links)
                 condition = data["condition"]
                 exterior = _dmarket_exterior_map.get(condition, "field-tested")
                 market_hash = data["market_hash"].replace(' ', '%20').replace('|', '%7C')
@@ -4584,6 +4608,18 @@ def main():
                 print(f"      Skinport: https://skinport.com/market/730?search={market_hash}&sort=price&order=asc")
                 print(f"      CSFloat:  https://csfloat.com/search?market_hash_name={market_hash}&max_float={max_flt:.4f}&sort_by=lowest_price&type=buy_now")
                 print(f"      DMarket:  https://dmarket.com/ingame-items/item-list/csgo-skins?title={market_hash.replace('%20', '+').replace('%7C', '%257C')}&exterior={exterior}")
+
+                # Show direct listing links (may expire if bought/recalled)
+                if data["listings"]:
+                    print(f"    Direct listings (may expire):")
+                    for src, lid, price, flt in data["listings"]:
+                        if src == "CSFloat":
+                            print(f"      [{src}] ${price/100:.2f} @ {flt:.4f}: https://csfloat.com/item/{lid}")
+                        elif src == "DMarket":
+                            print(f"      [{src}] ${price/100:.2f} @ {flt:.4f}: https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId={lid}")
+                        elif src == "Waxpeer" and lid.startswith("waxpeer_"):
+                            waxpeer_id = lid[len("waxpeer_"):]
+                            print(f"      [{src}] ${price/100:.2f} @ {flt:.4f}: https://waxpeer.com/item/{waxpeer_id}")
 
 
             # Output sell links with expected float ranges
