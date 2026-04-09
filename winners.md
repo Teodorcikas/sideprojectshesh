@@ -4,1081 +4,179 @@ Profitable trade-ups found with ROI >= 25% and EV >= $0.30.
 
 ---
 
-## 2026-03-21
-
-### Harlequin | Consumer Grade → Industrial Grade | +200.0% ROI | EV: $1.60
-- **Input:** 10x FAMAS | Byproduct (Factory New) @ $0.08 each = $0.80 total
-- **Max input float:** 0.0825
-- **Avg input float:** 0.0616 (adjusted: 0.1120)
-- **Expected output value:** $2.40 (after 2% CSFloat fee)
-- **Outputs (20% each):**
-  - MP5-SD | Picnic (MW, ~0.0840) — $1.15 [Skinport]
-  - MP7 | Coral Paisley (MW, ~0.0728) — $3.49 [Skinport]
-  - SSG 08 | Calligrafaux (MW, ~0.1120) — $4.58 [Skinport]
-  - Tec-9 | Banana Leaf (FN, ~0.0672) — $1.15 [Skinport]
-  - XM1014 | XoooM (FN, ~0.0672) — $1.90 [Skinport]
-- **Buy listings:** DMarket (Skinport price used — $0.08/ea)
-
----
-
-### Chroma 3 | Mil-Spec Grade → Restricted | +59.0% ROI | EV: $1.77
-- **Input:** 10x Sawed-Off | Fubar (Battle-Scarred) @ $0.30 each = $3.00 total
-- **Max input float:** 0.4900
-- **Avg input float:** 0.4790 (adjusted: 0.1317)
-- **Expected output value:** $4.77 (after 2% CSFloat fee)
-- **Outputs (20% each):**
-  - CZ75-Auto | Red Astor (MW, ~0.1317) — $2.09 [Skinport]
-  - Galil AR | Firefight (MW, ~0.1317) — $2.50 [Skinport]
-  - SSG 08 | Ghost Crusader (MW, ~0.1317) — $2.77 [Skinport]
-  - Tec-9 | Re-Entry (FN, ~0.0566) — $14.52 [Skinport] ← jackpot
-  - XM1014 | Black Tie (MW, ~0.0988) — $2.48 [Skinport]
-- **Buy listings:** DMarket (Skinport price used — $0.30/ea)
-
----
-
-### CS20 | Mil-Spec Grade → Restricted | +28.4% ROI | EV: $0.97
-- **Input:** 10x MAG-7 | Popdog (Minimal Wear) @ $0.34 each = $3.40 total
-- **Max input float:** 0.1200
-- **Avg input float:** 0.0921 (adjusted: 0.1151)
-- **Expected output value:** $4.37 (after 2% CSFloat fee)
-- **Outputs (20% each):**
-  - Five-SeveN | Buddy (FN, ~0.0633) — $14.91 [Skinport] ← jackpot
-  - M249 | Aztec (MW, ~0.0863) — $1.50 [Skinport]
-  - MP5-SD | Agent (MW, ~0.1151) — $2.44 [Skinport]
-  - P250 | Inferno (MW, ~0.0783) — $1.68 [Skinport]
-  - UMP-45 | Plastique (MW, ~0.0921) — $1.76 [Skinport]
-- **Buy listings:** DMarket (Skinport price used — $0.34/ea)
-
----
-
-## 2026-03-21
-
-### Harlequin | Consumer Grade → Industrial Grade | +200.0% ROI | EV: $1.60
-- **Input:** 10x FAMAS | Byproduct (Factory New) @ $0.08 each = $0.80 total
-- **Max input float:** 0.0825
-- **Avg input float:** 0.0616 (max adjusted allowed: 0.1500)
-- **Expected output value:** $2.40 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Mi, ~0.0840) — $1.15 [Skinport]
-  - MP7 | Coral Paisley (Mi, ~0.0728) — $3.49 [Skinport]
-  - SSG 08 | Calligrafaux (Mi, ~0.1120) — $4.58 [Skinport]
-  - Tec-9 | Banana Leaf (Fa, ~0.0672) — $1.15 [Skinport]
-  - XM1014 | XoooM (Fa, ~0.0672) — $1.90 [Skinport]
-
-### Chroma 3 | Mil-Spec Grade → Restricted | +59.0% ROI | EV: $1.77
-- **Input:** 10x Sawed-Off | Fubar (Battle-Scarred) @ $0.30 each = $3.00 total
-- **Max input float:** 0.4900
-- **Avg input float:** 0.4790 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.77 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - CZ75-Auto | Red Astor (Mi, ~0.1317) — $2.09 [Skinport]
-  - Galil AR | Firefight (Mi, ~0.1317) — $2.50 [Skinport]
-  - SSG 08 | Ghost Crusader (Mi, ~0.1317) — $2.77 [Skinport]
-  - Tec-9 | Re-Entry (Fa, ~0.0566) — $14.52 [Skinport] ← jackpot
-  - XM1014 | Black Tie (Mi, ~0.0988) — $2.48 [Skinport]
-
-### Cs20 | Mil-Spec Grade → Restricted | +28.4% ROI | EV: $0.97
-- **Input:** 10x MAG-7 | Popdog (Minimal Wear) @ $0.34 each = $3.40 total
-- **Max input float:** 0.1200
-- **Avg input float:** 0.0921 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.37 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Five-SeveN | Buddy (Fa, ~0.0633) — $14.91 [Skinport] ← jackpot
-  - M249 | Aztec (Mi, ~0.0863) — $1.50 [Skinport]
-  - MP5-SD | Agent (Mi, ~0.1151) — $2.44 [Skinport]
-  - P250 | Inferno (Mi, ~0.0783) — $1.68 [Skinport]
-  - UMP-45 | Plastique (Mi, ~0.0921) — $1.76 [Skinport]
-
----
-
-## 2026-03-21
-
-### Harlequin | Consumer Grade → Industrial Grade | +200.0% ROI | EV: $1.60
-- **Input:** 10x FAMAS | Byproduct (Factory New) @ $0.08 each = $0.80 total
-- **Max input float:** 0.0825
-- **Avg input float:** 0.0616 (max adjusted allowed: 0.1500)
-- **Expected output value:** $2.40 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Mi, ~0.0840) — $1.15 [Skinport]
-  - MP7 | Coral Paisley (Mi, ~0.0728) — $3.49 [Skinport]
-  - SSG 08 | Calligrafaux (Mi, ~0.1120) — $4.58 [Skinport]
-  - Tec-9 | Banana Leaf (Fa, ~0.0672) — $1.15 [Skinport]
-  - XM1014 | XoooM (Fa, ~0.0672) — $1.90 [Skinport]
-
-### Chroma 3 | Mil-Spec Grade → Restricted | +59.0% ROI | EV: $1.77
-- **Input:** 10x Sawed-Off | Fubar (Battle-Scarred) @ $0.30 each = $3.00 total
-- **Max input float:** 0.4900
-- **Avg input float:** 0.4790 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.77 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - CZ75-Auto | Red Astor (Mi, ~0.1317) — $2.09 [Skinport]
-  - Galil AR | Firefight (Mi, ~0.1317) — $2.50 [Skinport]
-  - SSG 08 | Ghost Crusader (Mi, ~0.1317) — $2.77 [Skinport]
-  - Tec-9 | Re-Entry (Fa, ~0.0566) — $14.52 [Skinport] ← jackpot
-  - XM1014 | Black Tie (Mi, ~0.0988) — $2.48 [Skinport]
-
-### Cs20 | Mil-Spec Grade → Restricted | +28.4% ROI | EV: $0.97
-- **Input:** 10x MAG-7 | Popdog (Minimal Wear) @ $0.34 each = $3.40 total
-- **Max input float:** 0.1200
-- **Avg input float:** 0.0921 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.37 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Five-SeveN | Buddy (Fa, ~0.0633) — $14.91 [Skinport] ← jackpot
-  - M249 | Aztec (Mi, ~0.0863) — $1.50 [Skinport]
-  - MP5-SD | Agent (Mi, ~0.1151) — $2.44 [Skinport]
-  - P250 | Inferno (Mi, ~0.0783) — $1.68 [Skinport]
-  - UMP-45 | Plastique (Mi, ~0.0921) — $1.76 [Skinport]
-
----
-
-## 2026-03-21
-
-### Canals | Industrial Grade → Mil-Spec Grade | +393.8% ROI | EV: $288.27
-- **Input:** 10x SG 553 | Candy Apple (Field-Tested) @ $5.78 each = $73.20 total
-- **Max input float:** 0.2100
-- **Avg input float:** 0.1340 (max adjusted allowed: 0.3000)
-- **Expected output value:** $361.47 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - Dual Berettas | Emerald (Fa, ~0.0177) — $68.69 [Skinport] ← jackpot
-  - G3SG1 | Violet Murano (Mi, ~0.1109) — $40.89 [Skinport] ← jackpot
-  - P90 | Baroque Red (Mi, ~0.1109) — $0.00 [none]
-  - SSG 08 | Orange Filigree (Mi, ~0.1109) — $1365.81 [Skinport] ← jackpot
-
-### Harlequin | Consumer Grade → Industrial Grade | +236.9% ROI | EV: $1.85
-- **Input:** 10x SG 553 | Safari Print (Factory New) @ $0.06 each = $0.78 total
-- **Max input float:** 0.1050
-- **Avg input float:** 0.0574 (max adjusted allowed: 0.1500)
-- **Expected output value:** $2.63 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Mi, ~0.0775) — $1.15 [Skinport]
-  - MP7 | Coral Paisley (Fa, ~0.0671) — $4.66 [Skinport]
-  - SSG 08 | Calligrafaux (Mi, ~0.1033) — $4.58 [Skinport]
-  - Tec-9 | Banana Leaf (Fa, ~0.0620) — $1.15 [Skinport]
-  - XM1014 | XoooM (Fa, ~0.0620) — $1.90 [Skinport]
-
-### 2018 Inferno | Mil-Spec Grade → Restricted | +85.6% ROI | EV: $9.51
-- **Input:** 10x Sawed-Off | Brake Light (Factory New) @ $1.11 each = $11.10 total
-- **Max input float:** 0.0120
-- **Avg input float:** 0.0084 (max adjusted allowed: 0.1500)
-- **Expected output value:** $20.61 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - AK-47 | Safety Net (Fa, ~0.0632) — $25.70 [Skinport] ← jackpot
-  - MP7 | Fade (Fa, ~0.0263) — $32.70 [Skinport] ← jackpot
-  - P250 | Vino Primo (Mi, ~0.1053) — $4.70 [Skinport]
-
-### Radiant | Industrial Grade → Mil-Spec Grade | +68.0% ROI | EV: $0.61
-- **Input:** 10x Tec-9 | Citric Acid (Minimal Wear) @ $0.09 each = $0.90 total
-- **Max input float:** 0.1195
-- **Avg input float:** 0.0953 (max adjusted allowed: 0.1992)
-- **Expected output value:** $1.51 (after 2% CSFloat fee)
-- **Outputs (1/6 each):**
-  - AWP | Arsenic Spill (Mi, ~0.0789) — $1.24 [Skinport]
-  - Glock-18 | Coral Bloom (Mi, ~0.1183) — $1.46 [Skinport]
-  - M4A1-S | Rose Hex (Mi, ~0.0786) — $1.15 [Skinport]
-  - MP9 | Shredded (Mi, ~0.0943) — $0.92 [Skinport]
-  - P250 | Red Tide (Mi, ~0.1179) — $1.24 [Skinport]
-  - SSG 08 | Blush Pour (Mi, ~0.1066) — $3.27 [Skinport]
-
-### Spectrum | Mil-Spec Grade → Restricted | +64.2% ROI | EV: $2.73
-- **Input:** 10x Sawed-Off | Zander (Field-Tested) @ $0.42 each = $4.26 total
-- **Max input float:** 0.1925
-- **Avg input float:** 0.1517 (max adjusted allowed: 0.1500)
-- **Expected output value:** $6.99 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Galil AR | Crimson Tsunami (Mi, ~0.0719) — $4.94 [Skinport]
-  - M249 | Emerald Poison Dart (Fa, ~0.0588) — $4.44 [Skinport]
-  - MAC-10 | Last Dive (Fa, ~0.0680) — $17.51 [Skinport] ← jackpot
-  - UMP-45 | Scaffold (Mi, ~0.1308) — $3.56 [Skinport]
-  - XM1014 | Seasons (Fa, ~0.0654) — $5.26 [Skinport]
-
-### Bank | Industrial Grade → Mil-Spec Grade | +58.6% ROI | EV: $0.82
-- **Input:** 10x UMP-45 | Carbon Fiber (Factory New) @ $0.14 each = $1.40 total
-- **Max input float:** 0.0225
-- **Avg input float:** 0.0118 (max adjusted allowed: 0.1875)
-- **Expected output value:** $2.22 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - CZ75-Auto | Tuxedo (Mi, ~0.0789) — $1.06 [Skinport]
-  - Desert Eagle | Meteorite (Fa, ~0.0177) — $3.12 [Skinport]
-  - Galil AR | Tuxedo (Mi, ~0.0789) — $2.64 [Skinport]
-
-### Italy | Industrial Grade → Mil-Spec Grade | +57.4% ROI | EV: $0.52
-- **Input:** 10x P2000 | Granite Marbleized (Field-Tested) @ $0.09 each = $0.90 total
-- **Max input float:** 0.2450
-- **Avg input float:** 0.1912 (max adjusted allowed: 0.2500)
-- **Expected output value:** $1.42 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - Glock-18 | Candy Apple (Fa, ~0.0532) — $2.77 [CSFloat]
-  - MP7 | Anodized Navy (Fa, ~0.0142) — $1.35 [CSFloat]
-  - Sawed-Off | Full Stop (Mi, ~0.1064) — $0.23 [CSFloat]
-
-### Ascent | Industrial Grade → Mil-Spec Grade | +35.6% ROI | EV: $0.32
-- **Input:** 10x Galil AR | Robin's Egg (Minimal Wear) @ $0.09 each = $0.90 total
-- **Max input float:** 0.1286
-- **Avg input float:** 0.0962 (max adjusted allowed: 0.2143)
-- **Expected output value:** $1.22 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Desert Eagle | Mint Fan (Mi, ~0.0962) — $0.95 [CSFloat]
-  - FAMAS | Yeti Camo (Mi, ~0.1122) — $1.61 [CSFloat]
-  - P2000 | Royal Baroque (Mi, ~0.0962) — $1.61 [CSFloat]
-  - MP9 | Cobalt Paisley (Mi, ~0.1042) — $1.08 [CSFloat]
-  - P90 | Reef Grief (Mi, ~0.0962) — $1.00 [CSFloat]
-
-### Danger Zone | Mil-Spec Grade → Restricted | +31.2% ROI | EV: $1.07
-- **Input:** 10x Nova | Wood Fired (Minimal Wear) @ $0.31 each = $3.44 total
-- **Max input float:** 0.1250
-- **Avg input float:** 0.1087 (max adjusted allowed: 0.1667)
-- **Expected output value:** $4.51 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - G3SG1 | Scavenger (Mi, ~0.0862) — $0.84 [CSFloat]
-  - Galil AR | Signal (Fa, ~0.0663) — $9.72 [CSFloat]
-  - MAC-10 | Pipe Down (Mi, ~0.1193) — $1.39 [CSFloat]
-  - P250 | Nevermore (Fa, ~0.0530) — $4.60 [CSFloat]
-  - USP-S | Flashback (Fa, ~0.0663) — $6.50 [CSFloat]
-
-### Revolver Case | Mil-Spec Grade → Restricted | +26.0% ROI | EV: $0.83
-- **Input:** 10x R8 Revolver | Crimson Web (Field-Tested) @ $0.23 each = $3.20 total
-- **Max input float:** 0.1710
-- **Avg input float:** 0.1381 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.03 (after 2% CSFloat fee)
-- **Outputs (1/6 each):**
-  - PP-Bizon | Fuel Rod (Mi, ~0.1403) — $3.19 [Skinport]
-  - Five-SeveN | Retrobution (Mi, ~0.1403) — $4.54 [Skinport]
-  - Negev | Power Loader (Mi, ~0.1403) — $5.41 [Skinport]
-  - SG 553 | Tiger Moth (Mi, ~0.1403) — $3.00 [Skinport]
-  - Tec-9 | Avalanche (Mi, ~0.1403) — $5.80 [Skinport]
-  - XM1014 | Teclu Burner (Mi, ~0.0912) — $2.78 [Skinport]
-
----
-
-## 2026-03-21
-
-### Canals | Industrial Grade → Mil-Spec Grade | +393.8% ROI | EV: $288.27
-- **Input:** 10x SG 553 | Candy Apple (Field-Tested) @ $5.78 each = $73.20 total
-- **Max input float:** 0.2100
-- **Avg input float:** 0.1340 (max adjusted allowed: 0.3000)
-- **Expected output value:** $361.47 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - Dual Berettas | Emerald (Fa, ~0.0177) — $68.69 [Skinport] ← jackpot
-  - G3SG1 | Violet Murano (Mi, ~0.1109) — $40.89 [Skinport] ← jackpot
-  - P90 | Baroque Red (Mi, ~0.1109) — $0.00 [CSFloat]
-  - SSG 08 | Orange Filigree (Mi, ~0.1109) — $1365.81 [Skinport] ← jackpot
-
-### Harlequin | Consumer Grade → Industrial Grade | +236.9% ROI | EV: $1.85
-- **Input:** 10x SG 553 | Safari Print (Factory New) @ $0.06 each = $0.78 total
-- **Max input float:** 0.1050
-- **Avg input float:** 0.0574 (max adjusted allowed: 0.1500)
-- **Expected output value:** $2.63 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Mi, ~0.0775) — $1.15 [Skinport]
-  - MP7 | Coral Paisley (Fa, ~0.0671) — $4.66 [Skinport]
-  - SSG 08 | Calligrafaux (Mi, ~0.1033) — $4.58 [Skinport]
-  - Tec-9 | Banana Leaf (Fa, ~0.0620) — $1.15 [Skinport]
-  - XM1014 | XoooM (Fa, ~0.0620) — $1.90 [Skinport]
-
-### 2018 Inferno | Mil-Spec Grade → Restricted | +85.6% ROI | EV: $9.51
-- **Input:** 10x Sawed-Off | Brake Light (Factory New) @ $1.11 each = $11.10 total
-- **Max input float:** 0.0120
-- **Avg input float:** 0.0084 (max adjusted allowed: 0.1500)
-- **Expected output value:** $20.61 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - AK-47 | Safety Net (Fa, ~0.0632) — $25.70 [Skinport] ← jackpot
-  - MP7 | Fade (Fa, ~0.0263) — $32.70 [Skinport] ← jackpot
-  - P250 | Vino Primo (Mi, ~0.1053) — $4.70 [Skinport]
-
-### Radiant | Industrial Grade → Mil-Spec Grade | +68.0% ROI | EV: $0.61
-- **Input:** 10x Tec-9 | Citric Acid (Minimal Wear) @ $0.09 each = $0.90 total
-- **Max input float:** 0.1195
-- **Avg input float:** 0.0953 (max adjusted allowed: 0.1992)
-- **Expected output value:** $1.51 (after 2% CSFloat fee)
-- **Outputs (1/6 each):**
-  - AWP | Arsenic Spill (Mi, ~0.0789) — $1.24 [Skinport]
-  - Glock-18 | Coral Bloom (Mi, ~0.1183) — $1.46 [Skinport]
-  - M4A1-S | Rose Hex (Mi, ~0.0786) — $1.15 [Skinport]
-  - MP9 | Shredded (Mi, ~0.0943) — $0.92 [Skinport]
-  - P250 | Red Tide (Mi, ~0.1179) — $1.24 [Skinport]
-  - SSG 08 | Blush Pour (Mi, ~0.1066) — $3.27 [Skinport]
-
-### Spectrum | Mil-Spec Grade → Restricted | +64.2% ROI | EV: $2.73
-- **Input:** 10x Sawed-Off | Zander (Field-Tested) @ $0.42 each = $4.26 total
-- **Max input float:** 0.1925
-- **Avg input float:** 0.1517 (max adjusted allowed: 0.1500)
-- **Expected output value:** $6.99 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Galil AR | Crimson Tsunami (Mi, ~0.0719) — $4.94 [Skinport]
-  - M249 | Emerald Poison Dart (Fa, ~0.0588) — $4.44 [Skinport]
-  - MAC-10 | Last Dive (Fa, ~0.0680) — $17.51 [Skinport] ← jackpot
-  - UMP-45 | Scaffold (Mi, ~0.1308) — $3.56 [Skinport]
-  - XM1014 | Seasons (Fa, ~0.0654) — $5.26 [Skinport]
-
-### Bank | Industrial Grade → Mil-Spec Grade | +58.6% ROI | EV: $0.82
-- **Input:** 10x UMP-45 | Carbon Fiber (Factory New) @ $0.14 each = $1.40 total
-- **Max input float:** 0.0225
-- **Avg input float:** 0.0118 (max adjusted allowed: 0.1875)
-- **Expected output value:** $2.22 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - CZ75-Auto | Tuxedo (Mi, ~0.0789) — $1.06 [Skinport]
-  - Desert Eagle | Meteorite (Fa, ~0.0177) — $3.12 [Skinport]
-  - Galil AR | Tuxedo (Mi, ~0.0789) — $2.64 [Skinport]
-
-### Italy | Industrial Grade → Mil-Spec Grade | +57.4% ROI | EV: $0.52
-- **Input:** 10x P2000 | Granite Marbleized (Field-Tested) @ $0.09 each = $0.90 total
-- **Max input float:** 0.2450
-- **Avg input float:** 0.1912 (max adjusted allowed: 0.2500)
-- **Expected output value:** $1.42 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - Glock-18 | Candy Apple (Fa, ~0.0532) — $2.77 [CSFloat]
-  - MP7 | Anodized Navy (Fa, ~0.0142) — $1.35 [CSFloat]
-  - Sawed-Off | Full Stop (Mi, ~0.1064) — $0.23 [CSFloat]
-
-### Ascent | Industrial Grade → Mil-Spec Grade | +35.6% ROI | EV: $0.32
-- **Input:** 10x Galil AR | Robin's Egg (Minimal Wear) @ $0.09 each = $0.90 total
-- **Max input float:** 0.1286
-- **Avg input float:** 0.0962 (max adjusted allowed: 0.2143)
-- **Expected output value:** $1.22 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Desert Eagle | Mint Fan (Mi, ~0.0962) — $0.95 [CSFloat]
-  - FAMAS | Yeti Camo (Mi, ~0.1122) — $1.61 [CSFloat]
-  - P2000 | Royal Baroque (Mi, ~0.0962) — $1.61 [CSFloat]
-  - MP9 | Cobalt Paisley (Mi, ~0.1042) — $1.08 [CSFloat]
-  - P90 | Reef Grief (Mi, ~0.0962) — $1.00 [CSFloat]
-
-### Danger Zone | Mil-Spec Grade → Restricted | +31.2% ROI | EV: $1.07
-- **Input:** 10x Nova | Wood Fired (Minimal Wear) @ $0.31 each = $3.44 total
-- **Max input float:** 0.1250
-- **Avg input float:** 0.1087 (max adjusted allowed: 0.1667)
-- **Expected output value:** $4.51 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - G3SG1 | Scavenger (Mi, ~0.0862) — $0.84 [CSFloat]
-  - Galil AR | Signal (Fa, ~0.0663) — $9.72 [CSFloat]
-  - MAC-10 | Pipe Down (Mi, ~0.1193) — $1.39 [CSFloat]
-  - P250 | Nevermore (Fa, ~0.0530) — $4.60 [CSFloat]
-  - USP-S | Flashback (Fa, ~0.0663) — $6.50 [CSFloat]
-
-### Revolver Case | Mil-Spec Grade → Restricted | +26.0% ROI | EV: $0.83
-- **Input:** 10x R8 Revolver | Crimson Web (Field-Tested) @ $0.23 each = $3.20 total
-- **Max input float:** 0.1710
-- **Avg input float:** 0.1381 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.03 (after 2% CSFloat fee)
-- **Outputs (1/6 each):**
-  - PP-Bizon | Fuel Rod (Mi, ~0.1403) — $3.19 [Skinport]
-  - Five-SeveN | Retrobution (Mi, ~0.1403) — $4.54 [Skinport]
-  - Negev | Power Loader (Mi, ~0.1403) — $5.41 [Skinport]
-  - SG 553 | Tiger Moth (Mi, ~0.1403) — $3.00 [Skinport]
-  - Tec-9 | Avalanche (Mi, ~0.1403) — $5.80 [Skinport]
-  - XM1014 | Teclu Burner (Mi, ~0.0912) — $2.78 [Skinport]
-
----
-
-## 2026-03-22
-
-### Achroma | Consumer Grade → Industrial Grade | +273.4% ROI | EV: $5.44
-- **Input:** 10x M249 | Sleet (Minimal Wear) @ $0.02 each = $1.99 total
-- **Max input float:** 0.1307
-- **Avg input float:** 0.0604 (max adjusted allowed: 0.1867)
-- **Expected output value:** $7.43 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - FAMAS | Vendetta (Fa, ~0.0518) — $2.76 [CSFloat]
-  - M4A4 | Aeolian Dark (Fa, ~0.0561) — $1.62 [CSFloat]
-  - MAC-10 | Snow Splash (Fa, ~0.0518) — $11.02 [CSFloat] ← jackpot
-  - MP5-SD | Snow Splash (Fa, ~0.0518) — $5.84 [CSFloat]
-  - R8 Revolver | Dark Chamber (Fa, ~0.0693) — $16.70 [CSFloat] ← jackpot
-
-### Harlequin | Consumer Grade → Industrial Grade | +263.6% ROI | EV: $3.37
-- **Input:** 10x R8 Revolver | Mauve Aside (Minimal Wear) @ $0.04 each = $1.28 total
-- **Max input float:** 0.1205
-- **Avg input float:** 0.0429 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.65 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Fa, ~0.0400) — $2.33 [CSFloat]
-  - MP7 | Coral Paisley (Fa, ~0.0347) — $4.66 [CSFloat]
-  - SSG 08 | Calligrafaux (Fa, ~0.0533) — $8.65 [CSFloat]
-  - Tec-9 | Banana Leaf (Fa, ~0.0320) — $3.48 [CSFloat]
-  - XM1014 | XoooM (Fa, ~0.0320) — $4.65 [CSFloat]
-
-### Chroma | Mil-Spec Grade → Restricted | +226.3% ROI | EV: $26.09
-- **Input:** 10x SCAR-20 | Grotto (Minimal Wear) @ $0.55 each = $11.53 total
-- **Max input float:** 0.0750
-- **Avg input float:** 0.0685 (max adjusted allowed: 0.1500)
-- **Expected output value:** $37.62 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - Desert Eagle | Naga (Mi, ~0.1370) — $7.05 [CSFloat]
-  - Dual Berettas | Urban Shock (Fa, ~0.0644) — $121.37 [CSFloat] ← jackpot
-  - MAC-10 | Malachite (Fa, ~0.0685) — $16.85 [CSFloat] ← jackpot
-  - Sawed-Off | Serenity (Fa, ~0.0685) — $8.31 [CSFloat]
-
-### Italy | Industrial Grade → Mil-Spec Grade | +85.9% ROI | EV: $0.77
-- **Input:** 10x P2000 | Granite Marbleized (Field-Tested) @ $0.09 each = $0.90 total
-- **Max input float:** 0.2450
-- **Avg input float:** 0.1912 (max adjusted allowed: 0.2500)
-- **Expected output value:** $1.67 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - Glock-18 | Candy Apple (Fa, ~0.0532) — $3.12 [CSFloat]
-  - MP7 | Anodized Navy (Fa, ~0.0142) — $1.76 [CSFloat]
-  - Sawed-Off | Full Stop (Mi, ~0.1064) — $0.26 [CSFloat]
-
-### Chroma 3 | Mil-Spec Grade → Restricted | +60.5% ROI | EV: $1.82
-- **Input:** 10x Sawed-Off | Fubar (Battle-Scarred) @ $0.30 each = $3.00 total
-- **Max input float:** 0.4900
-- **Avg input float:** 0.4790 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.82 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - CZ75-Auto | Red Astor (Mi, ~0.1317) — $2.17 [CSFloat]
-  - Galil AR | Firefight (Mi, ~0.1317) — $2.79 [CSFloat]
-  - SSG 08 | Ghost Crusader (Mi, ~0.1317) — $2.77 [CSFloat]
-  - Tec-9 | Re-Entry (Fa, ~0.0566) — $14.41 [CSFloat] ← jackpot
-  - XM1014 | Black Tie (Mi, ~0.0988) — $2.45 [CSFloat]
-
-### Danger Zone | Mil-Spec Grade → Restricted | +59.9% ROI | EV: $2.18
-- **Input:** 10x Nova | Wood Fired (Minimal Wear) @ $0.30 each = $3.64 total
-- **Max input float:** 0.1250
-- **Avg input float:** 0.1038 (max adjusted allowed: 0.1667)
-- **Expected output value:** $5.82 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - G3SG1 | Scavenger (Mi, ~0.0834) — $1.04 [CSFloat]
-  - Galil AR | Signal (Fa, ~0.0642) — $13.28 [CSFloat] ← jackpot
-  - MAC-10 | Pipe Down (Mi, ~0.1155) — $1.60 [CSFloat]
-  - P250 | Nevermore (Fa, ~0.0513) — $5.65 [CSFloat]
-  - USP-S | Flashback (Fa, ~0.0642) — $8.16 [CSFloat]
-
-### Bank | Industrial Grade → Mil-Spec Grade | +48.4% ROI | EV: $0.73
-- **Input:** 10x UMP-45 | Carbon Fiber (Factory New) @ $0.15 each = $1.50 total
-- **Max input float:** 0.0225
-- **Avg input float:** 0.0118 (max adjusted allowed: 0.1875)
-- **Expected output value:** $2.23 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - CZ75-Auto | Tuxedo (Mi, ~0.0789) — $1.06 [CSFloat]
-  - Desert Eagle | Meteorite (Fa, ~0.0177) — $3.12 [CSFloat]
-  - Galil AR | Tuxedo (Mi, ~0.0789) — $2.66 [CSFloat]
-
-### Chroma 2 | Mil-Spec Grade → Restricted | +48.1% ROI | EV: $1.33
-- **Input:** 10x Sawed-Off | Origami (Minimal Wear) @ $0.27 each = $2.76 total
-- **Max input float:** 0.0825
-- **Avg input float:** 0.0863 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.09 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - AWP | Worm God (Fa, ~0.0652) — $9.35 [CSFloat]
-  - CZ75-Auto | Pole Position (Mi, ~0.1014) — $2.33 [CSFloat]
-  - MAG-7 | Heat (Mi, ~0.1448) — $3.19 [CSFloat]
-  - UMP-45 | Grand Prix (Fi, ~0.2645) — $1.83 [CSFloat]
-
-### Radiant | Industrial Grade → Mil-Spec Grade | +45.7% ROI | EV: $0.48
-- **Input:** 10x P250 | Sedimentary (Minimal Wear) @ $0.09 each = $1.05 total
-- **Max input float:** 0.1355
-- **Avg input float:** 0.1003 (max adjusted allowed: 0.1992)
-- **Expected output value:** $1.53 (after 2% CSFloat fee)
-- **Outputs (1/6 each):**
-  - AWP | Arsenic Spill (Mi, ~0.0735) — $1.24 [CSFloat]
-  - Glock-18 | Coral Bloom (Mi, ~0.1102) — $1.57 [CSFloat]
-  - M4A1-S | Rose Hex (Mi, ~0.0732) — $1.16 [CSFloat]
-  - MP9 | Shredded (Mi, ~0.0878) — $0.92 [CSFloat]
-  - P250 | Red Tide (Mi, ~0.1097) — $1.24 [CSFloat]
-  - SSG 08 | Blush Pour (Mi, ~0.0993) — $3.27 [CSFloat]
-
-### 2018 Inferno | Industrial Grade → Mil-Spec Grade | +39.6% ROI | EV: $0.52
-- **Input:** 10x MAC-10 | Calf Skin (Minimal Wear) @ $0.13 each = $1.30 total
-- **Max input float:** 0.1500
-- **Avg input float:** 0.1239 (max adjusted allowed: 0.1500)
-- **Expected output value:** $1.81 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - M4A4 | Converter (Fa, ~0.0496) — $3.07 [CSFloat]
-  - Sawed-Off | Brake Light (Fa, ~0.0099) — $1.11 [CSFloat]
-  - SSG 08 | Hand Brake (Mi, ~0.1239) — $1.99 [CSFloat]
-  - USP-S | Check Engine (Mi, ~0.0743) — $1.26 [CSFloat]
-
-### Gamma 2 | Mil-Spec Grade → Restricted | +37.4% ROI | EV: $6.03
-- **Input:** 10x Negev | Dazzle (Minimal Wear) @ $1.34 each = $16.13 total
-- **Max input float:** 0.1527
-- **Avg input float:** 0.0981 (max adjusted allowed: 0.0957)
-- **Expected output value:** $22.16 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Desert Eagle | Directive (Mi, ~0.1167) — $10.52 [CSFloat] ← jackpot
-  - Glock-18 | Weasel (Fa, ~0.0603) — $62.27 [CSFloat] ← jackpot
-  - MAG-7 | Petroglyph (Fa, ~0.0266) — $5.85 [CSFloat]
-  - SCAR-20 | Powercore (Fa, ~0.0603) — $19.84 [CSFloat] ← jackpot
-  - SG 553 | Triarch (Fa, ~0.0603) — $14.59 [CSFloat] ← jackpot
-
-### Huntsman | Restricted → Classified | +37.2% ROI | EV: $53.88
-- **Input:** 10x StatTrak™ MAC-10 | Tatter (Minimal Wear) @ $9.34 each = $144.94 total
-- **Max input float:** 0.0833
-- **Avg input float:** 0.0668 (max adjusted allowed: 0.1667)
-- **Expected output value:** $198.82 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - M4A1-S | Atomic Alloy (Mi, ~0.1063) — $67.88 [CSFloat] ← jackpot
-  - SCAR-20 | Cyrex (Fa, ~0.0591) — $74.94 [CSFloat] ← jackpot
-  - USP-S | Caiman (Fa, ~0.0472) — $341.50 [CSFloat] ← jackpot
-  - USP-S | Orion (Fa, ~0.0591) — $327.20 [CSFloat] ← jackpot
-
-### Boreal | Mil-Spec Grade → Restricted | +31.1% ROI | EV: $1.56
-- **Input:** 10x MAC-10 | Poplar Thicket (Minimal Wear) @ $0.45 each = $5.03 total
-- **Max input float:** 0.1360
-- **Avg input float:** 0.1081 (max adjusted allowed: 0.2000)
-- **Expected output value:** $6.59 (after 2% CSFloat fee)
-- **Outputs (1/2 each):**
-  - Glock-18 | Glockingbird (Mi, ~0.1190) — $5.08 [CSFloat]
-  - M4A4 | Sheet Lightning (Mi, ~0.1332) — $8.39 [CSFloat]
-
-### Cs20 | Restricted → Classified | +30.5% ROI | EV: $5.27
-- **Input:** 10x P250 | Inferno (Minimal Wear) @ $1.68 each = $17.27 total
-- **Max input float:** 0.1020
-- **Avg input float:** 0.0949 (max adjusted allowed: 0.1500)
-- **Expected output value:** $22.54 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - AUG | Death by Puppy (Fa, ~0.0532) — $46.71 [CSFloat] ← jackpot
-  - MP9 | Hydra (Mi, ~0.1331) — $15.18 [CSFloat] ← jackpot
-  - P90 | Nostalgia (Mi, ~0.0759) — $7.13 [CSFloat]
-
-### Cs20 | Mil-Spec Grade → Restricted | +29.7% ROI | EV: $1.01
-- **Input:** 10x SCAR-20 | Assault (Minimal Wear) @ $0.33 each = $3.39 total
-- **Max input float:** 0.0930
-- **Avg input float:** 0.0864 (max adjusted allowed: 0.1500)
-- **Expected output value:** $4.40 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Five-SeveN | Buddy (Fa, ~0.0686) — $15.07 [CSFloat] ← jackpot
-  - M249 | Aztec (Mi, ~0.0936) — $1.50 [CSFloat]
-  - MP5-SD | Agent (Mi, ~0.1248) — $2.44 [CSFloat]
-  - P250 | Inferno (Mi, ~0.0849) — $1.68 [CSFloat]
-  - UMP-45 | Plastique (Mi, ~0.0998) — $1.76 [CSFloat]
-
-### Revolver Case | Classified → Covert | +25.3% ROI | EV: $24.39
-- **Input:** 10x G3SG1 | The Executioner (Field-Tested) @ $9.60 each = $96.41 total
-- **Max input float:** 0.2731
-- **Avg input float:** 0.2398 (max adjusted allowed: 0.1875)
-- **Expected output value:** $120.80 (after 2% CSFloat fee)
-- **Outputs (1/2 each):**
-  - M4A4 | Royal Paladin (Mi, ~0.1124) — $114.99 [CSFloat] ← jackpot
-  - R8 Revolver | Fade (Fa, ~0.0562) — $131.54 [CSFloat] ← jackpot
-
----
-
-## 2026-03-22
-
-### Achroma | Consumer Grade → Industrial Grade | +504.7% ROI | EV: $1.72
-- **Input:** 10x M249 | Sleet (Minimal Wear) @ $0.02 each = $0.34 total
-- **Max input float:** 0.1307
-- **Avg input float:** 0.0958 (max adjusted allowed: 0.1867)
-- **Expected output value:** $2.06 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - FAMAS | Vendetta (Mi, ~0.0863) — $3.51 [Steam]
-  - M4A4 | Aeolian Dark (Mi, ~0.0935) — $1.05 [Steam]
-  - MAC-10 | Snow Splash (Mi, ~0.0863) — $5.82 [Steam]
-  - MP5-SD | Snow Splash (Mi, ~0.0863) — $0.14 [Steam]
-  - R8 Revolver | Dark Chamber (Mi, ~0.1156) — $0.00 [none]
-
-### Harlequin | Consumer Grade → Industrial Grade | +178.8% ROI | EV: $0.57
-- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.32 total
-- **Max input float:** 0.0825
-- **Avg input float:** 0.1259 (max adjusted allowed: 0.1500)
-- **Expected output value:** $0.89 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Fi, ~0.1504) — $0.49 [Steam]
-  - MP7 | Coral Paisley (Mi, ~0.1303) — $0.37 [Steam]
-  - SSG 08 | Calligrafaux (Fi, ~0.2005) — $3.27 [Steam]
-  - Tec-9 | Banana Leaf (Mi, ~0.1203) — $0.23 [Steam]
-  - XM1014 | XoooM (Mi, ~0.1203) — $0.21 [Steam]
-
-### Harlequin | Industrial Grade → Mil-Spec Grade | +88.6% ROI | EV: $0.62
-- **Input:** 10x Tec-9 | Banana Leaf (Field-Tested) @ $0.07 each = $0.70 total
-- **Max input float:** 0.3257
-- **Avg input float:** 0.2393 (max adjusted allowed: 0.5429)
-- **Expected output value:** $1.32 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - Five-SeveN | Fraise Crane (Fi, ~0.2593) — $0.72 [Steam]
-  - Galil AR | Sky Mandala (Fi, ~0.2792) — $2.45 [Steam]
-  - Zeus x27 | Earth Mandala (Fi, ~0.2633) — $1.46 [Steam]
-  - UMP-45 | Warm Blooded (Fi, ~0.2792) — $0.77 [Steam]
-
-### Limited Edition Item | Classified → Covert | +65.0% ROI | EV: $10.47
-- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.11 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3197 (max adjusted allowed: 0.3800)
-- **Expected output value:** $26.58 (after 2% CSFloat fee)
-- **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.3197) — $27.13 [Steam] ← jackpot
-
-### 2018 Inferno | Industrial Grade → Mil-Spec Grade | +57.1% ROI | EV: $0.40
-- **Input:** 10x MAC-10 | Calf Skin (Field-Tested) @ $0.07 each = $0.70 total
-- **Max input float:** 0.0700
-- **Avg input float:** 0.2836 (max adjusted allowed: 0.0700)
-- **Expected output value:** $1.10 (after 2% CSFloat fee)
-- **Outputs (1/4 each):**
-  - M4A4 | Converter (Mi, ~0.1134) — $1.32 [Steam]
-  - Sawed-Off | Brake Light (Fa, ~0.0227) — $1.54 [Steam]
-  - SSG 08 | Hand Brake (Fi, ~0.2836) — $0.89 [Steam]
-  - USP-S | Check Engine (Fi, ~0.1702) — $0.76 [Steam]
-
-### 2018 Nuke | Mil-Spec Grade → Restricted | +40.3% ROI | EV: $0.44
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1727 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.54 (after 2% CSFloat fee)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1727) — $1.04 [Steam]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2417) — $2.43 [Steam]
-  - MAG-7 | Core Breach (Fi, ~0.3453) — $1.27 [Steam]
-
-### Boreal | Mil-Spec Grade → Restricted | +31.2% ROI | EV: $0.50
-- **Input:** 10x XM1014 | Copperflage (Field-Tested) @ $0.16 each = $1.60 total
-- **Max input float:** 0.3040
-- **Avg input float:** 0.2527 (max adjusted allowed: 0.5067)
-- **Expected output value:** $2.10 (after 2% CSFloat fee)
-- **Outputs (1/2 each):**
-  - Glock-18 | Glockingbird (Fi, ~0.2822) — $1.74 [Steam]
-  - M4A4 | Sheet Lightning (Fi, ~0.3158) — $2.56 [Steam]
-
-### Genesis | Mil-Spec Grade → Restricted | +29.2% ROI | EV: $0.35
-- **Input:** 10x MAG-7 | MAGnitude (Field-Tested) @ $0.12 each = $1.20 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3050 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.55 (after 2% CSFloat fee)
-- **Outputs (1/5 each):**
-  - Dual Berettas | Angel Eyes (Fi, ~0.3050) — $1.03 [Steam]
-  - M4A1-S | Liquidation (Fi, ~0.3050) — $4.04 [Steam]
-  - MAC-10 | Cat Fight (Fi, ~0.3050) — $0.91 [Steam]
-  - Nova | Ocular (Fi, ~0.3050) — $1.00 [Steam]
-  - UMP-45 | Continuum (Fi, ~0.3050) — $0.95 [Steam]
-
----
-
-## 2026-03-22
-
-### Harlequin | Consumer Grade → Industrial Grade | +482.5% ROI | EV: $1.54
-- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.32 total
-- **Max input float:** 0.2090
-- **Avg input float:** 0.1259 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.86 (after platform fees)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Fi, ~0.1504) — $0.49 [Skinport]
-  - MP7 | Coral Paisley (Mi, ~0.1303) — $3.49 [Skinport]
-  - SSG 08 | Calligrafaux (Fi, ~0.2005) — $3.27 [Skinport]
-  - Tec-9 | Banana Leaf (Mi, ~0.1203) — $0.24 [Steam]
-  - XM1014 | XoooM (Mi, ~0.1203) — $2.68 [Skinport]
-
-### Limited Edition Item | Classified → Covert | +67.9% ROI | EV: $10.99
-- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.18 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3171 (max adjusted allowed: 0.3800)
-- **Expected output value:** $27.17 (after platform fees)
-- **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.3171) — $31.97 [Steam] ← jackpot
-
-### 2018 Nuke | Mil-Spec Grade → Restricted | +32.7% ROI | EV: $0.36
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1583 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.46 (after platform fees)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1583) — $1.17 [Steam]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2217) — $2.43 [Skinport]
-  - MAG-7 | Core Breach (Fi, ~0.3167) — $1.27 [Skinport]
-
----
-
-## 2026-03-22
-
-### Harlequin | Consumer Grade → Industrial Grade | +236.0% ROI | EV: $0.47
-- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.20 total
-- **Max input float:** 0.2090
-- **Avg input float:** 0.2023 (max adjusted allowed: 0.3800)
-- **Expected output value:** $0.67 (after platform fees)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Fi, ~0.2188) — $0.49 [Steam]
-  - MP7 | Coral Paisley (Fi, ~0.1897) — $0.09 [Steam]
-  - SSG 08 | Calligrafaux (Fi, ~0.2918) — $3.27 [Steam]
-  - Tec-9 | Banana Leaf (Fi, ~0.1751) — $0.08 [Steam]
-  - XM1014 | XoooM (Fi, ~0.1751) — $0.07 [Steam]
-
-### Limited Edition Item | Classified → Covert | +67.9% ROI | EV: $10.99
-- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.18 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3171 (max adjusted allowed: 0.3800)
-- **Expected output value:** $27.17 (after platform fees)
-- **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.3171) — $31.97 [Steam] ← jackpot
-
----
-
-## 2026-03-22
-
-### Harlequin | Consumer Grade → Industrial Grade | +540.0% ROI | EV: $1.08
-- **Input:** 10x FAMAS | Byproduct (Field-Tested) @ $0.02 each = $0.20 total
-- **Max input float:** 0.2090
-- **Avg input float:** 0.2023 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.28 (after platform fees)
-- **Outputs (1/5 each):**
-  - MP5-SD | Picnic (Fi, ~0.2188) — $0.10 [Steam]
-  - MP7 | Coral Paisley (Fi, ~0.1897) — $3.48 [Skinport]
-  - SSG 08 | Calligrafaux (Fi, ~0.2918) — $3.27 [Skinport]
-  - Tec-9 | Banana Leaf (Fi, ~0.1751) — $0.07 [Skinport]
-  - XM1014 | XoooM (Fi, ~0.1751) — $0.07 [Skinport]
-
-### Achroma | Consumer Grade → Industrial Grade | +224.0% ROI | EV: $0.45
-- **Input:** 10x M249 | Sleet (Minimal Wear) @ $0.02 each = $0.20 total
-- **Max input float:** 0.3311
-- **Avg input float:** 0.2086 (max adjusted allowed: 0.4730)
-- **Expected output value:** $0.65 (after platform fees)
-- **Outputs (1/5 each):**
-  - FAMAS | Vendetta (Fi, ~0.2036) — $0.05 [CSFloat]
-  - M4A4 | Aeolian Dark (Fi, ~0.2206) — $0.46 [Skinport]
-  - MAC-10 | Snow Splash (Fi, ~0.2036) — $2.92 [Skinport]
-  - MP5-SD | Snow Splash (Fi, ~0.2036) — $0.06 [Skinport]
-  - R8 Revolver | Dark Chamber (Fi, ~0.2727) — $0.06 [Steam]
-
-### Harlequin | Industrial Grade → Mil-Spec Grade | +80.4% ROI | EV: $0.56
-- **Input:** 10x Tec-9 | Banana Leaf (Field-Tested) @ $0.07 each = $0.70 total
-- **Max input float:** 0.3257
-- **Avg input float:** 0.2413 (max adjusted allowed: 0.5429)
-- **Expected output value:** $1.26 (after platform fees)
-- **Outputs (1/4 each):**
-  - Five-SeveN | Fraise Crane (Fi, ~0.2615) — $1.73 [Skinport]
-  - Galil AR | Sky Mandala (Fi, ~0.2816) — $2.45 [Skinport]
-  - Zeus x27 | Earth Mandala (Fi, ~0.2655) — $0.71 [Steam]
-  - UMP-45 | Warm Blooded (Fi, ~0.2816) — $0.72 [Steam]
-
-### Limited Edition Item | Classified → Covert | +54.2% ROI | EV: $8.77
-- **Input:** 10x Desert Eagle | Heat Treated (Field-Tested) @ $1.59 each = $16.18 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3171 (max adjusted allowed: 0.3800)
-- **Expected output value:** $24.95 (after platform fees)
-- **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.3171) — $27.13 [Skinport] ← jackpot
-
-### 2018 Nuke | Mil-Spec Grade → Restricted | +31.8% ROI | EV: $0.35
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1583 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.45 (after platform fees)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1583) — $1.14 [Steam]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2217) — $2.43 [Skinport]
-  - MAG-7 | Core Breach (Fi, ~0.3167) — $1.27 [Skinport]
-
----
-
-## 2026-03-24
-
-### 2018 Inferno | Industrial Grade → Mil-Spec Grade | +51.4% ROI | EV: $0.36
-- **Input:** 10x R8 Revolver | Nitro (Field-Tested) @ $0.07 each = $0.70 total
+## 2026-04-01
+
+### Canals + Dust 2 | Industrial Grade → Mil-Spec Grade | +111.0% ROI | EV: $12.83
+- **Input:** 10x SG 553 | Candy Apple (Field-Tested) @ $5.66 each = $11.56 total
+- **Max input float:** 0.2660
+- **Avg input float:** 0.2703 (max adjusted allowed: 0.3800)
+- **Expected output value:** $24.39 (after platform fees)
+- **Outputs (1/7 each):**
+  - Dual Berettas | Emerald (Fa, ~0.0243) — $67.93 [CSFloat] ← jackpot
+  - G3SG1 | Violet Murano (Fi, ~0.1520) — $33.99 [CSFloat] ← jackpot
+  - P90 | Baroque Red (Fi, ~0.1520) — $809.33 [CSFloat] ← jackpot
+  - SSG 08 | Orange Filigree (Fi, ~0.1520) — $37.88 [CSFloat] ← jackpot
+  - PP-Bizon | Brass (Fi, ~0.3039) — $0.20 [CSFloat]
+  - M4A1-S | VariCamo (Fi, ~0.1823) — $0.22 [CSFloat]
+  - SG 553 | Damascus Steel (Fi, ~0.3039) — $0.16 [CSFloat]
+
+### Canals + Dust 2 | Industrial Grade → Mil-Spec Grade | +101.6% ROI | EV: $18.39
+- **Input:** 10x SG 553 | Candy Apple (Field-Tested) @ $5.66 each = $18.11 total
+- **Max input float:** 0.2660
+- **Avg input float:** 0.2740 (max adjusted allowed: 0.3800)
+- **Expected output value:** $36.50 (after platform fees)
+- **Outputs (1/7 each):**
+  - Dual Berettas | Emerald (Fa, ~0.0245) — $67.93 [CSFloat] ← jackpot
+  - G3SG1 | Violet Murano (Fi, ~0.1533) — $33.99 [CSFloat] ← jackpot
+  - P90 | Baroque Red (Fi, ~0.1533) — $809.33 [CSFloat] ← jackpot
+  - SSG 08 | Orange Filigree (Fi, ~0.1533) — $37.88 [CSFloat] ← jackpot
+  - PP-Bizon | Brass (Fi, ~0.3067) — $0.20 [CSFloat]
+  - M4A1-S | VariCamo (Fi, ~0.1840) — $0.22 [CSFloat]
+  - SG 553 | Damascus Steel (Fi, ~0.3067) — $0.16 [CSFloat]
+
+### 2018 Inferno | Industrial Grade → Mil-Spec Grade | +27.7% ROI | EV: $0.39
+- **Input:** 10x R8 Revolver | Nitro (Field-Tested) @ $0.08 each = $1.40 total
 - **Max input float:** 0.3412
-- **Avg input float:** 0.2733 (max adjusted allowed: 0.3800)
+- **Avg input float:** 0.1041 (max adjusted allowed: 0.3800)
+- **Expected output value:** $1.79 (after platform fees)
+- **Outputs (1/4 each):**
+  - M4A4 | Converter (Fa, ~0.0654) — $3.30 [CSFloat]
+  - Sawed-Off | Brake Light (Fa, ~0.0131) — $1.32 [CSFloat]
+  - SSG 08 | Hand Brake (Fi, ~0.1634) — $1.33 [CSFloat]
+  - USP-S | Check Engine (Mi, ~0.0980) — $1.36 [CSFloat]
+
+---
+
+## 2026-04-08
+
+### Cs20 + 2018 Nuke | Mil-Spec Grade → Restricted | +45.7% ROI | EV: $2.38
+- **Input:** 10x MAG-7 | Popdog (Minimal Wear) @ $0.35 each = $5.21 total
+- **Max input float:** 0.3040
+- **Avg input float:** 0.0793 (max adjusted allowed: 0.3800)
+- **Expected output value:** $7.59 (after platform fees)
+- **Outputs (1/8 each):**
+  - Five-SeveN | Buddy (Fa, ~0.0545) — $14.97 [CSFloat] ← jackpot
+  - M249 | Aztec (Mi, ~0.0744) — $1.44 [CSFloat]
+  - MP5-SD | Agent (Mi, ~0.0991) — $3.36 [CSFloat]
+  - P250 | Inferno (Fa, ~0.0674) — $17.78 [CSFloat] ← jackpot
+  - UMP-45 | Plastique (Mi, ~0.0793) — $1.47 [CSFloat]
+  - AUG | Random Access (Fa, ~0.0496) — $14.61 [CSFloat] ← jackpot
+  - Glock-18 | Nuclear Garden (Fa, ~0.0694) — $29.50 [CSFloat] ← jackpot
+  - MAG-7 | Core Breach (Mi, ~0.0991) — $6.89 [CSFloat]
+
+### 2018 Inferno + Safehouse | Industrial Grade → Mil-Spec Grade | +43.8% ROI | EV: $0.32
+- **Input:** 10x R8 Revolver | Nitro (Field-Tested) @ $0.08 each = $0.74 total
+- **Max input float:** 0.3412
+- **Avg input float:** 0.2452 (max adjusted allowed: 0.3800)
 - **Expected output value:** $1.06 (after platform fees)
+- **Outputs (1/7 each):**
+  - M4A4 | Converter (Mi, ~0.1054) — $1.20 [CSFloat]
+  - Sawed-Off | Brake Light (Fa, ~0.0211) — $1.32 [CSFloat]
+  - SSG 08 | Hand Brake (Fi, ~0.2636) — $1.15 [CSFloat]
+  - USP-S | Check Engine (Fi, ~0.1582) — $0.92 [CSFloat]
+  - FAMAS | Teardown (Fi, ~0.1582) — $0.13 [CSFloat]
+  - Five-SeveN | Silver Quartz (Mi, ~0.1054) — $0.65 [CSFloat]
+  - SSG 08 | Acid Fade (Fa, ~0.0079) — $0.96 [CSFloat]
+
+### Anubis + Italy | Industrial Grade → Mil-Spec Grade | +40.1% ROI | EV: $1.73
+- **Input:** 10x MAC-10 | Echoing Sands (Field-Tested) @ $0.27 each = $4.31 total
+- **Max input float:** 0.3164
+- **Avg input float:** 0.0494 (max adjusted allowed: 0.3800)
+- **Expected output value:** $6.04 (after platform fees)
+- **Outputs (1/7 each):**
+  - AK-47 | Steel Delta (Fa, ~0.0427) — $23.98 [CSFloat] ← jackpot
+  - AWP | Black Nile (Fa, ~0.0438) — $36.92 [CSFloat] ← jackpot
+  - MAG-7 | Copper Coated (Fa, ~0.0584) — $13.00 [CSFloat] ← jackpot
+  - Tec-9 | Mummy's Rot (Fa, ~0.0584) — $32.29 [CSFloat] ← jackpot
+  - Glock-18 | Candy Apple (Fa, ~0.0175) — $3.02 [CSFloat]
+  - MP7 | Anodized Navy (Fa, ~0.0047) — $1.70 [CSFloat]
+  - Sawed-Off | Full Stop (Fa, ~0.0351) — $1.10 [CSFloat]
+
+### 2018 Inferno | Industrial Grade → Mil-Spec Grade | +40.0% ROI | EV: $0.32
+- **Input:** 10x R8 Revolver | Nitro (Field-Tested) @ $0.08 each = $0.80 total
+- **Max input float:** 0.3412
+- **Avg input float:** 0.2497 (max adjusted allowed: 0.3800)
+- **Expected output value:** $1.12 (after platform fees)
 - **Outputs (1/4 each):**
-  - M4A4 | Converter (Mi, ~0.1136) — $1.35 [Skinport]
-  - Sawed-Off | Brake Light (Fa, ~0.0227) — $1.55 [Skinport]
-  - SSG 08 | Hand Brake (Fi, ~0.2839) — $0.98 [Skinport]
-  - USP-S | Check Engine (Fi, ~0.1703) — $0.74 [Skinport]
+  - M4A4 | Converter (Mi, ~0.1026) — $1.20 [CSFloat]
+  - Sawed-Off | Brake Light (Fa, ~0.0205) — $1.32 [CSFloat]
+  - SSG 08 | Hand Brake (Fi, ~0.2564) — $1.15 [CSFloat]
+  - USP-S | Check Engine (Fi, ~0.1538) — $0.92 [CSFloat]
 
-### 2018 Nuke | Mil-Spec Grade → Restricted | +27.6% ROI | EV: $0.30
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1709 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.40 (after platform fees)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1709) — $1.02 [Skinport]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2392) — $2.40 [Skinport]
-  - MAG-7 | Core Breach (Fi, ~0.3417) — $1.18 [Skinport]
-
----
-
-## 2026-03-24
-
-### Achroma | Industrial Grade → Mil-Spec Grade | +157.0% ROI | EV: $0.79
-- **Input:** 10x M4A4 | Aeolian Dark (Field-Tested) @ $0.05 each = $0.50 total
-- **Max input float:** 0.3087
-- **Avg input float:** 0.2576 (max adjusted allowed: 0.4750)
-- **Expected output value:** $1.28 (after platform fees)
-- **Outputs (1/4 each):**
-  - AUG | Creep (Fi, ~0.3170) — $0.60 [Steam]
-  - Desert Eagle | The Daily Deagle (Fi, ~0.2298) — $1.45 [Skinport]
-  - P2000 | Grip Tape (Fi, ~0.2972) — $1.47 [Skinport]
-  - P90 | Aeolian Light (Fi, ~0.2576) — $2.12 [Skinport]
-
-### Italy | Industrial Grade → Mil-Spec Grade | +65.2% ROI | EV: $0.46
-- **Input:** 10x M4A1-S | Boreal Forest (Field-Tested) @ $0.07 each = $0.70 total
-- **Max input float:** 0.5287
-- **Avg input float:** 0.3550 (max adjusted allowed: 0.6333)
-- **Expected output value:** $1.16 (after platform fees)
-- **Outputs (1/3 each):**
-  - Glock-18 | Candy Apple (Mi, ~0.1196) — $1.82 [Skinport]
-  - MP7 | Anodized Navy (Fa, ~0.0319) — $1.83 [Skinport]
-  - Sawed-Off | Full Stop (Fi, ~0.2392) — $0.14 [Skinport]
-
-### 2018 Nuke | Mil-Spec Grade → Restricted | +28.2% ROI | EV: $0.31
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1709 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.41 (after platform fees)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1709) — $1.02 [Skinport]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2392) — $2.42 [Skinport]
-  - MAG-7 | Core Breach (Fi, ~0.3417) — $1.18 [Skinport]
-
-### Limited Edition Item | Classified → Covert | +26.5% ROI | EV: $5.25
-- **Input:** 10x M4A1-S | Solitude (Field-Tested) @ $1.90 each = $19.84 total
+### Achroma | Restricted → Classified | +29.4% ROI | EV: $6.77
+- **Input:** 10x Glock-18 | Trace Lock (Field-Tested) @ $2.30 each = $23.00 total
 - **Max input float:** 0.2660
-- **Avg input float:** 0.2621 (max adjusted allowed: 0.3800)
-- **Expected output value:** $25.09 (after platform fees)
+- **Avg input float:** 0.2172 (max adjusted allowed: 0.3800)
+- **Expected output value:** $29.77 (after platform fees)
 - **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.2803) — $27.28 [Skinport] ← jackpot
+  - AWP | The End (Fi, ~0.3103) — $35.96 [Skinport] ← jackpot
 
-### Genesis | Mil-Spec Grade → Restricted | +25.0% ROI | EV: $0.30
-- **Input:** 10x MP5-SD | Focus (Field-Tested) @ $0.12 each = $1.20 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3260 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.50 (after platform fees)
-- **Outputs (1/5 each):**
-  - Dual Berettas | Angel Eyes (Fi, ~0.3260) — $1.02 [Skinport]
-  - M4A1-S | Liquidation (Fi, ~0.3260) — $4.28 [Skinport]
-  - MAC-10 | Cat Fight (Fi, ~0.3260) — $0.93 [Skinport]
-  - Nova | Ocular (Fi, ~0.3260) — $1.00 [Skinport]
-  - UMP-45 | Continuum (Fi, ~0.3260) — $0.95 [Skinport]
+### Cs20 + 2018 Nuke | Mil-Spec Grade → Restricted | +28.0% ROI | EV: $2.83
+- **Input:** 10x MAG-7 | Popdog (Minimal Wear) @ $0.35 each = $10.11 total
+- **Max input float:** 0.3040
+- **Avg input float:** 0.0543 (max adjusted allowed: 0.3800)
+- **Expected output value:** $12.94 (after platform fees)
+- **Outputs (1/8 each):**
+  - Five-SeveN | Buddy (Fa, ~0.0374) — $14.97 [CSFloat] ← jackpot
+  - M249 | Aztec (Fa, ~0.0509) — $6.27 [CSFloat]
+  - MP5-SD | Agent (Fa, ~0.0679) — $13.94 [CSFloat] ← jackpot
+  - P250 | Inferno (Fa, ~0.0462) — $17.78 [CSFloat] ← jackpot
+  - UMP-45 | Plastique (Fa, ~0.0543) — $9.00 [CSFloat]
+  - AUG | Random Access (Fa, ~0.0340) — $14.61 [CSFloat] ← jackpot
+  - Glock-18 | Nuclear Garden (Fa, ~0.0475) — $29.50 [CSFloat] ← jackpot
+  - MAG-7 | Core Breach (Fa, ~0.0679) — $24.87 [CSFloat] ← jackpot
 
----
+### Cs20 + 2018 Nuke | Mil-Spec Grade → Restricted | +27.0% ROI | EV: $1.87
+- **Input:** 10x MAG-7 | Popdog (Minimal Wear) @ $0.35 each = $6.92 total
+- **Max input float:** 0.3040
+- **Avg input float:** 0.0706 (max adjusted allowed: 0.3800)
+- **Expected output value:** $8.79 (after platform fees)
+- **Outputs (1/8 each):**
+  - Five-SeveN | Buddy (Fa, ~0.0486) — $14.97 [CSFloat] ← jackpot
+  - M249 | Aztec (Fa, ~0.0662) — $6.27 [CSFloat]
+  - MP5-SD | Agent (Mi, ~0.0883) — $3.36 [CSFloat]
+  - P250 | Inferno (Fa, ~0.0601) — $17.78 [CSFloat] ← jackpot
+  - UMP-45 | Plastique (Mi, ~0.0706) — $1.47 [CSFloat]
+  - AUG | Random Access (Fa, ~0.0442) — $14.61 [CSFloat] ← jackpot
+  - Glock-18 | Nuclear Garden (Fa, ~0.0618) — $29.50 [CSFloat] ← jackpot
+  - MAG-7 | Core Breach (Mi, ~0.0883) — $6.89 [CSFloat]
 
-## 2026-03-24
-
-### Achroma | Industrial Grade → Mil-Spec Grade | +157.0% ROI | EV: $0.79
-- **Input:** 10x M4A4 | Aeolian Dark (Field-Tested) @ $0.05 each = $0.50 total
-- **Max input float:** 0.3087
-- **Avg input float:** 0.2576 (max adjusted allowed: 0.4750)
-- **Expected output value:** $1.28 (after platform fees)
-- **Outputs (1/4 each):**
-  - AUG | Creep (Fi, ~0.3170) — $0.60 [Steam]
-  - Desert Eagle | The Daily Deagle (Fi, ~0.2298) — $1.45 [Skinport]
-  - P2000 | Grip Tape (Fi, ~0.2972) — $1.47 [Skinport]
-  - P90 | Aeolian Light (Fi, ~0.2576) — $2.12 [Skinport]
-
-### Italy | Industrial Grade → Mil-Spec Grade | +65.2% ROI | EV: $0.46
-- **Input:** 10x M4A1-S | Boreal Forest (Field-Tested) @ $0.07 each = $0.70 total
-- **Max input float:** 0.5287
-- **Avg input float:** 0.3550 (max adjusted allowed: 0.6333)
-- **Expected output value:** $1.16 (after platform fees)
-- **Outputs (1/3 each):**
-  - Glock-18 | Candy Apple (Mi, ~0.1196) — $1.82 [Skinport]
-  - MP7 | Anodized Navy (Fa, ~0.0319) — $1.83 [Skinport]
-  - Sawed-Off | Full Stop (Fi, ~0.2392) — $0.14 [Skinport]
-
-### 2018 Nuke | Mil-Spec Grade → Restricted | +28.2% ROI | EV: $0.31
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1709 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.41 (after platform fees)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1709) — $1.02 [Skinport]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2392) — $2.42 [Skinport]
-  - MAG-7 | Core Breach (Fi, ~0.3417) — $1.18 [Skinport]
-
-### Limited Edition Item | Classified → Covert | +26.5% ROI | EV: $5.25
-- **Input:** 10x M4A1-S | Solitude (Field-Tested) @ $1.90 each = $19.84 total
-- **Max input float:** 0.2660
-- **Avg input float:** 0.2621 (max adjusted allowed: 0.3800)
-- **Expected output value:** $25.09 (after platform fees)
-- **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.2803) — $27.28 [Skinport] ← jackpot
-
-### Genesis | Mil-Spec Grade → Restricted | +25.0% ROI | EV: $0.30
-- **Input:** 10x MP5-SD | Focus (Field-Tested) @ $0.12 each = $1.20 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3260 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.50 (after platform fees)
-- **Outputs (1/5 each):**
-  - Dual Berettas | Angel Eyes (Fi, ~0.3260) — $1.02 [Skinport]
-  - M4A1-S | Liquidation (Fi, ~0.3260) — $4.28 [Skinport]
-  - MAC-10 | Cat Fight (Fi, ~0.3260) — $0.93 [Skinport]
-  - Nova | Ocular (Fi, ~0.3260) — $1.00 [Skinport]
-  - UMP-45 | Continuum (Fi, ~0.3260) — $0.95 [Skinport]
+### Shattered Web + 2018 Nuke | Mil-Spec Grade → Restricted | +25.8% ROI | EV: $4.66
+- **Input:** 10x M249 | Warbird (Field-Tested) @ $0.96 each = $18.04 total
+- **Max input float:** 0.2780
+- **Avg input float:** 0.0496 (max adjusted allowed: 0.3800)
+- **Expected output value:** $22.70 (after platform fees)
+- **Outputs (1/8 each):**
+  - AK-47 | Rat Rod (Fa, ~0.0660) — $111.31 [CSFloat] ← jackpot
+  - AUG | Arctic Wolf (Fa, ~0.0462) — $29.55 [CSFloat] ← jackpot
+  - PP-Bizon | Embargo (Fa, ~0.0660) — $43.51 [CSFloat] ← jackpot
+  - P2000 | Obsidian (Fa, ~0.0660) — $77.85 [CSFloat] ← jackpot
+  - MP7 | Neon Ply (Fa, ~0.0660) — $83.95 [CSFloat] ← jackpot
+  - AUG | Random Access (Fa, ~0.0330) — $14.61 [CSFloat] ← jackpot
+  - Glock-18 | Nuclear Garden (Fa, ~0.0462) — $29.50 [CSFloat] ← jackpot
+  - MAG-7 | Core Breach (Fa, ~0.0660) — $24.87 [CSFloat] ← jackpot
 
 ---
 
-## 2026-03-24
+## 2026-04-08
 
-### Achroma | Industrial Grade → Mil-Spec Grade | +157.0% ROI | EV: $0.79
-- **Input:** 10x M4A4 | Aeolian Dark (Field-Tested) @ $0.05 each = $0.50 total
-- **Max input float:** 0.3087
-- **Avg input float:** 0.2576 (max adjusted allowed: 0.4750)
-- **Expected output value:** $1.28 (after platform fees)
-- **Outputs (1/4 each):**
-  - AUG | Creep (Fi, ~0.3170) — $0.60 [Steam]
-  - Desert Eagle | The Daily Deagle (Fi, ~0.2298) — $1.45 [Skinport]
-  - P2000 | Grip Tape (Fi, ~0.2972) — $1.47 [Skinport]
-  - P90 | Aeolian Light (Fi, ~0.2576) — $2.12 [Skinport]
-
-### Italy | Industrial Grade → Mil-Spec Grade | +65.2% ROI | EV: $0.46
-- **Input:** 10x M4A1-S | Boreal Forest (Field-Tested) @ $0.07 each = $0.70 total
-- **Max input float:** 0.5287
-- **Avg input float:** 0.3550 (max adjusted allowed: 0.6333)
-- **Expected output value:** $1.16 (after platform fees)
+### Glove | Restricted → Classified | +78.3% ROI | EV: $13.86
+- **Input:** 10x StatTrak™ G3SG1 | Stinger (Field-Tested) @ $1.54 each = $17.69 total
+- **Max input float:** 0.3547
+- **Avg input float:** 0.1619 (max adjusted allowed: 0.5067)
+- **Expected output value:** $31.55 (after platform fees)
 - **Outputs (1/3 each):**
-  - Glock-18 | Candy Apple (Mi, ~0.1196) — $1.82 [Skinport]
-  - MP7 | Anodized Navy (Fa, ~0.0319) — $1.83 [Skinport]
-  - Sawed-Off | Full Stop (Fi, ~0.2392) — $0.14 [Skinport]
+  - FAMAS | Mecha Industries (Mi, ~0.1441) — $39.67 [CSFloat] ← jackpot
+  - P90 | Shallow Grave (Fi, ~0.2161) — $33.69 [CSFloat] ← jackpot
+  - Sawed-Off | Wasteland Princess (Fi, ~0.2017) — $33.99 [CSFloat] ← jackpot
 
-### 2018 Nuke | Mil-Spec Grade → Restricted | +28.2% ROI | EV: $0.31
-- **Input:** 10x P90 | Facility Negative (Field-Tested) @ $0.11 each = $1.10 total
-- **Max input float:** 0.1900
-- **Avg input float:** 0.1709 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.41 (after platform fees)
-- **Outputs (1/3 each):**
-  - AUG | Random Access (Fi, ~0.1709) — $1.02 [Skinport]
-  - Glock-18 | Nuclear Garden (Fi, ~0.2392) — $2.42 [Skinport]
-  - MAG-7 | Core Breach (Fi, ~0.3417) — $1.18 [Skinport]
-
-### Limited Edition Item | Classified → Covert | +26.5% ROI | EV: $5.25
-- **Input:** 10x M4A1-S | Solitude (Field-Tested) @ $1.90 each = $19.84 total
-- **Max input float:** 0.2660
-- **Avg input float:** 0.2621 (max adjusted allowed: 0.3800)
-- **Expected output value:** $25.09 (after platform fees)
-- **Outputs (1/1 each):**
-  - AK-47 | Aphrodite (Fi, ~0.2803) — $27.28 [Skinport] ← jackpot
-
-### Genesis | Mil-Spec Grade → Restricted | +25.0% ROI | EV: $0.30
-- **Input:** 10x MP5-SD | Focus (Field-Tested) @ $0.12 each = $1.20 total
-- **Max input float:** 0.3800
-- **Avg input float:** 0.3260 (max adjusted allowed: 0.3800)
-- **Expected output value:** $1.50 (after platform fees)
-- **Outputs (1/5 each):**
-  - Dual Berettas | Angel Eyes (Fi, ~0.3260) — $1.02 [Skinport]
-  - M4A1-S | Liquidation (Fi, ~0.3260) — $4.28 [Skinport]
-  - MAC-10 | Cat Fight (Fi, ~0.3260) — $0.93 [Skinport]
-  - Nova | Ocular (Fi, ~0.3260) — $1.00 [Skinport]
-  - UMP-45 | Continuum (Fi, ~0.3260) — $0.95 [Skinport]
-
----
-
-## 2026-03-26
-
-### Esports 2013 Winter + Kilowatt | Mil-Spec Grade → Restricted | +41.5% ROI | EV: $2.01
-- **Input:** 10x G3SG1 | Azure Zebra (Minimal Wear) @ $2.17 each = $4.84 total
-- **Max input float:** 0.1064
-- **Avg input float:** 0.2279 (max adjusted allowed: 0.3800)
-- **Expected output value:** $6.85 (after platform fees)
-- **Outputs (1/7 each):**
-  - AK-47 | Blue Laminate (Mi, ~0.1420) — $24.58 [Skinport] ← jackpot
-  - P90 | Blind Spot (Fi, ~0.1605) — $58.51 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3211) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2157) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3211) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3211) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.1987) — $0.48 [Skinport]
-
-### Esports 2013 Winter + Kilowatt | Mil-Spec Grade → Restricted | +33.0% ROI | EV: $0.90
-- **Input:** 10x G3SG1 | Azure Zebra (Minimal Wear) @ $2.17 each = $2.74 total
-- **Max input float:** 0.1064
-- **Avg input float:** 0.2428 (max adjusted allowed: 0.3800)
-- **Expected output value:** $3.64 (after platform fees)
-- **Outputs (1/7 each):**
-  - AK-47 | Blue Laminate (Mi, ~0.1368) — $24.58 [Skinport] ← jackpot
-  - P90 | Blind Spot (Fi, ~0.1537) — $58.51 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3074) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2065) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3074) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3074) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.1902) — $0.48 [Skinport]
-
-### Arms Deal 3 + Kilowatt | Mil-Spec Grade → Restricted | +33.0% ROI | EV: $1.79
-- **Input:** 10x Glock-18 | Blue Fissure (Field-Tested) @ $2.46 each = $5.42 total
-- **Max input float:** 0.2576
-- **Avg input float:** 0.2522 (max adjusted allowed: 0.3800)
-- **Expected output value:** $7.21 (after platform fees)
-- **Outputs (1/9 each):**
-  - CZ75-Auto | Tread Plate (Fa, ~0.0611) — $23.39 [Skinport] ← jackpot
-  - Desert Eagle | Heirloom (Fi, ~0.2446) — $10.71 [Skinport] ← jackpot
-  - Five-SeveN | Copper Galaxy (Fa, ~0.0611) — $55.95 [Skinport] ← jackpot
-  - Tec-9 | Titanium Bit (Fa, ~0.0611) — $85.32 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3057) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2054) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3057) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3057) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.1892) — $0.48 [Skinport]
-
-### Arms Deal 3 + Kilowatt | Mil-Spec Grade → Restricted | +32.4% ROI | EV: $2.59
-- **Input:** 10x Glock-18 | Blue Fissure (Field-Tested) @ $2.46 each = $8.00 total
-- **Max input float:** 0.2576
-- **Avg input float:** 0.2549 (max adjusted allowed: 0.3800)
-- **Expected output value:** $10.59 (after platform fees)
-- **Outputs (1/9 each):**
-  - CZ75-Auto | Tread Plate (Fa, ~0.0649) — $23.39 [Skinport] ← jackpot
-  - Desert Eagle | Heirloom (Fi, ~0.2597) — $10.71 [Skinport] ← jackpot
-  - Five-SeveN | Copper Galaxy (Fa, ~0.0649) — $55.95 [Skinport] ← jackpot
-  - Tec-9 | Titanium Bit (Fa, ~0.0649) — $85.32 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3246) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2181) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3246) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3246) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.2009) — $0.48 [Skinport]
-
-### Arms Deal 3 + Kilowatt | Mil-Spec Grade → Restricted | +32.1% ROI | EV: $3.39
-- **Input:** 10x Glock-18 | Blue Fissure (Field-Tested) @ $2.46 each = $10.58 total
-- **Max input float:** 0.2576
-- **Avg input float:** 0.2618 (max adjusted allowed: 0.3800)
-- **Expected output value:** $13.97 (after platform fees)
-- **Outputs (1/9 each):**
-  - CZ75-Auto | Tread Plate (Fa, ~0.0685) — $23.39 [Skinport] ← jackpot
-  - Desert Eagle | Heirloom (Fi, ~0.2740) — $10.71 [Skinport] ← jackpot
-  - Five-SeveN | Copper Galaxy (Fa, ~0.0685) — $55.95 [Skinport] ← jackpot
-  - Tec-9 | Titanium Bit (Fa, ~0.0685) — $85.32 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3426) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2302) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3426) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3426) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.2120) — $0.48 [Skinport]
-
-### Esports 2013 Winter + Kilowatt | Mil-Spec Grade → Restricted | +31.0% ROI | EV: $2.38
-- **Input:** 10x G3SG1 | Azure Zebra (Minimal Wear) @ $2.17 each = $7.67 total
-- **Max input float:** 0.1064
-- **Avg input float:** 0.2136 (max adjusted allowed: 0.3800)
-- **Expected output value:** $10.05 (after platform fees)
-- **Outputs (1/7 each):**
-  - AK-47 | Blue Laminate (Mi, ~0.1415) — $24.58 [Skinport] ← jackpot
-  - P90 | Blind Spot (Fi, ~0.1598) — $58.51 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3196) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2147) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3196) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3196) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.1978) — $0.48 [Skinport]
-
-### Esports 2013 Winter + Kilowatt | Mil-Spec Grade → Restricted | +26.2% ROI | EV: $2.75
-- **Input:** 10x G3SG1 | Azure Zebra (Minimal Wear) @ $2.17 each = $10.50 total
-- **Max input float:** 0.1064
-- **Avg input float:** 0.2067 (max adjusted allowed: 0.3800)
-- **Expected output value:** $13.25 (after platform fees)
-- **Outputs (1/7 each):**
-  - AK-47 | Blue Laminate (Mi, ~0.1430) — $24.58 [Skinport] ← jackpot
-  - P90 | Blind Spot (Fi, ~0.1619) — $58.51 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.3238) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.2175) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.3238) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.3238) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.2004) — $0.48 [Skinport]
-
-### Arms Deal 3 + Kilowatt | Mil-Spec Grade → Restricted | +26.2% ROI | EV: $0.79
-- **Input:** 10x Glock-18 | Blue Fissure (Field-Tested) @ $2.46 each = $3.03 total
-- **Max input float:** 0.2576
-- **Avg input float:** 0.2507 (max adjusted allowed: 0.3800)
-- **Expected output value:** $3.82 (after platform fees)
-- **Outputs (1/9 each):**
-  - CZ75-Auto | Tread Plate (Fa, ~0.0581) — $23.39 [Skinport] ← jackpot
-  - Desert Eagle | Heirloom (Fi, ~0.2323) — $10.71 [Skinport] ← jackpot
-  - Five-SeveN | Copper Galaxy (Fa, ~0.0581) — $55.95 [Skinport] ← jackpot
-  - Tec-9 | Titanium Bit (Fa, ~0.0581) — $85.32 [Skinport] ← jackpot
-  - Five-SeveN | Hybrid (Fi, ~0.2903) — $0.48 [Skinport]
-  - Glock-18 | Block-18 (Fi, ~0.1951) — $0.68 [Skinport]
-  - M4A4 | Etch Lord (Fi, ~0.2903) — $0.68 [Skinport]
-  - MP7 | Just Smile (Fi, ~0.2903) — $0.55 [Skinport]
-  - Sawed-Off | Analog Input (Fi, ~0.1797) — $0.48 [Skinport]
-
----
-
-## 2026-03-26
-
-### Canals | Industrial Grade → Mil-Spec Grade | +207.7% ROI | EV: $133.35
-- **Input:** 10x AK-47 | Baroque Purple (Well-Worn) @ $6.37 each = $64.19 total
-- **Max input float:** 0.7600
-- **Avg input float:** 0.4180 (max adjusted allowed: 0.7600)
-- **Expected output value:** $197.54 (after platform fees)
-- **Outputs (1/4 each):**
-  - Dual Berettas | Emerald (Fa, ~0.0334) — $66.40 [CSFloat] ← jackpot
-  - G3SG1 | Violet Murano (Fi, ~0.2090) — $33.99 [CSFloat] ← jackpot
-  - P90 | Baroque Red (Fi, ~0.2090) — $809.33 [CSFloat] ← jackpot
-  - SSG 08 | Orange Filigree (Fi, ~0.2090) — $38.88 [CSFloat] ← jackpot
+### Glove | Classified → Covert | +55.6% ROI | EV: $71.34
+- **Input:** 10x StatTrak™ P90 | Shallow Grave (Field-Tested) @ $9.49 each = $128.27 total
+- **Max input float:** 0.4071
+- **Avg input float:** 0.2245 (max adjusted allowed: 0.5429)
+- **Expected output value:** $199.61 (after platform fees)
+- **Outputs (1/2 each):**
+  - M4A4 | Buzz Kill (Fi, ~0.2194) — $290.01 [CSFloat] ← jackpot
+  - SSG 08 | Dragonfire (Fi, ~0.1567) — $291.96 [CSFloat] ← jackpot
 
 ---
