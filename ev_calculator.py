@@ -98,28 +98,48 @@ _csfloat_multi_limiter = MultiKeyRateLimiter(_csfloat_all_keys, max_per_second_p
 _steam_consecutive_429s = 0
 _steam_blocked = False
 
-# Global CSFloat budget tracker — updated from response headers
-_csfloat_budget = {"remaining": None, "limit": None, "reset": None, "lock": threading.Lock()}
+# Per-key CSFloat budget tracker — updated from response headers
+_csfloat_budget_lock = threading.Lock()
+_csfloat_budgets = {}  # key_idx -> {"remaining": int, "limit": int, "reset": int}
 
-def _update_csfloat_budget(response):
-    """Update budget tracker from CSFloat response headers."""
-    with _csfloat_budget["lock"]:
+def _update_csfloat_budget(response, key_idx=0):
+    """Update per-key budget tracker from CSFloat response headers."""
+    with _csfloat_budget_lock:
         try:
-            _csfloat_budget["remaining"] = int(response.headers.get("X-RateLimit-Remaining", -1))
-            _csfloat_budget["limit"] = int(response.headers.get("X-RateLimit-Limit", -1))
-            reset = response.headers.get("X-RateLimit-Reset")
-            if reset:
-                _csfloat_budget["reset"] = int(reset)
+            _csfloat_budgets[key_idx] = {
+                "remaining": int(response.headers.get("X-RateLimit-Remaining", -1)),
+                "limit": int(response.headers.get("X-RateLimit-Limit", -1)),
+                "reset": int(response.headers.get("X-RateLimit-Reset", 0)),
+            }
         except (ValueError, TypeError):
             pass
 
+def _csfloat_total_remaining():
+    """Return total remaining budget across all keys, or None if unknown."""
+    with _csfloat_budget_lock:
+        if not _csfloat_budgets:
+            return None
+        total = sum(b["remaining"] for b in _csfloat_budgets.values() if b["remaining"] >= 0)
+        return total if total >= 0 else None
+
 def _csfloat_has_budget():
     """Return True if we have enough CSFloat budget to make a request."""
-    with _csfloat_budget["lock"]:
-        remaining = _csfloat_budget["remaining"]
-        if remaining is None:
-            return True  # Unknown budget, allow (first request will tell us)
-        return remaining > CSFLOAT_BUDGET_RESERVE
+    remaining = _csfloat_total_remaining()
+    if remaining is None:
+        return True  # Unknown budget, allow (first request will tell us)
+    return remaining > CSFLOAT_BUDGET_RESERVE
+
+def _csfloat_budget_summary():
+    """Return human-readable budget summary for logging."""
+    with _csfloat_budget_lock:
+        if not _csfloat_budgets:
+            return "unknown"
+        parts = []
+        for idx in sorted(_csfloat_budgets.keys()):
+            b = _csfloat_budgets[idx]
+            parts.append(f"key{idx}:{b['remaining']}/{b['limit']}")
+        total = sum(b["remaining"] for b in _csfloat_budgets.values() if b["remaining"] >= 0)
+        return f"{total} total ({', '.join(parts)})"
 
 sys.stdout.reconfigure(encoding='utf-8', line_buffering=True)
 
@@ -883,13 +903,12 @@ def fetch_csfloat_listings(float_limits, max_pages_per_rarity=40):
         # Check budget before starting this rarity
         # Stop if: hit input cap OR remaining budget would eat into output reserve
         input_floor = CSFLOAT_OUTPUT_RESERVE + CSFLOAT_BUDGET_RESERVE
-        with _csfloat_budget["lock"]:
-            remaining = _csfloat_budget["remaining"]
+        remaining = _csfloat_total_remaining()
         if total_requests >= CSFLOAT_INPUT_CAP:
             print(f"   [CSFLOAT] Input cap hit ({total_requests}/{CSFLOAT_INPUT_CAP} requests used), stopping input fetch")
             break
         if remaining is not None and remaining <= input_floor:
-            print(f"   [CSFLOAT] Budget low ({remaining} left, reserving {input_floor} for outputs+testing), stopping input fetch")
+            print(f"   [CSFLOAT] Budget low ({_csfloat_budget_summary()}, reserving {input_floor} for outputs+testing), stopping input fetch")
             break
 
         min_price = 0
@@ -900,10 +919,9 @@ def fetch_csfloat_listings(float_limits, max_pages_per_rarity=40):
             if total_requests >= CSFLOAT_INPUT_CAP:
                 print(f"   [CSFLOAT] Input cap hit ({total_requests}/{CSFLOAT_INPUT_CAP}), stopping {rarity_name}")
                 break
-            with _csfloat_budget["lock"]:
-                remaining = _csfloat_budget["remaining"]
+            remaining = _csfloat_total_remaining()
             if remaining is not None and remaining <= input_floor:
-                print(f"   [CSFLOAT] Budget floor hit ({remaining} left, reserving {input_floor}), stopping {rarity_name}")
+                print(f"   [CSFLOAT] Budget floor hit ({_csfloat_budget_summary()}, reserving {input_floor}), stopping {rarity_name}")
                 break
 
             params = {
@@ -920,13 +938,13 @@ def fetch_csfloat_listings(float_limits, max_pages_per_rarity=40):
                 api_key, key_idx = _csfloat_multi_limiter.acquire()
                 headers = {"Authorization": api_key}
                 r = requests.get(CSFLOAT_URL, params=params, headers=headers, timeout=15)
-                _update_csfloat_budget(r)
+                _update_csfloat_budget(r, key_idx)
                 total_requests += 1
 
                 if r.status_code == 429:
                     _csfloat_multi_limiter.report_429(key_idx)
-                    with _csfloat_budget["lock"]:
-                        rl_reset = _csfloat_budget["reset"]
+                    with _csfloat_budget_lock:
+                        rl_reset = _csfloat_budgets.get(key_idx, {}).get("reset")
                     wait_time = 10
                     if rl_reset:
                         wait_time = max(1, rl_reset - int(time.time()) + 1)
@@ -1000,8 +1018,7 @@ def fetch_csfloat_listings(float_limits, max_pages_per_rarity=40):
                 print(f"   [CSFLOAT] {rarity_name} error: {e}")
                 break
 
-        with _csfloat_budget["lock"]:
-            remaining = _csfloat_budget["remaining"]
+        remaining = _csfloat_total_remaining()
         print(f"   [CSFLOAT] {rarity_name}: {rarity_items} items (max_float={max_float:.4f}) [{remaining}/{_csfloat_budget.get('limit','?')} budget left]")
 
     print(f"   [CSFLOAT] Total: {len(all_items)} items, {total_requests} API requests used")
@@ -1178,8 +1195,8 @@ def extract_skin_name(title):
     # Remove condition suffix
     for cond in ["(Factory New)", "(Minimal Wear)", "(Field-Tested)", "(Well-Worn)", "(Battle-Scarred)"]:
         title = title.replace(cond, "")
-    # Remove StatTrak prefix for lookup
-    title = title.replace("StatTrak™ ", "").replace("StatTrak ", "")
+    # Remove StatTrak prefix for lookup (NFKC turns ™ into TM)
+    title = title.replace("StatTrak™ ", "").replace("StatTrakTM ", "").replace("StatTrak ", "")
     return title.strip()
 
 
@@ -1190,10 +1207,15 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
     """
     processed = []
     float_violations = 0
+    skipped_rarity = 0
+    skipped_collection = 0
+    skipped_skin_db = 0
+    skipped_float_calc = 0
     for item in raw_items:
         coll = item["collection"]
         in_rarity = RARITY_ORDER.get(item["quality"])
         if in_rarity is None:
+            skipped_rarity += 1
             continue
         fv = item["float"]
         title = item["title"]
@@ -1202,13 +1224,14 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
         # Get max adjusted float for this collection+rarity
         max_adjusted = float_limits.get((coll, in_rarity))
         if max_adjusted is None:
+            skipped_collection += 1
             continue
 
         # Look up this skin's float range
         skin_name = extract_skin_name(title)
         skin_range = skin_float_ranges.get(skin_name)
         if skin_range is None:
-            # Unknown skin - skip to avoid incorrect float calculations
+            skipped_skin_db += 1
             continue
         skin_min = skin_range["min_float"]
         skin_max = skin_range["max_float"]
@@ -1216,6 +1239,7 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
         # Calculate max raw float for this specific skin
         max_raw_float = calc_max_input_float_for_skin(max_adjusted, skin_min, skin_max)
         if max_raw_float is None:
+            skipped_float_calc += 1
             continue
 
         # Hard filter: reject any item where float exceeds max_raw_float
@@ -1260,6 +1284,9 @@ def process_cached_items(raw_items, float_limits, skinport_prices, skin_float_ra
 
     if float_violations > 0:
         print(f"   [FILTER] {float_violations} items rejected — float > max_raw_float")
+    other_skips = skipped_rarity + skipped_collection + skipped_skin_db + skipped_float_calc
+    if other_skips > 0:
+        print(f"   [FILTER] {other_skips} items skipped — {skipped_rarity} unknown rarity, {skipped_collection} no float limit for collection, {skipped_skin_db} not in skin DB, {skipped_float_calc} float calc failed")
     return processed
 
 
@@ -1787,12 +1814,14 @@ def fetch_csfloat_price(skin_name, condition):
         try:
             headers = {"Authorization": api_key}
             r = requests.get(CSFLOAT_URL, params=params, headers=headers, timeout=10)
-            _update_csfloat_budget(r)
+            _update_csfloat_budget(r, key_idx)
             if r.status_code == 429:
                 _csfloat_multi_limiter.report_429(key_idx)
-                rl_remaining = _csfloat_budget["remaining"]
-                rl_limit = _csfloat_budget["limit"]
-                rl_reset = _csfloat_budget["reset"]
+                with _csfloat_budget_lock:
+                    key_budget = _csfloat_budgets.get(key_idx, {})
+                    rl_remaining = key_budget.get("remaining")
+                    rl_limit = key_budget.get("limit")
+                    rl_reset = key_budget.get("reset")
                 wait_time = 5
                 if rl_reset:
                     wait_time = max(1, rl_reset - int(time.time()) + 1)
@@ -1841,11 +1870,9 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
 
     # --- PRE-FETCH: Collect all output (name, cond) pairs and bulk-fetch in parallel ---
     # Show CSFloat budget status from Phase 1
-    with _csfloat_budget["lock"]:
-        remaining = _csfloat_budget["remaining"]
-        limit = _csfloat_budget["limit"]
+    remaining = _csfloat_total_remaining()
     if remaining is not None:
-        print(f"\n   [CSFLOAT BUDGET] {remaining}/{limit} requests remaining ({CSFLOAT_OUTPUT_RESERVE} reserved for outputs, {CSFLOAT_BUDGET_RESERVE} reserve)")
+        print(f"\n   [CSFLOAT BUDGET] {_csfloat_budget_summary()} ({CSFLOAT_OUTPUT_RESERVE} reserved for outputs, {CSFLOAT_BUDGET_RESERVE} reserve)")
     print(f"\n[PHASE 2] Pre-fetching output prices...")
     all_output_pairs = set()
     for coll_name, rarities in viable_collections.items():
@@ -2054,8 +2081,7 @@ def phase2_calculate_ev(viable_collections, coll_skins, cached_prices, skinport_
             tradeup_outputs.sort(key=lambda x: x[0], reverse=True)
 
             # Collect output pairs prioritized by trade-up ROI, up to budget
-            with _csfloat_budget["lock"]:
-                remaining = _csfloat_budget["remaining"]
+            remaining = _csfloat_total_remaining()
             available_budget = max(0, (remaining or 0) - CSFLOAT_BUDGET_RESERVE)
 
             to_fetch = []
@@ -2880,8 +2906,7 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
     prioritized_outputs = sorted(output_priority.keys(), key=lambda k: output_priority[k], reverse=True)
 
     # Determine budget -- reallocate unused input budget to outputs
-    with _csfloat_budget["lock"]:
-        remaining = _csfloat_budget["remaining"]
+    remaining = _csfloat_total_remaining()
     available_budget = max(0, (remaining or CSFLOAT_OUTPUT_RESERVE) - CSFLOAT_BUDGET_RESERVE)
     # Use up to available_budget (includes unused input allocation), cap at 90% of total
     max_output_budget = int(_CSFLOAT_TOTAL_BUDGET * 0.90)
@@ -2955,14 +2980,25 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
                                 ref_source = f"same-skin {alt_cond}"
                                 break
 
-                    # Apply sanity check: reject singleton at 3x+ reference
-                    if ref_price and ref_price > 0 and price > ref_price * 3:
-                        if count <= 1:
-                            print(f"   [REJECTED] {name} ({cond}): CSFloat ${price/100:.2f} (1 listing) vs {ref_source} ${ref_price/100:.2f} ({price/ref_price:.1f}x)")
-                            csfloat_rejected_inflated += 1
-                            continue  # Don't cache — let it be retried next run
+                    # Apply sanity check based on listing count
+                    if count <= 1:
+                        # Singleton: high skepticism
+                        if ref_price and ref_price > 0:
+                            ratio = price / ref_price
+                            if ratio > 2.0:
+                                print(f"   [REJECTED] {name} ({cond}): CSFloat ${price/100:.2f} (1 listing) vs {ref_source} ${ref_price/100:.2f} ({ratio:.1f}x) — singleton >2x ref")
+                                csfloat_rejected_inflated += 1
+                                continue  # Don't cache — let it be retried next run
+                            elif ratio > 1.5:
+                                print(f"   [WARN] {name} ({cond}): CSFloat ${price/100:.2f} (1 listing) vs {ref_source} ${ref_price/100:.2f} ({ratio:.1f}x) — singleton 1.5-2x ref")
                         else:
-                            print(f"   [WARN] {name} ({cond}): CSFloat ${price/100:.2f} ({count} listings) vs {ref_source} ${ref_price/100:.2f} ({price/ref_price:.1f}x)")
+                            # Singleton with NO reference on any platform — unverifiable, reject
+                            print(f"   [REJECTED] {name} ({cond}): CSFloat ${price/100:.2f} (1 listing) — no reference price on Steam/Skinport/DMarket to verify")
+                            csfloat_rejected_inflated += 1
+                            continue
+                    elif ref_price and ref_price > 0 and price > ref_price * 3:
+                        # Multiple listings but wildly inflated
+                        print(f"   [WARN] {name} ({cond}): CSFloat ${price/100:.2f} ({count} listings) vs {ref_source} ${ref_price/100:.2f} ({price/ref_price:.1f}x)")
 
                     cached_prices[cache_key] = price
                     price_sources[cache_key] = "CSFloat"
@@ -2979,7 +3015,7 @@ def phase2_pass2_deep_verify(candidates, outputs_to_verify, coll_skins,
 
         print(f"   CSFloat: {csfloat_ok} priced, {csfloat_no_listing} no listing, {csfloat_failed} failed")
         if csfloat_rejected_inflated:
-            print(f"   CSFloat rejected: {csfloat_rejected_inflated} inflated singletons (>3x reference)")
+            print(f"   CSFloat rejected: {csfloat_rejected_inflated} inflated/unverified singletons")
 
     # Fetch Steam volume data for verified outputs (liquidity only, ~50-100 calls)
     steam_volume_fetched = 0
@@ -3420,8 +3456,7 @@ def phase2_multi_collection_ev(all_inputs_by_collection, viable_collections, col
         # Step 3: Use remaining CSFloat budget to verify/upgrade the most valuable output prices
         # CSFloat has 2% fee vs Skinport 8% / Steam 15%, so verifying here improves net EV
         if _csfloat_has_budget():
-            with _csfloat_budget["lock"]:
-                remaining = _csfloat_budget["remaining"]
+            remaining = _csfloat_total_remaining()
             available = max(0, (remaining or 0) - CSFLOAT_BUDGET_RESERVE)
 
             if available > 0:
@@ -3979,7 +4014,7 @@ def fetch_steam_trend(skin_name, condition):
                 _steam_consecutive_429s += 1
                 # Bail after 6 total 429s (not consecutive — a single success shouldn't
                 # reset the counter to 0 because Steam rate limits are per-IP/window)
-                if _steam_consecutive_429s >= 6:
+                if _steam_consecutive_429s >= 4:
                     _steam_blocked = True
                     print(f"   [STEAM] Blocked after {_steam_consecutive_429s} total 429s — skipping all remaining Steam fetches")
                     print(f"   [STEAM] Falling back to Skinport + CSFloat prices only")
@@ -3988,9 +4023,6 @@ def fetch_steam_trend(skin_name, condition):
                 print(f"   [STEAM] Rate limited, pausing {backoff}s... ({_steam_consecutive_429s} total 429s)")
                 time.sleep(backoff)
                 continue
-            # Don't fully reset — decrement by 1 on success (acknowledges partial recovery)
-            if _steam_consecutive_429s > 0:
-                _steam_consecutive_429s -= 1
             if r.ok:
                 data = r.json()
                 if data.get("success"):
@@ -4319,12 +4351,20 @@ def main():
             if targeted_processed:
                 merged_items = all_items + targeted_processed
                 prev_viable = len(viable_collections)
-                prev_watchlist = len(watchlist_collections)
+                prev_watchlist_colls = dict(watchlist_collections)  # save original watchlist
                 viable_collections, watchlist_collections, all_inputs_by_collection = _classify_collections(merged_items)
                 promoted = len(viable_collections) - prev_viable
                 if promoted > 0:
                     print(f"   {promoted} collections promoted from watchlist to viable!")
-                print(f"   Viable: {len(viable_collections)} (was {prev_viable}), Watchlist: {len(watchlist_collections)} (was {prev_watchlist})")
+                # Preserve original watchlist collections that weren't promoted (don't silently drop them)
+                restored = 0
+                for coll, rarities in prev_watchlist_colls.items():
+                    if coll not in viable_collections and coll not in watchlist_collections:
+                        watchlist_collections[coll] = rarities
+                        restored += 1
+                if restored:
+                    print(f"   {restored} watchlist collections restored (were dropped by reclassification)")
+                print(f"   Viable: {len(viable_collections)} (was {prev_viable}), Watchlist: {len(watchlist_collections)} (was {len(prev_watchlist_colls)})")
 
     if not viable_collections and not watchlist_collections:
         print("\nNo viable or watchlist collections found")
